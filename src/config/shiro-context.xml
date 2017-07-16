@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+	default-lazy-init="true">
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login.jspx" />
+		<property name="successUrl" value="/" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="authcFilter" />
+			</util:map>
+		</property>
+		<!--anon匿名 authc登录认证 user用户已登录 logout退出filter -->
+		<property name="filterChainDefinitions">
+			<value>
+				/login = anon
+				/user/**=user
+			</value>
+		</property>
+	</bean>
+
+	<bean id="authcFilter" class="com.coupon.security.MyAuthenticationFilter" />
+
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="authorizingRealm" />
+<!-- 		<property name="sessionManager" ref="sessionManager" /> -->
+	</bean>
+
+	<bean id="authorizingRealm" class="com.coupon.security.MyRealm" />
+	<bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager" >
+		<property name="globalSessionTimeout" value="5000" />
+	</bean>
+
+	<!-- 开启Shiro注解的Spring配置方式的beans。在lifecycleBeanPostProcessor之后运行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+</beans>

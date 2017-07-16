@@ -1,0 +1,71 @@
+﻿<%@ Page Language="C#" %>
+<script language="C#" runat="server">
+	static String [] arrField = {"OrderID", "CustomerID", "RequiredDate", "Freight", "ShipCity", "ShipAddress"};
+	static String [] arrOrder = {
+"Argentina	10409	OCEAN	2007.02.06	29.83	Buenos Aires	Ing. Gustavo Moncada 8585 Piso 20-A",
+"Argentina	10448	RANCH	2007.03.17	138.82	Buenos Aires	Av. del Libertador 900",
+"Argentina	10521	CACTU	2007.05.27	17.22	Buenos Aires	Cerrito 333",
+"Argentina	10531	OCEAN	2007.06.05	8.12	Buenos Aires	Ing. Gustavo Moncada 8585 Piso 20-A",
+"Argentina	10716	RANCH	2007.11.21	22.57	Buenos Aires	Av. del Libertador 900",
+"Belgium	10252	SUPRD	2006.08.06	51.3	Charleroi	Boulevard Tirou, 255",
+"Belgium	10302	SUPRD	2006.10.08	6.27	Charleroi	Boulevard Tirou, 255",
+"Belgium	10458	SUPRD	2007.03.26	147.06	Charleroi	Boulevard Tirou, 255",
+"Belgium	10463	SUPRD	2007.04.01	114.78	Charleroi	Boulevard Tirou, 255",
+"Belgium	10475	SUPRD	2007.04.11	68.52	Charleroi	Boulevard Tirou, 255",
+"Belgium	10529	MAISD	2007.06.04	66.69	Bruxelles	Rue Joseph-Bens 532",
+"Belgium	10649	MAISD	2007.09.25	6.2	Bruxelles	Rue Joseph-Bens 532",
+"Norway	10387	SANTG	2007.01.15	93.63	Stavern	Erling Skakkes gate 78",
+"Norway	10520	SANTG	2007.05.27	513.37	Stavern	Erling Skakkes gate 78",
+"Norway	10639	SANTG	2007.09.17	38.64	Stavern	Erling Skakkes gate 78",
+"Poland	10374	WOLZA	2007.01.02	223.94	Warszawa	ul. Filtrowa 68",
+"Poland	10611	WOLZA	2007.08.22	80.65	Warszawa	ul. Filtrowa 68",
+"Spain	10281	ROMEY	2006.08.28	2.94	Madrid	Gran Via, 1",
+"Spain	10282	ROMEY	2006.09.12	12.69	Madrid	Gran Via, 1",
+"Spain	10303	GODOS	2006.10.09	107.83	Sevilla	C/ Romero, 33",
+"Spain	10306	ROMEY	2006.10.14	7.56	Madrid	Gran Via, 1",
+"Spain	10326	BOLID	2006.11.07	77.92	Madrid	C/ Araquil, 67",
+"Spain	10366	GALED	2007.01.09	110.14	Barcelona	Rambla de Catalua, 23",
+"Spain	10426	GALED	2007.02.24	18.69	Barcelona	Rambla de Catalua, 23",
+"Spain	10550	GODOS	2007.06.25	4.32	Sevilla	C/ Romero, 33",
+"Spain	10568	GALED	2007.07.11	6.54	Barcelona	Rambla de Catalua, 23",
+"Spain	10629	GODOS	2007.09.09	85.46	Sevilla	C/ Romero, 33",
+"Switzerland	10254	CHOPS	2006.08.08	22.98	Bern	Hauptstr. 31",
+"Switzerland	10255	RICSU	2006.08.09	148.33	Geneve	Starenweg 5",
+"Switzerland	10370	CHOPS	2006.12.31	1.17	Bern	Hauptstr. 31",
+"Switzerland	10419	RICSU	2007.02.17	137.35	Geneve	Starenweg 5",
+"Switzerland	10519	CHOPS	2007.05.26	91.76	Bern	Hauptstr. 31",
+"Switzerland	10537	RICSU	2007.05.28	78.85	Geneve	Starenweg 5",
+"Switzerland	10666	RICSU	2007.10.10	232.42	Geneve	Starenweg 5",
+"Switzerland	10731	CHOPS	2007.12.04	96.65	Bern	Hauptstr. 31",
+"Switzerland	10746	CHOPS	2007.12.17	31.43	Bern	Hauptstr. 31"
+};
+	public void Page_Load(Object sender, EventArgs e) {
+		Response.ContentType = "text/xml";
+
+		String country = Request.Params["country"];
+		String isWeight = Request.Params["isWeight"];
+		if(country==null) return;
+		
+		Response.Write("<records>");
+		for(int i=0; i<arrOrder.Length; i++) {
+			String [] arr = arrOrder[i].Split('\t');
+			if(arr.Length !=7) break;
+			
+			//过滤：其它国家
+			if(arr[0] != country) continue;
+
+			//过滤：小于100
+			if(isWeight == "1") {
+				double d;
+				double.TryParse(arr[4], out d);
+				if(d < 100.0) continue;
+			}
+			
+			Response.Write("<record>");
+			for(int j=0; j<6; j++) Response.Write("<" +arrField[j]+ ">" +arr[j+1]+ "</" +arrField[j]+ ">");
+			Response.Write("</record>");
+		}
+		Response.Write("</records>");
+		Response.End();
+	}
+</script>
