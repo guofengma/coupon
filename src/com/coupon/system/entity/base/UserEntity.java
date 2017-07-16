@@ -14,7 +14,7 @@ import com.coupon.system.entity.User;
 @MappedSuperclass
 public abstract class UserEntity extends BaseEntity {
 
-	protected String loginId;
+	protected String displayName;
 	protected String name;
 	protected String password;
 
@@ -22,12 +22,12 @@ public abstract class UserEntity extends BaseEntity {
 	@JoinTable(name = "ogpis_user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
 	protected Set<Role> roles = new HashSet<Role>();
 
-	public String getLoginId() {
-		return loginId;
+	public String getDisplayName() {
+		return displayName;
 	}
 
-	public void setLoginId(String loginId) {
-		this.loginId = loginId;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public String getName() {

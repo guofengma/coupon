@@ -16,9 +16,4 @@ public interface UserDao extends BaseDao<User, String> {
 
 	public List<User> findUserByName(String name);
 
-//	public String saveUser(User user);
-//	
-//	public User getUserById(String id);
-//
-//	public void deleteUser(String id);
 }

@@ -55,7 +55,7 @@
 						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">用户名</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="form-field-1" placeholder="用户名" class="col-xs-10 col-sm-5" name="loginId" value="${user.loginId}">
+							<input type="text" id="form-field-1" placeholder="用户名" class="col-xs-10 col-sm-5" name="displayName" value="${user.displayName}">
 						</div>
 					</div>				
 
@@ -67,9 +67,9 @@
 	
 							<div class="col-sm-9">
 								<input type="password" id="form-field-2" placeholder="密码" class="col-xs-10 col-sm-5" name="password">
-								<span class="help-inline col-xs-12 col-sm-7">
+								<!-- <span class="help-inline col-xs-12 col-sm-7">
 									<span class="middle">Inline help text</span>
-								</span>
+								</span> -->
 							</div>
 						</div>
 	
@@ -80,9 +80,9 @@
 	
 							<div class="col-sm-9">
 								<input type="password" id="form-field-2" placeholder="重复输入密码" class="col-xs-10 col-sm-5">
-								<span class="help-inline col-xs-12 col-sm-7">
+								<!-- <span class="help-inline col-xs-12 col-sm-7">
 									<span class="middle">Inline help text</span>
-								</span>
+								</span> -->
 							</div>
 						</div>
 					</c:if>

@@ -43,7 +43,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">用户名：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-loginId" class="col-xs-10 col-sm-5" name="loginId">
+									<input type="text" id="form-displayName" class="col-xs-10 col-sm-5" name="displayName">
 								</div>
 							 </div> 
 							 <div class="space-4"></div> 							 
@@ -79,7 +79,7 @@ function showUserInfo()
 		type:"GET",
 		success:function(result){
 			$("#form-username").attr("value",result.username);
-			$("#form-loginId").attr("value",result.loginId);
+			$("#form-displayName").attr("value",result.displayName);
 		},
 		error:function(){
 			alert("出错了");
@@ -90,14 +90,14 @@ function showUserInfo()
 function saveUserInfo()
 {
 	var password = document.getElementById("form-password").value; 
-	var loginId = document.getElementById("form-loginId").value; 
+	var displayName = document.getElementById("form-displayName").value; 
 	var getTimestamp = new Date().getTime();
 	$.ajax({
 		url:"<%=request.getContextPath()%>/system/user/changePassword?timeStamp="+getTimestamp,
 		dataType:"json",
 		data:{
 			"password":password,
-			"loginId":loginId
+			"displayName":displayName
 			},
 		async:true,
 		type:"POST",

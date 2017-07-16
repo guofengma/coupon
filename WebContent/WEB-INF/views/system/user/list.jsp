@@ -57,7 +57,7 @@
 										<c:forEach items="${users.items}" var="item">
 											<tr class="odd gradeX">
 													<td>${item.name}</td>
-													<td>${item.loginId}</td>
+													<td>${item.displayName}</td>
 													<td>
 														<c:forEach items="${item.roles}" var="role" varStatus="status">
 															${role.name}<c:if test="${!status.last}">;</c:if>

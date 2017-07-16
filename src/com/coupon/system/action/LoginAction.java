@@ -66,7 +66,7 @@ public class LoginAction {
 			HttpServletRequest request) throws IOException {
 		User user = userService.findByUserName(MyRealm.hardName);
 		String result = "{\"username\":\"" + user.getName()
-				+ "\",\"loginId\":\"" + user.getLoginId() + "\"}";
+				+ "\",\"displayName\":\"" + user.getDisplayName() + "\"}";
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("utf-8");
 		resp.getWriter().write(result);

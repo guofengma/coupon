@@ -38,7 +38,7 @@ public class MyRealm extends AuthorizingRealm {
 			// 用户的验证逻辑
 			User user = userService.findByUserName(username);
 			if (user != null) {
-				return new SimpleAuthenticationInfo(user.getLoginId(),
+				return new SimpleAuthenticationInfo(user.getDisplayName(),
 						user.getPassword(), getName());
 			}
 		}

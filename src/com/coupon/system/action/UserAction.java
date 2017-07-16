@@ -94,7 +94,7 @@ public class UserAction extends BaseAction {
 				return "redirect:edit?id="+id+"&&same=0";
 			}
 		}
-		bean.setLoginId(user.getLoginId());
+		bean.setDisplayName(user.getDisplayName());
 		bean.setName(user.getName());
 		// 更新角色
 		bean.getRoles().clear();// 先清空角色
@@ -124,12 +124,12 @@ public class UserAction extends BaseAction {
 	
 	@RequestMapping(value = "/system/user/changePassword")
 	public void changePassword(HttpServletRequest request, HttpServletResponse response , ModelMap model) throws IOException {
-		 String loginId = request.getParameter("loginId");
+		 String displayName = request.getParameter("displayName");
 		 String password = request.getParameter("password");
 		 String currentUserName = MyRealm.hardName;
 		 User user = userService.findByUserName(currentUserName);
 		 user.setPassword(password);
-		 user.setLoginId(loginId);
+		 user.setDisplayName(displayName);
 		 userService.update(user);
 	 	 String result = "{\"result\":\"success\"}";
 	 	 response.setContentType("application/json");
