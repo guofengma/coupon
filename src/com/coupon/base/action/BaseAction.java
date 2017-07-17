@@ -15,4 +15,5 @@ public class BaseAction {
 		String menus = request.getParameter("menus");
 		model.addAttribute("menus", menus);// 指定导航栏展开那个子菜单
 	}
+	
 }

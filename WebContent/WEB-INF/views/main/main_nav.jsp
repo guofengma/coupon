@@ -12,11 +12,6 @@
                 <a href="<c:url value='/system/user/list'/>"><i class="icon-user"></i> 用户管理 </a>
             </li>
         </shiro:hasPermission>
-        <shiro:hasPermission name="role:Management">
-        	<li>
-        		<a href="<c:url value='/system/role/list'/>"><i class="icon-key"></i> 角色管理 </a>
-            </li> 
-        </shiro:hasPermission>
         <shiro:hasPermission name="customer:Management">
         	<li>
         		<a href=""><i class="icon-group"></i> 客户管理 </a>
@@ -35,6 +30,16 @@
         <shiro:hasPermission name="recharge:Management">
         	<li>
         		<a href=""><i class="icon-money"></i> 后台充值 </a>
+            </li> 
+        </shiro:hasPermission>
+                <shiro:hasPermission name="role:Management">
+        	<li>
+        		<a href="<c:url value='/system/role/list'/>"><i class="icon-key"></i> 角色管理 </a>
+            </li> 
+        </shiro:hasPermission>
+        <shiro:hasPermission name="city:Management">
+        	<li>
+        		<a href="<c:url value='/system/city/list'/>"><i class="icon-book"></i> 城市管理 </a>
             </li> 
         </shiro:hasPermission>
     </ul>
