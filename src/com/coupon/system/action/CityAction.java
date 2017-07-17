@@ -31,11 +31,8 @@ public class CityAction extends BaseAction{
 	public void getFCity(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		 StringBuilder result = new StringBuilder("[");
 		 List<City> fCity = cityService.getFCity();
-		 String used = "" ;
-		 
 		 for(City temp : fCity){
-			 used = temp.isUsed()?"是":"否";
-			 result.append("{\"id\":\""+temp.getId()+"\",\"name\":\""+temp.getName()+"\",\"used\":\""+used+"\",\"priority\":\""+temp.getPriority()+"\"},");
+			 result.append("{\"id\":\""+temp.getId()+"\",\"name\":\""+temp.getName()+"\",\"used\":"+temp.isUsed()+",\"priority\":\""+temp.getPriority()+"\"},");
 		 }
 		 if(fCity.size()!=0){
 			 result.deleteCharAt(result.length()-1);
@@ -53,10 +50,8 @@ public class CityAction extends BaseAction{
 		City fCity = cityService.findById(fid);
 		StringBuilder result = new StringBuilder("[");
 		 List<City> sCity = fCity.getChildren();
-		 String used = "" ;
 		 for(City temp : sCity){
-			 used = temp.isUsed()?"是":"否";
-			 result.append("{\"id\":\""+temp.getId()+"\",\"name\":\""+temp.getName()+"\",\"used\":\""+used+"\",\"priority\":\""+temp.getPriority()+"\"},");
+			 result.append("{\"id\":\""+temp.getId()+"\",\"name\":\""+temp.getName()+"\",\"used\":"+temp.isUsed()+",\"priority\":\""+temp.getPriority()+"\"},");
 		 }
 		 if(sCity.size()!=0){
 			 result.deleteCharAt(result.length()-1);
@@ -65,6 +60,62 @@ public class CityAction extends BaseAction{
 		 response.setContentType("application/json");
 	 	 response.setCharacterEncoding("utf-8");
 	 	 response.getWriter().write(result.toString());
+	}
+	
+	@RequiresPermissions(value={"city:management"})
+	@RequestMapping(value = "/system/city/changeState")
+	public void changeState(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		StringBuilder result = new StringBuilder();
+		boolean isFCity = false ;
+		String id = request.getParameter("id");
+		City city = cityService.findById(id);
+		if(city.getParent()==null)
+			isFCity = true ;
+		String state = request.getParameter("state");
+		if(isFCity){//如果是一级城市
+			if(state.equals("false")){//如果是关闭
+				boolean normal = true ; //默认可以正常关闭一级城市
+				List<City> sCitys = city.getChildren();
+				for(City temp: sCitys){
+					if(temp.isUsed()){
+						normal = false ;
+					}
+				}
+				if(normal){
+					city.setUsed(false);
+					cityService.update(city);
+					result.append("{\"flag\":\"success\",\"msg\":\"关闭业务成功\"}");
+				}else{
+					result.append("{\"flag\":\"failed\",\"msg\":\"有二级城市未关闭，一级城市不可关闭！\"}");
+				}
+			}else{
+				city.setUsed(true);
+				cityService.update(city);
+				result.append("{\"flag\":\"success\",\"msg\":\"拓展业务成功\"}");
+			}
+		}
+		if(!isFCity){//如果是二级城市
+			if(state.equals("true")){//如果是开启
+				City fCity = city.getParent();
+				if(fCity.isUsed()){//如果它的父城市是开启的，那么开启二级城市没问题
+					city.setUsed(true);
+					cityService.update(city);
+					result.append("{\"flag\":\"success\",\"msg\":\"拓展业务成功\"}");
+				}else{
+					result.append("{\"flag\":\"failed\",\"msg\":\"一级城市还未开启，二级城市不可开启\"}");
+				}
+			}else{
+				city.setUsed(false);
+				cityService.update(city);
+				result.append("{\"flag\":\"success\",\"msg\":\"关闭业务成功\"}");
+			}
+			
+		}
+			
+		
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+	 	response.getWriter().write(result.toString());
 	}
 
 }

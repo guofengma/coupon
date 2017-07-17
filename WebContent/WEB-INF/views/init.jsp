@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="<%=path %>/assets/bootstrap/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="<%=path %>/assets/bootstrap/css/bootstrap-theme.css" type="text/css">
 <link rel="stylesheet" href="<%=path %>/assets/bootstrap/css/bootstrap-select.min.css" type="text/css">
+<link rel="stylesheet" href="<%=path%>/assets/bootstrapSwitch/dist/css/bootstrap3/bootstrap-switch.min.css">
 <link rel="stylesheet" href="<%=path %>/assets/font-awesome/css/font-awesome.min.css" type="text/css">
 <link rel="stylesheet" href="<%=path %>/assets/font-awesome/css/font-awesome1.min.css" type="text/css">
 <link rel="stylesheet" href="<%=path %>/assets/css/form-elements.css" type="text/css">
@@ -35,6 +36,7 @@
 <!-- Javascript -->
 <script src="<%=path %>/assets/js/jquery-1.11.1.min.js"></script>
 <script src="<%=path %>/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%=path%>/assets/bootstrapSwitch/dist/js/bootstrap-switch.min.js"></script>
 <script src="<%=path %>/assets/bootstrap/js/bootstrap-select.min.js"></script>
 <script src="<%=path %>/assets/js/jquery.backstretch.min.js"></script>
 <script src="<%=path %>/assets/js/scripts.js"></script>
