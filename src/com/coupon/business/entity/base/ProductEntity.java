@@ -2,9 +2,12 @@ package com.coupon.business.entity.base;
 
 import java.util.Date;
 
+import javax.persistence.MappedSuperclass;
+
 import com.coupon.base.entity.BaseEntity;
 
-public class ProductEntity extends BaseEntity{
+@MappedSuperclass
+public abstract class ProductEntity extends BaseEntity{
 
 	protected String name ;
 	

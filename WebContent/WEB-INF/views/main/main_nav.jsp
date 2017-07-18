@@ -14,7 +14,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="customer:Management">
         	<li>
-        		<a href=""><i class="icon-group"></i> 客户管理 </a>
+        		<a href="<c:url value='/business/customer/list'/>"><i class="icon-group"></i> 客户管理 </a>
             </li> 
         </shiro:hasPermission>
         <shiro:hasPermission name="redeem:Management">
@@ -24,7 +24,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="product:Management">
         	<li>
-        		<a href=""><i class="icon-gift"></i> 商品管理 </a>
+        		<a href="<c:url value='/business/product/list'/>"><i class="icon-gift"></i> 商品管理 </a>
             </li> 
         </shiro:hasPermission>
         <shiro:hasPermission name="recharge:Management">

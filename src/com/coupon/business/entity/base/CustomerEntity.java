@@ -1,7 +1,10 @@
 package com.coupon.business.entity.base;
 
+import javax.persistence.MappedSuperclass;
+
 import com.coupon.base.entity.BaseEntity;
 
-public class CustomerEntity extends BaseEntity{
+@MappedSuperclass
+public abstract class CustomerEntity extends BaseEntity{
 
 }
