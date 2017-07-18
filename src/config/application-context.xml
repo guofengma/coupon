@@ -51,6 +51,7 @@
 		<property name="packagesToScan">
 			<list>
 				<value>com.coupon.system.entity</value>
+				<value>com.coupon.business.entity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
