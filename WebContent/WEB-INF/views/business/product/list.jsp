@@ -23,7 +23,7 @@
 	<div id="page-wrapper" style="height:100%;">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-user"></i> 用户管理</li>
+				<li class="active"><i class="icon-user"></i> 商品管理</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -35,7 +35,7 @@
 						
 						<div class="table-toolbar" style="text-align: right;">
 							<div class="btn-group">
-									<a href="<c:url value='/system/user/add'/>" class="btn-sm btn-app btn-success no-radius">
+									<a href="<c:url value='/business/product/add'/>" class="btn-sm btn-app btn-success no-radius">
 										<i class="icon-plus bigger-200">添加商品</i>
 									</a>
 							</div>
@@ -58,16 +58,16 @@
 									<tbody>
 										<%-- <c:forEach items="${product.items}" var="item"> --%>
 											<tr class="odd gradeX">
-													<td>12</td>
-													<td>12</td>
-													<td>12</td>
+													<td>充值卡</td>
+													<td>300</td>
+													<td>2017.07.19--2017.12.19</td>
 													<td>
 													  <%--  <c:forEach items="${item.citys}" var="itemCity">
 													   	${itemCity.name}
-													   </c:forEach> --%>12
+													   </c:forEach> --%>北京，上海，武汉
 													</td>
 													<td>12</td>
-													<td><img src='<%=path%>/assets/1.jpg'/></td> 
+													<td><img src='<%=path%>/assets/2.jpg'/></td> 
 													<td>
 															<p>
 																<a href="<c:url value='/business/product/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
@@ -82,6 +82,31 @@
 													</td>
 											</tr>
 										<%-- </c:forEach> --%>
+										
+										<tr class="odd gradeX">
+													<td>耳机</td>
+													<td>500</td>
+													<td>2017.07.19--2017.12.19</td>
+													<td>
+													  <%--  <c:forEach items="${item.citys}" var="itemCity">
+													   	${itemCity.name}
+													   </c:forEach> --%>北京，上海，武汉，南京
+													</td>
+													<td>30</td>
+													<td><img src='<%=path%>/assets/1.jpg'/></td> 
+													<td>
+															<p>
+																<a href="<c:url value='/business/product/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
+																	<i class="icon-edit bigger-200"></i>
+																	编辑
+																</a>&nbsp;&nbsp;
+																<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+																	<i class="icon-trash bigger-200"></i>
+																	删除
+																</a>
+															</p>
+													</td>
+											</tr>
 									</tbody>
 								</table>
 							</div>

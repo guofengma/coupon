@@ -45,7 +45,7 @@ public class LoginAction {
 		try {
 			subject.login(token);
 			subject.getSession().setTimeout(1000 * 60 * 60 * 8);//将seesion过期时间设置为8小时
-			return "redirect:system/user/list";
+			return "redirect:main";
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
 			model.addAttribute("loginFlag", "failed");

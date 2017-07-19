@@ -6,7 +6,7 @@
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
 	</button>
-	<a class="navbar-brand"><span style="color:white;font-size:26px;"><i class="icon-gift"></i> 礼品兑换系统</span></a>
+	<a href="<c:url value='/main'/>" class="navbar-brand"><span style="color:white;font-size:26px;"><i class="icon-gift"></i> 礼品兑换管理系统</span></a>
 </div>
 <!-- Top Menu Items -->
 <ul class="nav navbar-right top-nav">
