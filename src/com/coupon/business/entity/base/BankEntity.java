@@ -23,7 +23,7 @@ public abstract class BankEntity extends BaseEntity{
 	@JoinColumn(name = "cityId")
 	protected City city;
 	
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "bank")
 	protected List<Customer> customer;
 
 	public String getName() {

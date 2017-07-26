@@ -1,6 +1,8 @@
 package com.coupon.system.entity.base;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
@@ -44,8 +46,8 @@ public abstract class CityEntity extends BaseEntity {
 	protected List<User> user;
 	
 	@ManyToMany(targetEntity = Product.class, fetch = FetchType.EAGER)
-	@JoinTable(name = "ogpis_city_product", joinColumns = @JoinColumn(name = "CITY_ID"), inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
-	protected List<Product> product ;
+	@JoinTable(name = "coupon_city_product", joinColumns = @JoinColumn(name = "CITY_ID"), inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
+	protected Set<Product> product = new HashSet<Product>();
 
 
 	public City getParent() {
@@ -112,12 +114,12 @@ public abstract class CityEntity extends BaseEntity {
 		this.user = user;
 	}
 
-	public List<Product> getProduct() {
+	public Set<Product> getProduct() {
 		return product;
 	}
 
-	public void setProduct(List<Product> product) {
+	public void setProduct(Set<Product> product) {
 		this.product = product;
 	}
-	
+
 }

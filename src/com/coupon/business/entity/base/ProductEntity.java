@@ -1,7 +1,9 @@
 package com.coupon.business.entity.base;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
@@ -38,8 +40,8 @@ public abstract class ProductEntity extends BaseEntity{
 	protected List<RedeemCode> redeemCode;
 	
 	@ManyToMany(targetEntity = City.class, fetch = FetchType.EAGER)
-	@JoinTable(name = "ogpis_city_product", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "City_ID"))
-	protected List<City> city ;
+	@JoinTable(name = "coupon_city_product", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "CITY_ID"))
+	protected Set<City> city = new HashSet<City>();
 
 	public String getName() {
 		return name;
@@ -105,11 +107,13 @@ public abstract class ProductEntity extends BaseEntity{
 		this.redeemCode = redeemCode;
 	}
 
-	public List<City> getCity() {
+	public Set<City> getCity() {
 		return city;
 	}
 
-	public void setCity(List<City> city) {
+	public void setCity(Set<City> city) {
 		this.city = city;
 	}
+
+
 }

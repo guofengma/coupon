@@ -26,8 +26,8 @@ public abstract class UserEntity extends BaseEntity {
 	protected String name;
 	protected String password;
 
-	@ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
-	@JoinTable(name = "ogpis_user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+	@ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER )
+	@JoinTable(name = "coupon_user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
 	protected Set<Role> roles = new HashSet<Role>();
 	
 	@ManyToOne

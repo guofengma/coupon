@@ -7,7 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.coupon.base.entity.BaseEntity;
 import com.coupon.business.entity.Product;
@@ -24,7 +24,7 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 	
 	protected Date endTime;//有效期结束时间
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "redeemCode")
+	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "redeemCode")
 	protected Record record;
 	
 	@ManyToOne

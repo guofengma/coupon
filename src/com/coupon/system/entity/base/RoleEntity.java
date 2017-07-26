@@ -37,14 +37,14 @@ public class RoleEntity extends BaseEntity {
 	 * 该角色对应的用户
 	 */
 	@ManyToMany(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "ogpis_user_role", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+	@JoinTable(name = "coupon_user_role", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
 	protected Set<User> users = new HashSet<User>();
 
 	/**
 	 * 该角色对应的权限url
 	 */
 	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name = "ogpis_role_permission", joinColumns = @JoinColumn(name = "role_id"))
+	@CollectionTable(name = "coupon_role_permission", joinColumns = @JoinColumn(name = "role_id"))
 	@Column(name = "perm_url")
 	protected Set<String> perms;
 
