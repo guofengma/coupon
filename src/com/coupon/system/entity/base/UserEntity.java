@@ -1,13 +1,21 @@
 package com.coupon.system.entity.base;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+
 import com.coupon.base.entity.BaseEntity;
+import com.coupon.business.entity.Customer;
+import com.coupon.system.entity.City;
 import com.coupon.system.entity.Role;
 import com.coupon.system.entity.User;
 
@@ -21,6 +29,21 @@ public abstract class UserEntity extends BaseEntity {
 	@ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
 	@JoinTable(name = "ogpis_user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
 	protected Set<Role> roles = new HashSet<Role>();
+	
+	@ManyToOne
+	@JoinColumn(name = "city_id")
+	protected City city;
+	
+	public List<Customer> getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(List<Customer> customer) {
+		this.customer = customer;
+	}
+
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
+	protected List<Customer> customer;
 
 	public String getDisplayName() {
 		return displayName;
@@ -44,6 +67,14 @@ public abstract class UserEntity extends BaseEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	/**

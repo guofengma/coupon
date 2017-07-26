@@ -1,10 +1,20 @@
 package com.coupon.business.entity.base;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
 import com.coupon.base.entity.BaseEntity;
+import com.coupon.business.entity.Record;
+import com.coupon.business.entity.RedeemCode;
+import com.coupon.system.entity.City;
 
 @MappedSuperclass
 public abstract class ProductEntity extends BaseEntity{
@@ -20,6 +30,16 @@ public abstract class ProductEntity extends BaseEntity{
 	protected Date endTime ;
 	
 	protected String description ;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "product")
+	protected List<Record> record;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "product")
+	protected List<RedeemCode> redeemCode;
+	
+	@ManyToMany(targetEntity = City.class, fetch = FetchType.EAGER)
+	@JoinTable(name = "ogpis_city_product", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "City_ID"))
+	protected List<City> city ;
 
 	public String getName() {
 		return name;
@@ -67,5 +87,29 @@ public abstract class ProductEntity extends BaseEntity{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<Record> getRecord() {
+		return record;
+	}
+
+	public void setRecord(List<Record> record) {
+		this.record = record;
+	}
+
+	public List<RedeemCode> getRedeemCode() {
+		return redeemCode;
+	}
+
+	public void setRedeemCode(List<RedeemCode> redeemCode) {
+		this.redeemCode = redeemCode;
+	}
+
+	public List<City> getCity() {
+		return city;
+	}
+
+	public void setCity(List<City> city) {
+		this.city = city;
 	}
 }
