@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import com.coupon.system.entity.base.UserEntity;
 
 @Entity
-@Table(name = "ogpis_user")
+@Table(name = "coupon_user")
 public class User extends UserEntity {
 
 	/**

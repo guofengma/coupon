@@ -23,6 +23,7 @@ public class CityAction extends BaseAction{
 	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/list")
 	public String list(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
 		return "system/city/list";
 	}
 	

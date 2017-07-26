@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.coupon.system.entity.base.RoleEntity;
 
 @Entity
-@Table(name = "ogpis_role")
+@Table(name = "coupon_role")
 public class Role extends RoleEntity {
 
 	/**

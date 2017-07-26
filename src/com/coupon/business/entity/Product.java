@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import com.coupon.business.entity.base.ProductEntity;
 
 @Entity
-@Table(name = "ogpis_product")
+@Table(name = "coupon_product")
 public class Product extends ProductEntity{
 
 }

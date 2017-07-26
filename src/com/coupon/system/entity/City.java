@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import com.coupon.system.entity.base.CityEntity;
 
 @Entity
-@Table(name = "ogpis_city")
+@Table(name = "coupon_city")
 public class City extends CityEntity{
 
 }
