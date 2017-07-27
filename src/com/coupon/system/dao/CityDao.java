@@ -9,4 +9,6 @@ public interface CityDao extends BaseDao<City, String>{
 
 	List<City> getFCity();
 
+	List<City> getFCityUsed();
+
 }

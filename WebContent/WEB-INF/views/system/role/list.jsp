@@ -53,7 +53,7 @@
 									</thead>
 									<tbody>
 										<c:forEach items="${roles}" var="item">
-											<c:if test="${!item.isSuper}">
+											<c:if test='${!item.isSuper}'>
 												<tr class="odd gradeX">
 													<td>${item.name}</td>
 													<td>${item.priority}</td>

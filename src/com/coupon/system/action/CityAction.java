@@ -64,6 +64,29 @@ public class CityAction extends BaseAction{
 	}
 	
 	@RequiresPermissions(value={"city:management"})
+	@RequestMapping(value = "/system/city/getSCityUsedByFCityId")
+	public void getSCityUsedByFCityId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String fid = request.getParameter("id");
+		City fCity = cityService.findById(fid);
+		StringBuilder result = new StringBuilder("[");
+		List<City> sCity = fCity.getChildren();
+		boolean hasSCityUsed = false ;
+		for(City temp : sCity){
+			 if(temp.isUsed()){
+				 hasSCityUsed = true ;
+				 result.append("{\"id\":\""+temp.getId()+"\",\"name\":\""+temp.getName()+"\"},");
+			 }
+		 }
+		 if(hasSCityUsed){
+			 result.deleteCharAt(result.length()-1);
+		 }
+		 result.append("]");
+		 response.setContentType("application/json");
+	 	 response.setCharacterEncoding("utf-8");
+	 	 response.getWriter().write(result.toString());
+	}
+	
+	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/changeState")
 	public void changeState(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		StringBuilder result = new StringBuilder();

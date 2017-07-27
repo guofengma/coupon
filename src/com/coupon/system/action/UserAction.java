@@ -20,8 +20,10 @@ import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.security.MyRealm;
+import com.coupon.system.entity.City;
 import com.coupon.system.entity.Role;
 import com.coupon.system.entity.User;
+import com.coupon.system.service.CityService;
 import com.coupon.system.service.RoleService;
 import com.coupon.system.service.UserService;
 
@@ -32,6 +34,8 @@ public class UserAction extends BaseAction {
 	private UserService userService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private CityService cityService;
 
 	@RequiresPermissions(value={"user:management"})
 	@RequestMapping(value = "/system/user/list")
@@ -52,6 +56,8 @@ public class UserAction extends BaseAction {
 	public String add(HttpServletRequest request,ModelMap model) {
 		String same = request.getParameter("same");
 		List<Role> roleList = roleService.getList();
+		List<City> fCityUsedList = cityService.getFCityUsed();
+		model.addAttribute("fCityUsedList",fCityUsedList);
 		model.addAttribute("roleList",roleList);
 		model.addAttribute("same", same);
 		return "system/user/edit";
@@ -75,14 +81,17 @@ public class UserAction extends BaseAction {
 	@RequiresPermissions(value={"user:management"})
 	@RequestMapping(value = "/system/user/save", method = RequestMethod.POST)
 	public String save(HttpServletRequest request, ModelMap model, User user,
-			String id, String[] roleIds, boolean isAdd) {
+			String id, String[] roleIds, boolean isAdd,String fCity,String sCity) {
+		System.out.println(fCity+sCity);
+		String cityId = sCity.equals("null")? fCity : sCity;
+		City city = cityService.findById(cityId);
 		List<User> temp ;
 		temp = userService.findUserByName(user.getName());
 		User bean = null;
 		if (isAdd) {
 			bean = new User();
 			bean.setPassword(user.getPassword());
-			
+			bean.setCity(city);
 			if(temp.size()>0)//该用户名存在
 			{
 				return "redirect:add?same=0";

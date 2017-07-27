@@ -14,7 +14,7 @@
     %>
 </head>
 <html>
-<body>
+<body style="text-align:left">
 <div id="wrapper">
 <!-- 网站头及导航栏 -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="z-index:1080">
@@ -27,11 +27,11 @@
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li>
-					<a href='<c:url value="/system/user/list"/>'><i class="icon-user"></i> 用户管理</a>
+					<a href='<c:url value="/system/user/list"/>'><i class="icon-user"></i> 员工管理</a>
 				</li>
 				<li class="active">
-					<c:if test='<%=!isAdd %>'>编辑用户</c:if>
-					<c:if test='<%=isAdd %>'>添加用户</c:if>
+					<c:if test='<%=!isAdd %>'>编辑员工</c:if>
+					<c:if test='<%=isAdd %>'>添加员工</c:if>
 				</li>
 			</ul>
 		</div>
@@ -52,10 +52,10 @@
 					<div class="space-4"></div>
 					
 					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">用户名</label>
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-2">员工姓名</label>
 
 						<div class="col-sm-9">
-							<input type="text" id="form-field-1" placeholder="用户名" class="col-xs-10 col-sm-5" name="displayName" value="${user.displayName}">
+							<input type="text" id="form-field-2" placeholder="员工姓名" class="col-xs-10 col-sm-5" name="displayName" value="${user.displayName}">
 						</div>
 					</div>				
 
@@ -63,10 +63,10 @@
 						<div class="space-4"></div>
 						
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 密码 </label>
+							<label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 密码 </label>
 	
 							<div class="col-sm-9">
-								<input type="password" id="form-field-2" placeholder="密码" class="col-xs-10 col-sm-5" name="password">
+								<input type="password" id="form-field-3" placeholder="密码" class="col-xs-10 col-sm-5" name="password">
 								<!-- <span class="help-inline col-xs-12 col-sm-7">
 									<span class="middle">Inline help text</span>
 								</span> -->
@@ -76,18 +76,36 @@
 						<div class="space-4"></div>
 						
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 重复输入 </label>
+							<label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 重复输入 </label>
 	
 							<div class="col-sm-9">
-								<input type="password" id="form-field-2" placeholder="重复输入密码" class="col-xs-10 col-sm-5">
+								<input type="password" id="form-field-4" placeholder="重复输入密码" class="col-xs-10 col-sm-5">
 								<!-- <span class="help-inline col-xs-12 col-sm-7">
 									<span class="middle">Inline help text</span>
 								</span> -->
 							</div>
 						</div>
+						
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 所在城市 </label>
+	
+							<div class="col-sm-9">
+								<select class="selectpicker" id="fCity" name="fCity" onchange="fCityChange()">
+									 <option value="null">选择省份</option>
+									 <c:forEach items="${fCityUsedList}" var="item">
+									  	<option value="${item.id}">${item.name}</option>
+									 </c:forEach>
+								 </select>
+								 <select class="selectpicker" id="sCity" name="sCity">
+									 <option value="null">选择市县</option>
+								 </select>
+							</div>
+						</div>
 					</c:if>
 					<div class="form-group">
-                    	<label class="col-sm-3 control-label no-padding-right" for="form-field-1">角色</label>
+                    	<label class="col-sm-3 control-label no-padding-right" for="form-field-6">角色</label>
                     	
                     	<div class="col-sm-9 control-label" style="text-align:left;">
                     		<c:forEach items="${roleList}" var="role">
@@ -104,7 +122,8 @@
                     	</div>
                     </div>
 					<div class="clearfix form-actions">
-						<div class="col-md-12">
+						<div class="col-md-3"></div>
+						<div class="col-md-9">
 							<button class="btn-sm btn-success no-radius" type="submit" onclick="test()" >
 								<i class="icon-ok bigger-200"></i>
 								确认
@@ -121,24 +140,50 @@
 		</div><!-- /row -->
 	</div>
 </div>
-</body>
 <script type="text/javascript">
-
 $(function(){
-	var same = ${same};
-	if(same==0)
-		alert("该用户名已经存在");	
-});
-
-$(function(){
+	var same = '${same}';
+	if(same=='0')
+		alert("该员工名已经存在");	
+	
 	$("#btnAdd").click(function(){
 		window.location.href="<%=path%>/system/user/add";
 	});
 });
 
+function fCityChange(){
+	var id = $("#fCity").val();
+	clearSCity();
+	if(id!='null'){
+		$.ajax({
+			url:"<%=path%>/system/city/getSCityUsedByFCityId",    //请求的url地址
+		    dataType:"json",   
+		    async:false,
+		    data:{"id":id},
+		    type:"GET",   //请求方式
+		    success:function(result){
+			console.log(result)
+		        for(var i=0;i<result.length;i++){
+					$("#sCity").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				}
+		    },
+		    error:function(){
+				alert("请求下级城市失败！")
+		    }
+		});
+	}
+	$('#sCity').selectpicker('refresh');
+}
+
 function test(){
-	
+}
+
+function clearSCity(){//清空二级城市下拉框所有内容（第一个默认的option不清除）
+	$("#sCity").empty();
+	$("#sCity").append("<option value='null'>选择市县</option>"); 
 }
 </script>
+</body>
+
 </html>
 	

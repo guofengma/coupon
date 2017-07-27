@@ -26,4 +26,9 @@ public class CityServiceImpl extends BaseServiceImpl<City, String> implements Ci
 	public List<City> getFCity() {
 		return getCityDao().getFCity();
 	}
+
+	@Override
+	public List<City> getFCityUsed() {
+		return getCityDao().getFCityUsed();
+	}
 }

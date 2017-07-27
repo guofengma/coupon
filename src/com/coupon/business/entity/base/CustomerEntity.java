@@ -25,6 +25,8 @@ public abstract class CustomerEntity extends BaseEntity{
 	
 	protected String password ; //登录密码
 	
+	protected boolean statu;
+	
 	@ManyToOne
 	@JoinColumn(name = "bankId")
 	protected Bank bank;  //对应兑换服务地址
@@ -70,6 +72,14 @@ public abstract class CustomerEntity extends BaseEntity{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public boolean isStatu() {
+		return statu;
+	}
+
+	public void setStatu(boolean statu) {
+		this.statu = statu;
 	}
 
 	public Bank getBank() {

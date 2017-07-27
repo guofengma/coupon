@@ -62,6 +62,20 @@
 							<input type="text"  placeholder="排列顺序" class="col-xs-10 col-sm-5" name="priority" value="${role.priority }">
 						</div>
 					</div>
+					
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">拥有所有权限</label>
+						<div class="col-sm-9 control-label" style="text-align:left;">
+								<label class="radio-inline" >
+                                  		<input id="isSuper" type="radio" name="isSuper" value="true" <c:if test="${ role.isSuper}">checked="checked"</c:if> />是
+                              		</label>
+                              		<label class="radio-inline ">
+                                  		<input id="notSuper" type="radio" name="isSuper" value="false" 	<c:if test="${!role.isSuper}">checked="checked"</c:if>/>否
+                              		</label>
+						</div>
+                    </div>
                     
                     <div class="space-4"></div>
                     

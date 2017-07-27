@@ -19,11 +19,20 @@ public class CityDaoImpl extends BaseDaoImpl<City, String> implements CityDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<City> getFCity() {
+	public List<City> getFCity() {//获取所有的一级行政区
 		 List<City> fCitys = this.queryByHql(
 					"from City where deleted=false and parent is null order by priority asc", null
 					);
 			 return fCitys;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<City> getFCityUsed() {//获取已经有业务的一级行政区
+		List<City> fCitys = this.queryByHql(
+				"from City where deleted=false and parent is null and used=true order by priority asc", null
+				);
+		 return fCitys;
 	}
 
 }

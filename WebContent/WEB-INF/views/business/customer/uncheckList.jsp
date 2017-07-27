@@ -23,7 +23,7 @@
 	<div id="page-wrapper" style="height:100%;">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-user"></i> 员工管理</li>
+				<li class="active"><i class="icon-user"></i> 客户管理</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -35,8 +35,8 @@
 						
 						<div class="table-toolbar" style="text-align: right;">
 							<div class="btn-group">
-									<a href="<c:url value='/system/user/add'/>" class="btn-sm btn-app btn-success no-radius">
-										<i class="icon-plus bigger-200">添加员工</i>
+									<a href="<c:url value='/business/product/add'/>" class="btn-sm btn-app btn-success no-radius">
+										<i class="icon-plus bigger-200">添加商品</i>
 									</a>
 							</div>
 						</div>
@@ -46,41 +46,67 @@
 								<table class="table table-striped table-bordered table-hover" id="data-table">
 									<thead>
 										<tr>
-											<th>登录名</th>
-											<th>员工名</th>
-											<th>角色</th>
-											<th>添加时间</th>
+											<th>商品名称</th>
+											<th>所需积分</th>
+											<th>活动有效期</th>
+											<th>可用城市</th>
+											<th>剩余数量</th>
+											<th>预览图</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${users.items}" var="item">
+										<%-- <c:forEach items="${product.items}" var="item"> --%>
 											<tr class="odd gradeX">
-													<td>${item.name}</td>
-													<td>${item.displayName}</td>
+													<td>充值卡</td>
+													<td>300</td>
+													<td>2017.07.19--2017.12.19</td>
 													<td>
-														<c:forEach items="${item.roles}" var="role" varStatus="status">
-															${role.name}<c:if test="${!status.last}">;</c:if>
-														</c:forEach>
+													  <%--  <c:forEach items="${item.citys}" var="itemCity">
+													   	${itemCity.name}
+													   </c:forEach> --%>北京，上海，武汉
 													</td>
-													<td>${item.createTime.toLocaleString()}</td> 
+													<td>12</td>
+													<td><img src='<%=path%>/assets/2.jpg'/></td> 
 													<td>
-														<c:if test="${item.name!=currentUser}">
 															<p>
-																<a href="<c:url value='/system/user/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
+																<a href="<c:url value='/business/product/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
 																	<i class="icon-edit bigger-200"></i>
 																	编辑
 																</a>&nbsp;&nbsp;
-																<a href="javascript:del('<c:url value='/system/user/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+																<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																	<i class="icon-trash bigger-200"></i>
 																	删除
 																</a>
 															</p>
-															</c:if>
-															<c:if test="${item.name==currentUser}">不能对当前登录员工进行操作</c:if>
 													</td>
 											</tr>
-										</c:forEach>
+										<%-- </c:forEach> --%>
+										
+										<tr class="odd gradeX">
+													<td>耳机</td>
+													<td>500</td>
+													<td>2017.07.19--2017.12.19</td>
+													<td>
+													  <%--  <c:forEach items="${item.citys}" var="itemCity">
+													   	${itemCity.name}
+													   </c:forEach> --%>北京，上海，武汉，南京
+													</td>
+													<td>30</td>
+													<td><img src='<%=path%>/assets/1.jpg'/></td> 
+													<td>
+															<p>
+																<a href="<c:url value='/business/product/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
+																	<i class="icon-edit bigger-200"></i>
+																	编辑
+																</a>&nbsp;&nbsp;
+																<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+																	<i class="icon-trash bigger-200"></i>
+																	删除
+																</a>
+															</p>
+													</td>
+											</tr>
 									</tbody>
 								</table>
 							</div>
@@ -109,7 +135,7 @@
 
 
 function del(url){
-	var isDel =  confirm('确定删除该员工吗？', '确认对话框');
+	var isDel =  confirm('确定删除该用户吗？', '确认对话框');
 	if(isDel){
 		window.location.href=url;
 	}

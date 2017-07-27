@@ -9,4 +9,6 @@ public interface CityService extends BaseService<City, String>{
 
 	List<City> getFCity();
 
+	List<City> getFCityUsed();
+
 }
