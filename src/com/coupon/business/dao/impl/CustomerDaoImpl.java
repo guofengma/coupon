@@ -56,4 +56,15 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
+	@Override
+	public List<Customer> findByIds(String[] ids) {
+		StringBuilder id = new StringBuilder();
+		for(String temp : ids){
+			id.append("'"+temp+"',");
+		}
+		id.deleteCharAt(id.length()-1);
+		return (List<Customer>) this.queryByHql("from Customer where id in ("+id.toString()+")",
+				null);
+	}
+
 }

@@ -57,7 +57,7 @@ public abstract class BaseEntity implements Serializable {
 		return remark;
 	}
 
-	protected void setRemark(String remark) {
+	public void setRemark(String remark) {
 		this.remark = remark;
 	}
 

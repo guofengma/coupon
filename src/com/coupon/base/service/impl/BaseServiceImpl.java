@@ -48,5 +48,13 @@ public abstract class BaseServiceImpl<T, ID extends Serializable> implements
 	public void batchSave(List<T> items){
 		this.baseDao.batchSave(items);
 	}
+	
+	/**
+	 * 批量保存
+	 */
+	@Override
+	public void batchUpdate(List<T> items){
+		this.baseDao.batchUpdate(items);
+	}
 
 }

@@ -23,7 +23,7 @@
 	<div id="page-wrapper" style="height:100%;">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-user"></i> 客户管理</li>
+				<li class="active"><i class="icon-user"></i> 通过审核客户</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -57,7 +57,7 @@
 											<tr class="odd gradeX">
 													<td>${item.name }</td>
 													<td>${item.phone }</td>
-													<td>${item.points }</td>
+													<td>${item.point }</td>
 													<td>
 															<p>
 																<a href="<c:url value='/business/product/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
@@ -77,7 +77,7 @@
 							</div>
 							<c:import url ="../../common/paging.jsp">
 		        				<c:param name="pageModelName" value="customers"/>
-		        				<c:param name="urlAddress" value="/customer/list?statu=check"/>
+		        				<c:param name="urlAddress" value="/business/customer/list"/>
 	       				 	</c:import>
 	       				 	
 	       				 	<!-- 模态框（Modal） -->

@@ -14,4 +14,6 @@ public interface CustomerService extends BaseService<Customer , String>{
 
 	IPageList<Customer> findByStaff(int pageNo, int pageSize, boolean check, String userId);
 
+	List<Customer> findByIds(String[] ids);
+
 }

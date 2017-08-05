@@ -25,7 +25,6 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> imple
 
 	@Override
 	public IPageList<Customer> findByAdmin(int pageNo, int pageSize, boolean check) {
-		System.out.println("1111111111111111111111111");
 		return (IPageList<Customer>) getCustomerDao().findByAdmin(pageNo, pageSize, check);
 	}
 
@@ -37,5 +36,10 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> imple
 	@Override
 	public IPageList<Customer> findByStaff(int pageNo, int pageSize, boolean check, String userId) {
 		return getCustomerDao().findByStaff(pageNo, pageSize, check,userId);
+	}
+
+	@Override
+	public List<Customer> findByIds(String[] ids) {
+		return getCustomerDao().findByIds(ids);
 	}
 }

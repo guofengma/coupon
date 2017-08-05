@@ -8,18 +8,18 @@
 <div id="navDiv" class="collapse navbar-collapse navbar-ex1-collapse" align="left">
     <ul class="nav navbar-nav side-nav pull-left">  
     	 <li>
-    	    <a href="#system" data-toggle="collapse" class="nav-header collapsed" ><i class="glyphicon glyphicon-list" ></i> 客户管理 <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="system" class="nav nav-list collapse" style="height:0px;" >
+    	    <a href="#customer" data-toggle="collapse" class="nav-header collapsed" ><i class="glyphicon glyphicon-list" ></i> 客户管理 <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="customer" class="nav nav-list collapse" style="height:0px;" >
 	            <li>
 	           	 	<a href="<c:url value='/business/customer/list?statu=check'/>"><i class="glyphicon glyphicon-star"></i> 已审核<i></i></a>
 	        	</li>
 	        	<li>
-	           	 	<a href="<c:url value='/business/customer/list?statu=uncheck'/>"><i class="glyphicon glyphicon-star"></i> 审核中<i></i></a>
+	           	 	<a href="<c:url value='/business/customer/list?statu=uncheck'/>"><i class="glyphicon glyphicon-star"></i> 待审核<i></i></a>
 	        	</li>
            </ul>
          </li>
          <li>
-            <a href="<c:url value=''/>"><i class="glyphicon glyphicon-star"></i> 商品管理<i></i></a>
+            <a href="<c:url value='/business/product/list'/>"><i class="glyphicon glyphicon-star"></i> 商品管理<i></i></a>
          </li> 
          <li>
             <a href="<c:url value='/system/user/list'/>"><i class="glyphicon glyphicon-star"></i> 员工管理<i></i></a>

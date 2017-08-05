@@ -100,4 +100,5 @@ public interface BaseDao<T, ID extends Serializable> extends CommonDao {
 	 */
 	public void batchMarkDelete(ID[] items);
 
+
 }

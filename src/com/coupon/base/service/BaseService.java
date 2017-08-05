@@ -66,5 +66,11 @@ public interface BaseService<T, ID extends Serializable> {
 	 * @param items
 	 */
 	void batchSave(List<T> items);
+	
+	/**
+	 * 批量更新
+	 * @param items
+	 */
+	void batchUpdate(List<T> items);
 
 }

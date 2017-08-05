@@ -219,7 +219,7 @@ public abstract class CommonDaoImpl extends HibernateDaoSupport implements
 
 	@Override
 	public void batchUpdate(Collection transientInstances) {
-		executeBatch(transientInstances, "update");
+		executeBatch(transientInstances, "merge");
 	}
 
 	/**
