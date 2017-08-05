@@ -75,9 +75,11 @@ public class CustomerAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/business/customer/check")
 	public String check(HttpServletRequest request, ModelMap model) {
+		User user = userService.findByUserName(MyRealm.hardName);
 		String id = request.getParameter("id");
 		Customer customer = customerService.findById(id);
 		customer.setStatu(true);
+		customer.setCheckUser(user);
 		customerService.update(customer);
 		model.addAttribute("statu",false);
 		return "redirect:list";
@@ -88,10 +90,12 @@ public class CustomerAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/business/customer/multiCheck")
 	public void multiCheck(HttpServletRequest request, ModelMap model ,HttpServletResponse response) throws IOException {
+		User user = userService.findByUserName(MyRealm.hardName);
 		String ids[] = request.getParameter("ids").split(";");
 		List<Customer> customers = customerService.findByIds(ids);
 		for(Customer temp:customers){
 			temp.setStatu(true);
+			temp.setCheckUser(user);
 		}
 		customerService.batchUpdate(customers);
 		response.setContentType("application/json");

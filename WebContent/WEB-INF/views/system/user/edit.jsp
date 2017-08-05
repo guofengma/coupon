@@ -9,6 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>礼品兑换系统</title>
+    <style type="text/css">
+   	 	.bootstrap-select .dropdown-toggle{width:162%}
+    </style>
     <%
     	boolean isAdd = request.getAttribute("user")==null;
     %>
@@ -86,11 +89,9 @@
 							</div>
 						</div>
 						
-						<div class="space-4"></div>
-						
+						<div class="space-4"></div>		
 						<div class="form-group">
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 所在城市 </label>
-	
 							<div class="col-sm-9">
 								<select class="selectpicker" id="fCity" name="fCity" onchange="fCityChange()">
 									 <option value="null">选择省份</option>
@@ -98,6 +99,13 @@
 									  	<option value="${item.id}">${item.name}</option>
 									 </c:forEach>
 								 </select>
+							</div>
+						</div>
+						
+						<div class="space-4"></div>		
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right">  </label>
+							<div class="col-sm-9">
 								 <select class="selectpicker" id="sCity" name="sCity">
 									 <option value="null">选择市县</option>
 								 </select>

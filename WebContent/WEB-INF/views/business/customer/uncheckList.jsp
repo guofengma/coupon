@@ -10,6 +10,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>礼品兑换系统</title>
+    <style type="text/css">
+   	 	.bootstrap-select .dropdown-toggle{width:158%}
+    </style>
 </head>
 <html>
 <body>
@@ -122,7 +125,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-name">客户姓名：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-name" class="col-xs-10 col-sm-5" name="name">
+									<input type="text" id="form-name" class="col-xs-10 col-sm-10" name="name">
 								</div>
 							 </div> 
 							 <div class="space-4"></div> 
@@ -130,27 +133,34 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-points">积分数量：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-points" class="col-xs-10 col-sm-5" name="points">
+									<input type="text" id="form-points" class="col-xs-10 col-sm-10" name="points">
 								</div>
 							 </div> 
 							 <div class="space-4"></div> 							 
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-phone">电话号码：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-phone" class="col-xs-10 col-sm-5" name="phone">
+									<input type="text" id="form-phone" class="col-xs-10 col-sm-10" name="phone">
 								</div>
 							 </div> 
 							 
 							<div class="space-4"></div> 	
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 所在城市： </label>
-								<div class="col-sm-9">
+								<div class="col-sm-9" style="text-align:left;">
 									<select class="selectpicker" id="fCity" name="fCity" onchange="fCityChange()">
 										 <option value="null">选择省份</option>
 										 <c:forEach items="${fCityUsedList}" var="item">
 										  	<option value="${item.id}">${item.name}</option>
 										 </c:forEach>
 									 </select>
+								</div>
+							</div>
+							
+							<div class="space-4"></div> 	
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right">  </label>
+								<div class="col-sm-9" style="text-align:left">
 									 <select class="selectpicker" id="sCity" name="sCity">
 										 <option value="null">选择市县</option>
 									 </select>
@@ -161,7 +171,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-remark">备注信息：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-remark" class="col-xs-10 col-sm-5" name="remark">
+									<input type="text" id="form-remark" class="col-xs-10 col-sm-10" name="remark">
 								</div>
 							 </div>
 							
@@ -206,11 +216,13 @@ function contraryCheck(){//反选
 }
 
 function add(){
+	clear();
 	$("#customerInfo").modal("show");
 	isNew = true ;
 }
 
 function edit(param){
+	clear();
 	$.ajax({
 		url:"<%=path%>/business/customer/getCustomerInfo",
 	    dataType:"json",   
@@ -258,6 +270,10 @@ function saveCustomerInfo(){
 			alert("保存客户信息失败！")
 	    }
 	});
+}
+
+function cancle(){
+	$("#customerInfo").modal("hide");
 }
 
 function multiCheck(){//批量审核

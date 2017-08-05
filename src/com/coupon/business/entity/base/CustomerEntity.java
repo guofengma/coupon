@@ -41,6 +41,10 @@ public abstract class CustomerEntity extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	protected User user;  //所属业务员
+	
+	@ManyToOne
+	@JoinColumn(name = "checkUserId")
+	protected User checkUser;  //审核人员
 
 	public String getPhone() {
 		return phone;
@@ -112,6 +116,14 @@ public abstract class CustomerEntity extends BaseEntity{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public User getCheckUser() {
+		return checkUser;
+	}
+
+	public void setCheckUser(User checkUser) {
+		this.checkUser = checkUser;
 	}
 	
 }

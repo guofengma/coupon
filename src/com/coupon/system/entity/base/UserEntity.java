@@ -44,7 +44,18 @@ public abstract class UserEntity extends BaseEntity {
 
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
 	protected List<Customer> customer;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "checkUser")
+	protected List<Customer> beCheckedCustomer;
 
+	public List<Customer> getBeCheckedCustomer() {
+		return beCheckedCustomer;
+	}
+
+	public void setBeCheckedCustomer(List<Customer> beCheckedCustomer) {
+		this.beCheckedCustomer = beCheckedCustomer;
+	}
+	
 	public String getDisplayName() {
 		return displayName;
 	}
