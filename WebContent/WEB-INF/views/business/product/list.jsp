@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/init.jsp" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
  <script type="text/javascript" src="<c:url value='/assets/js/plugins/data-tables/jquery.dataTables.js'/>"></script>
 <head>
     <meta charset="utf-8">
@@ -70,7 +71,7 @@
 													   </c:forEach>
 													</td>
 													<td>${item.redeemCode.size()}</td>
-													<td><img src='<%=path%>/assets/2.jpg'/></td> 
+													<td><img src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
 													<td>
 															<p>
 																<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
@@ -134,13 +135,13 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<form class="form-horizontal" role="form" id="productFrom" action="<%=path%>/business/product/save" method="post">
-							<input name="id" id="id" type="hidden" value=""/> 
+						<form enctype="multipart/form-data" class="form-horizontal" role="form" id="productFrom" action="<%=path%>/business/product/save" method="post">
+							<input name="oldId" id="oldId" type="hidden" value="null"/> 
 							<input name="city" id="city" type="hidden" value=""/>
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品名称：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-username" class="col-xs-10 col-sm-10" name="name" value="${product.name}">
+									<input type="text" id="name" class="col-xs-10 col-sm-10" name="name" value="${product.name}">
 								</div>
 							 </div> 
 							 
@@ -148,7 +149,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">所需积分：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-displayName" class="col-xs-10 col-sm-10" name="points">
+									<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
 								</div>
 							 </div> 
 							 
@@ -164,7 +165,7 @@
 							 	<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品说明：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-remark" class="col-xs-10 col-sm-10" name="remark">
+									<input type="text" id="description" class="col-xs-10 col-sm-10" name="description">
 								</div>
 							 </div> 
 							
@@ -278,19 +279,32 @@ function imgPreview(fileDom){
 }
 
 function del(url){
-	var isDel =  confirm('确定删除该用户吗？', '确认对话框');
+	var isDel =  confirm('确定删除该商品吗？', '确认对话框');
 	if(isDel){
 		window.location.href=url;
 	}
 }
 
+function online(url){
+	var isOnline =  confirm('确定上架该商品吗？', '确认对话框');
+	if(isOnline){
+		window.location.href=url;
+	}
+}
+
+function offline(url){
+	var isOffline =  confirm('确定下架该商品吗？', '确认对话框');
+	if(isOffline){
+		window.location.href=url;
+	}
+}
+
 function add(){
-	$("#id").val('');
 	$("#productInfo").modal("show");
 }
 
 function edit(param){
-	$("#id").val(param);
+	$("#oldId").val(param);
 	$("#productInfo").modal("show");
 }
 

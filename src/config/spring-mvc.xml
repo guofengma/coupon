@@ -12,6 +12,7 @@
 	<mvc:annotation-driven />
 	<!-- 静态资源处理器，所有以【mapping】开头的请求都会视为是对静态资源的请求，请求url会将【mapping】的内容替换成【location】的内容，然后执行静态资源的获取 -->
 	<mvc:resources location="/assets/" mapping="/assets/**" />
+	<mvc:resources location="/img/" mapping="/img/**" />
 	<context:component-scan base-package="com.coupon" />
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

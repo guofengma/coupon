@@ -1,16 +1,23 @@
 package com.coupon.business.action;
 
+import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
@@ -21,6 +28,7 @@ import com.coupon.business.service.CustomerService;
 import com.coupon.business.service.ProductService;
 import com.coupon.system.entity.City;
 import com.coupon.system.service.CityService;
+import com.coupon.util.FolderUtil;
 
 @Controller
 public class ProductAction extends BaseAction{
@@ -46,21 +54,84 @@ public class ProductAction extends BaseAction{
 	}
 	
 	@RequestMapping(value = "/business/product/save")
-	public String save(HttpServletRequest request, ModelMap model,String id ,String city
-			,String name , String points , String remark ) {
+	public String save(HttpServletRequest request, ModelMap model) throws Exception {
+		String oldId = "";
+		String city="";
+		String name = "";
+		String points="";
+		String description="" ;
 		super.addMenuParams(request, model);
 		Product product = new Product();
-		if(id.equals("")){
+		request.setCharacterEncoding("utf-8");
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+		if (!isMultipart) {
+			return "redirect:list";
+		}
+		FileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		List items = upload.parseRequest(request);
+		Iterator iter = items.iterator();//用来获取普通input
+		Iterator iter1 = items.iterator();//用来上传文件
+		while (iter.hasNext()) // 表单中有几个input标签，就循环几次
+		{
+			FileItem item = (FileItem) iter.next();
+			if (item.isFormField()) {
+				if(item.getFieldName().equals("description"))
+					description = item.getString("utf-8");
+				if(item.getFieldName().equals("oldId"))
+					oldId = item.getString("utf-8");
+				if(item.getFieldName().equals("city"))
+					city = item.getString("utf-8");
+				if(item.getFieldName().equals("name"))
+					name = item.getString("utf-8");
+				if(item.getFieldName().equals("points"))
+					points = item.getString("utf-8");
+			} else {
+				
+			}
+		}
+		if(oldId.equals("null")){
 			
 		}else{
-			product = productService.findById(id);
+			product = productService.findById(oldId);
+			String root = request.getServletContext().getRealPath("/");
+			String oldFilePath = root + "img\\"+product.getPicPath();
+			File oldfile = new File(oldFilePath);
+			if(oldfile.exists())
+				oldfile.delete();
+		}
+		while (iter1.hasNext()) // 表单中有几个input标签，就循环几次
+		{
+			FileItem item1 = (FileItem) iter1.next();
+			if (item1.isFormField()) {
+				
+			} else {
+				String fileName = item1.getName();
+				// 这里发现ie获取的是路径加文件名，chrome获取的是文件名，这里我们只需要文件名，所以有路径的要先去路径
+				fileName = fileName.substring(fileName.lastIndexOf("\\") + 1,
+						fileName.length());
+				String prefix = System.currentTimeMillis() + "";
+				File file = new File(request.getServletContext().getRealPath(
+						"/")
+						+ "img\\" + FolderUtil.getFolder());
+				if (!file.exists())
+					file.mkdirs();
+				File uploadedFile = new File(request.getServletContext()
+						.getRealPath("/")
+						+ "img\\"+FolderUtil.getFolder()
+						+ "\\"
+						+ prefix + fileName);
+				item1.write(uploadedFile);
+				product.setPicPath(FolderUtil.getFolder()+ "\\"
+						+ prefix + fileName);
+			}
 		}
 		Set<City> citys = cityService.findByIds(city.split(";"));
 		product.setCity(citys);
 		product.setName(name);
-		product.setRemark(remark);
+		product.setDescription(description);
 		product.setPoints(Integer.parseInt(points));
-		if(id.equals("")){
+		if(oldId.equals("null")){
 			productService.save(product);
 		}else{
 			productService.update(product);
@@ -68,6 +139,41 @@ public class ProductAction extends BaseAction{
 		return "redirect:list";
 	}
 	
+	/*
+	 * 单个删除商品
+	 */
+	@RequestMapping(value = "/business/product/delete")
+	public String delete(HttpServletRequest request, ModelMap model) {
+		String id = request.getParameter("id");
+		Product product =productService.findById(id);
+		product.setDeleted(true);
+		productService.update(product);
+		return "redirect:list";
+	}
+	
+	/*
+	 * 单个上架商品
+	 */
+	@RequestMapping(value = "/business/product/online")
+	public String online(HttpServletRequest request, ModelMap model) {
+		String id = request.getParameter("id");
+		Product product =productService.findById(id);
+		product.setStatu(true);
+		productService.update(product);
+		return "redirect:list";
+	}
+	
+	/*
+	 * 单个下架商品
+	 */
+	@RequestMapping(value = "/business/product/offline")
+	public String offline(HttpServletRequest request, ModelMap model) {
+		String id = request.getParameter("id");
+		Product product =productService.findById(id);
+		product.setStatu(false);
+		productService.update(product);
+		return "redirect:list";
+	}
 	
 
 }
