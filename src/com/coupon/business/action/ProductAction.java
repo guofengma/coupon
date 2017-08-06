@@ -1,11 +1,13 @@
 package com.coupon.business.action;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -173,6 +175,18 @@ public class ProductAction extends BaseAction{
 		product.setStatu(false);
 		productService.update(product);
 		return "redirect:list";
+	}
+	
+	@RequestMapping(value = "/business/product/getProductInfo")
+	public void getProductInfo(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		StringBuilder result = new StringBuilder();
+		Product product =productService.findById(id);
+		result.append("{\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription()+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
+		System.out.println(result.toString());
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(result.toString());
 	}
 	
 

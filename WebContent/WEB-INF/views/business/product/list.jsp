@@ -71,7 +71,7 @@
 													   </c:forEach>
 													</td>
 													<td>${item.redeemCode.size()}</td>
-													<td><img src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
+													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
 													<td>
 															<p>
 																<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
@@ -187,7 +187,7 @@
 							 <div class="col-md-12">
 								<button class="btn-sm btn-success no-radius" type="button" onclick="saveProductInfo()">
 									<i class="icon-edit bigger-200"></i>
-									保存修改
+									保存
 								</button>
 							</div>
 						</form> 
@@ -305,6 +305,22 @@ function add(){
 
 function edit(param){
 	$("#oldId").val(param);
+	$.ajax({
+		url:"<%=path%>/business/product/getProductInfo",
+	    dataType:"json",   
+	    async:false,
+		data:{"id":param},
+	    type:"GET",   //请求方式
+	    success:function(result){
+	       $("#name").val(result.name);
+		   $("#points").val(result.points);
+		   $("#description").val(result.description);
+		   document.getElementById("preview").src = "<%=path%>/img/"+result.picPath;
+	    },
+	    error:function(){
+			alert("读取城市信息失败！")
+	    }
+	});
 	$("#productInfo").modal("show");
 }
 
