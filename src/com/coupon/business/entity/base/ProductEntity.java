@@ -33,6 +33,8 @@ public abstract class ProductEntity extends BaseEntity{
 	
 	protected String description ;
 	
+	protected boolean statu ;//是否可用，也就是上架下架
+
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "product")
 	protected List<Record> record;
 	
@@ -85,6 +87,14 @@ public abstract class ProductEntity extends BaseEntity{
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public boolean isStatu() {
+		return statu;
+	}
+
+	public void setStatu(boolean statu) {
+		this.statu = statu;
 	}
 
 	public void setDescription(String description) {

@@ -1,6 +1,7 @@
 package com.coupon.system.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,10 @@ public class CityServiceImpl extends BaseServiceImpl<City, String> implements Ci
 	@Override
 	public List<City> getFCityUsed() {
 		return getCityDao().getFCityUsed();
+	}
+
+	@Override
+	public Set<City> findByIds(String[] ids) {
+		return getCityDao().findByIds(ids);
 	}
 }

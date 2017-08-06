@@ -1,6 +1,8 @@
 package com.coupon.system.dao.impl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
@@ -35,4 +37,16 @@ public class CityDaoImpl extends BaseDaoImpl<City, String> implements CityDao{
 		 return fCitys;
 	}
 
+	@Override
+	public Set<City> findByIds(String[] ids) {
+		StringBuilder id = new StringBuilder();
+		for(String temp : ids){
+			id.append("'"+temp+"',");
+		}
+		id.deleteCharAt(id.length()-1);
+		List<City> fCitys =  this.queryByHql(
+				"from City where deleted=false and id in ("+id.toString()+")", null
+				);
+		 return new HashSet(fCitys);
+	}
 }

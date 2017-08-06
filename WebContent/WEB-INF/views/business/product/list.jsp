@@ -10,6 +10,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>礼品兑换系统</title>
+    <style type="text/css">
+   	 	.bootstrap-select .dropdown-toggle{width:158%}
+    </style>
+    <link rel="stylesheet" href="<%=path %>/assets/ztree/css/metroStyle.css" type="text/css">
+	<script src="<%=path %>/assets/ztree/js/jquery.ztree.all.min.js"></script>
 </head>
 <html>
 <body>
@@ -48,7 +53,6 @@
 										<tr>
 											<th>商品名称</th>
 											<th>所需积分</th>
-											<th>活动有效期</th>
 											<th>可用城市</th>
 											<th>剩余数量</th>
 											<th>预览图</th>
@@ -56,30 +60,45 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${product.items}" var="item">
+										<c:forEach items="${products.items}" var="item">
 											<tr class="odd gradeX">
-													<%-- <td>${item.name}</td>
-													<td></td>
-													<td>2017.07.19--2017.12.19</td>
+													<td>${item.name}</td>
+													<td>${item.points}</td>
 													<td>
-													   <c:forEach items="${item.citys}" var="itemCity">
-													   	${itemCity.name}
-													   </c:forEach>北京，上海，武汉
+													   <c:forEach items="${item.city}" var="itemCity">
+													   	${itemCity.name}；
+													   </c:forEach>
 													</td>
-													<td>12</td>
+													<td>${item.redeemCode.size()}</td>
 													<td><img src='<%=path%>/assets/2.jpg'/></td> 
 													<td>
 															<p>
-																<a href="<c:url value='/business/product/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
+																<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
 																	<i class="icon-edit bigger-200"></i>
 																	编辑
 																</a>&nbsp;&nbsp;
 																<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																	<i class="icon-trash bigger-200"></i>
 																	删除
-																</a>
+																</a>&nbsp;&nbsp;
+																<c:if test="${item.statu}">
+																	<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
+																		<i class="icon-arrow-down bigger-200"></i>
+																		下架
+																	</a>&nbsp;&nbsp;
+																	<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
+																		<i class="icon-arrow-down bigger-200"></i>
+																		管理兑换码
+																	</a>&nbsp;&nbsp;
+																</c:if>			
+																<c:if test="${!item.statu}">
+																	<a href="javascript:online('<c:url value='/business/product/online?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
+																		<i class="icon-arrow-up bigger-200"></i>
+																		上架
+																	</a>&nbsp;&nbsp;
+																</c:if>
 															</p>
-													</td> --%>
+													</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -115,34 +134,53 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<form class="form-horizontal" role="form"> 
+						<form class="form-horizontal" role="form" id="productFrom" action="<%=path%>/business/product/save" method="post">
+							<input name="id" id="id" type="hidden" value=""/> 
+							<input name="city" id="city" type="hidden" value=""/>
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品名称：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-username" class="col-xs-10 col-sm-5" name="name" value="${product.name}">
+									<input type="text" id="form-username" class="col-xs-10 col-sm-10" name="name" value="${product.name}">
 								</div>
 							 </div> 
-							 <div class="space-4"></div> 
 							 
+							 <div class="space-4"></div> 
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">所需积分：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-displayName" class="col-xs-10 col-sm-5" name="points">
+									<input type="text" id="form-displayName" class="col-xs-10 col-sm-10" name="points">
 								</div>
 							 </div> 
+							 
+							 <div class="space-4"></div> 	
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 可用城市： </label>
+								<div class="col-sm-9" style="text-align:left;">
+									<ul id="cityTree" class="ztree"></ul>
+								</div>
+							</div>
+							
+							<div class="space-4"></div> 
+							 	<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品说明：</label>
+								<div class="col-sm-9">
+									<input type="text" id="form-remark" class="col-xs-10 col-sm-10" name="remark">
+								</div>
+							 </div> 
+							
 							 <div class="space-4"></div> 							 
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-2">选择图片：</label>
 								<div class="col-sm-9">
-									<input type=file id="form-password" class="col-xs-10 col-sm-5" name="file" onchange="imgPreview(this)">
+									<input type=file id="form-file" class="col-xs-10 col-sm-10" name="file" onchange="imgPreview(this)">
 								</div>
 							 </div> 
 							 
 							 <div class="space-4"></div> 							 
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-2">预览效果：</label>
-								<div class="col-sm-9">
-									<img id="preview" height="200" width="200">
+								<div class="col-sm-9" style="text-align:left">
+									<img id="preview" height="150" width="150">
 								</div>
 							 </div> 
 							 <div class="col-md-12">
@@ -160,6 +198,59 @@
 </div>
 </body>
 <script type="text/javascript">
+var setting = {
+		  view: {
+	    selectedMulti: true
+	  },
+	  check: {
+	    enable: true
+	  },
+	  data: {
+	    simpleData: {
+	      enable: true
+	    }
+	  },
+	  edit: {
+	    enable: false
+	  }
+};
+
+function getCheckedCity(){
+	var cityIds = [] ;
+    var treeObj=$.fn.zTree.getZTreeObj("cityTree");
+    nodes=treeObj.getCheckedNodes(true);
+    for(var i=0;i<nodes.length;i++){
+	   cityIds.push(nodes[i].id); //获取选中节点的值
+    } 
+    return cityIds ;
+}
+
+function saveProductInfo(){
+	$("#city").val(getCheckedCity().join(";"));
+	$("#productFrom").submit(); 
+}
+
+		
+function getUsedCity(){
+	var nodes = [] ;
+	$.ajax({
+		url:"<%=path%>/system/city/getUsedCity",
+	    dataType:"json",   
+	    async:false,
+	    type:"GET",   //请求方式
+	    success:function(result){
+	        nodes = result ;
+	    },
+	    error:function(){
+			alert("读取城市信息失败！")
+	    }
+	});
+	return nodes
+}
+$(function(){
+	$.fn.zTree.init($("#cityTree"), setting, getUsedCity());
+})
+
 function imgPreview(fileDom){
     //判断是否支持FileReader
     if (window.FileReader) {
@@ -194,8 +285,15 @@ function del(url){
 }
 
 function add(){
+	$("#id").val('');
 	$("#productInfo").modal("show");
 }
+
+function edit(param){
+	$("#id").val(param);
+	$("#productInfo").modal("show");
+}
+
 </script>
 </html>
 	

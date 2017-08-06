@@ -141,5 +141,36 @@ public class CityAction extends BaseAction{
 	 	response.setCharacterEncoding("utf-8");
 	 	response.getWriter().write(result.toString());
 	}
+	
+	
+	
+	@RequiresPermissions(value={"city:management"})
+	@RequestMapping(value = "/system/city/getUsedCity")
+	public void getFUsedCity(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		 StringBuilder result = new StringBuilder("[");
+		 List<City> fCityUsedList = cityService.getFCityUsed();
+		 for(City temp : fCityUsedList){
+			 boolean hasSCity = false ;
+			 result.append("{\"id\":\""+temp.getId()+"\",\"name\":\""+temp.getName()+"\",\"children\":[");
+			 List<City> sCityList = temp.getChildren();
+			 for(City sTemp : sCityList){
+				 if(sTemp.isUsed()){
+					 hasSCity = true ;
+					 result.append("{\"id\":\""+sTemp.getId()+"\",\"name\":\""+sTemp.getName()+"\"},");
+				 }
+			 }
+			 if(hasSCity)
+				 result.deleteCharAt(result.length()-1);
+			 result.append("]},");
+		 }
+		 if(fCityUsedList.size()!=0){
+			 result.deleteCharAt(result.length()-1);
+		 }
+		 result.append("]");
+		 System.out.println(result.toString());
+		 response.setContentType("application/json");
+	 	 response.setCharacterEncoding("utf-8");
+	 	 response.getWriter().write(result.toString());
+	}
 
 }
