@@ -182,7 +182,14 @@ public class ProductAction extends BaseAction{
 		String id = request.getParameter("id");
 		StringBuilder result = new StringBuilder();
 		Product product =productService.findById(id);
-		result.append("{\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription()+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
+		Set<City> citys = product.getCity();
+		StringBuilder cityIds = new StringBuilder();
+		for(City temp : citys){
+			cityIds.append(temp.getId()+";");
+		}
+		if(citys.size()!=0)
+			cityIds.deleteCharAt(cityIds.length()-1);
+		result.append("{\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription()+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");

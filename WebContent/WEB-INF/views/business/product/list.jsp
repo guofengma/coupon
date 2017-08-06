@@ -316,6 +316,16 @@ function edit(param){
 		   $("#points").val(result.points);
 		   $("#description").val(result.description);
 		   document.getElementById("preview").src = "<%=path%>/img/"+result.picPath;
+		   var treeObj=$.fn.zTree.getZTreeObj("cityTree");
+		   var checkNodesId = result.cityIds.split(";");
+		   console.log(checkNodesId)
+		   for(var i=0;i<checkNodesId.length;i++){
+			     var node = treeObj.getNodeByParam("id",checkNodesId[i],null);  
+			   	 if(!node.isParent){
+	                 treeObj.checkNode(node,true,true,true);//指定选中ID的节点  
+	                 treeObj.expandNode(node, true, false);//指定选中ID节点展开
+			   	 }  
+		   }
 	    },
 	    error:function(){
 			alert("读取城市信息失败！")
