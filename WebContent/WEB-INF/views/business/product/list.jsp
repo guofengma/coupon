@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/init.jsp" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
  <script type="text/javascript" src="<c:url value='/assets/js/plugins/data-tables/jquery.dataTables.js'/>"></script>
 <head>
     <meta charset="utf-8">
@@ -29,7 +29,7 @@
 	<div id="page-wrapper" style="height:100%;">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-user"></i> 商品管理</li>
+				<li class="active"><i class="icon-gift"></i> 商品管理</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -69,8 +69,8 @@
 													<%-- <td>
 													   <c:forEach items="${item.city}" var="itemCity">
 													   	${itemCity.name}；
-													   </c:forEach>
-													</td> --%>
+													   </c:forEach>  --%>
+													</td>
 													<td>${item.description}</td>
 													<td>${item.redeemCode.size()}</td>
 													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
@@ -81,12 +81,12 @@
 																	编辑
 																</a>&nbsp;&nbsp;
 																<c:if test="${item.statu}">
-																	<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
+																	<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																		<i class="icon-arrow-down bigger-200"></i>
 																		下架
 																	</a>&nbsp;&nbsp;
-																	<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
-																		<i class="icon-arrow-down bigger-200"></i>
+																	<a href="<c:url value='/business/redeemCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+																		<i class="icon-qrcode bigger-200"></i>
 																		管理兑换码
 																	</a>&nbsp;&nbsp;
 																</c:if>			
@@ -127,6 +127,7 @@
 		</div>
 	</div>	
 </div>
+
 <div class="modal fade" id="productInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -189,8 +190,12 @@
 							 </div> 
 							 <div class="col-md-12">
 								<button class="btn-sm btn-success no-radius" type="button" onclick="saveProductInfo()">
-									<i class="icon-edit bigger-200"></i>
+									<i class="icon-ok bigger-200"></i>
 									保存
+								</button>
+								<button class="btn-sm btn-success no-radius" type="button" onclick="cancel()">
+									<i class="icon-remove bigger-200"></i>
+									取消
 								</button>
 							</div>
 						</form> 
@@ -234,6 +239,9 @@ function saveProductInfo(){
 	$("#productFrom").submit(); 
 }
 
+function cancel(){
+	$("#productInfo").modal("hide");
+}
 		
 function getUsedCity(){
 	var nodes = [] ;
@@ -307,7 +315,7 @@ function add(){
 	 $("#name").val('');
 	 $("#points").val('');
 	 $("#description").val('');
-	 $("#oldId").val('');
+	 $("#oldId").val('null');
 	 var treeObj=$.fn.zTree.getZTreeObj("cityTree");
 	 treeObj.checkAllNodes(false);
 	 treeObj.expandAll(false);

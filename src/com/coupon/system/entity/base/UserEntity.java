@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 
 import com.coupon.base.entity.BaseEntity;
 import com.coupon.business.entity.Customer;
+import com.coupon.business.entity.RedeemCode;
 import com.coupon.system.entity.City;
 import com.coupon.system.entity.Role;
 import com.coupon.system.entity.User;
@@ -33,6 +34,9 @@ public abstract class UserEntity extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "city_id")
 	protected City city;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
+	protected List<RedeemCode> redeemCodes ; //虚拟出来的兑换码批次
 	
 	public List<Customer> getCustomer() {
 		return customer;
@@ -86,6 +90,14 @@ public abstract class UserEntity extends BaseEntity {
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+
+	public List<RedeemCode> getRedeemCodes() {
+		return redeemCodes;
+	}
+
+	public void setRedeemCodes(List<RedeemCode> redeemCodes) {
+		this.redeemCodes = redeemCodes;
 	}
 
 	/**
