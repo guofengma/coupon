@@ -54,7 +54,8 @@
 										<tr>
 											<th>商品名称</th>
 											<th>所需积分</th>
-											<th>可用城市</th>
+											<!-- <th>可用城市</th> -->
+											<th>描述信息</th>
 											<th>剩余数量</th>
 											<th>预览图</th>
 											<th>操作</th>
@@ -65,11 +66,12 @@
 											<tr class="odd gradeX">
 													<td>${item.name}</td>
 													<td>${item.points}</td>
-													<td>
+													<%-- <td>
 													   <c:forEach items="${item.city}" var="itemCity">
 													   	${itemCity.name}；
 													   </c:forEach>
-													</td>
+													</td> --%>
+													<td>${item.description}</td>
 													<td>${item.redeemCode.size()}</td>
 													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
 													<td>
@@ -302,10 +304,21 @@ function offline(url){
 }
 
 function add(){
+	 $("#name").val('');
+	 $("#points").val('');
+	 $("#description").val('');
+	 $("#oldId").val('');
+	 var treeObj=$.fn.zTree.getZTreeObj("cityTree");
+	 treeObj.checkAllNodes(false);
+	 treeObj.expandAll(false);
+	 document.getElementById("preview").src = "";
 	$("#productInfo").modal("show");
 }
 
 function edit(param){
+	var treeObj=$.fn.zTree.getZTreeObj("cityTree");
+	treeObj.checkAllNodes(false);
+	treeObj.expandAll(false);
 	$("#oldId").val(param);
 	$.ajax({
 		url:"<%=path%>/business/product/getProductInfo",
@@ -322,11 +335,16 @@ function edit(param){
 		   var checkNodesId = result.cityIds.split(";");
 		   console.log(checkNodesId)
 		   for(var i=0;i<checkNodesId.length;i++){
-			     var node = treeObj.getNodeByParam("id",checkNodesId[i],null);  
-			   	 if(!node.isParent){
-	                 treeObj.checkNode(node,true,true,true);//指定选中ID的节点  
-	                 treeObj.expandNode(node, true, false);//指定选中ID节点展开
-			   	 }  
+			   try{
+				   var node = treeObj.getNodeByParam("id",checkNodesId[i],null);  
+				   	 if(!node.isParent){
+		                 treeObj.checkNode(node,true,true,true);//指定选中ID的节点  
+				   	 }else{
+				   		 treeObj.expandNode(node, true, false);//指定选中ID节点展开
+				   	 } 
+			   }catch(e){
+				   console.log(e.name+":"+e.message);
+			   }
 		   }
 	    },
 	    error:function(){
