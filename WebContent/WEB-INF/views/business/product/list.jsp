@@ -56,7 +56,7 @@
 											<th>所需积分</th>
 											<!-- <th>可用城市</th> -->
 											<th>描述信息</th>
-											<th>剩余数量</th>
+											<th>批次数量</th>
 											<th>预览图</th>
 											<th>操作</th>
 										</tr>
@@ -69,8 +69,8 @@
 													<%-- <td>
 													   <c:forEach items="${item.city}" var="itemCity">
 													   	${itemCity.name}；
-													   </c:forEach>  --%>
-													</td>
+													   </c:forEach>  
+													</td>--%>
 													<td>${item.description}</td>
 													<td>${item.redeemCode.size()}</td>
 													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
@@ -80,14 +80,14 @@
 																	<i class="icon-edit bigger-200"></i>
 																	编辑
 																</a>&nbsp;&nbsp;
+																																	<a href="<c:url value='/business/redeemCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+																		<i class="icon-qrcode bigger-200"></i>
+																		管理兑换码
+																	</a>&nbsp;&nbsp;
 																<c:if test="${item.statu}">
 																	<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																		<i class="icon-arrow-down bigger-200"></i>
 																		下架
-																	</a>&nbsp;&nbsp;
-																	<a href="<c:url value='/business/redeemCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
-																		<i class="icon-qrcode bigger-200"></i>
-																		管理兑换码
 																	</a>&nbsp;&nbsp;
 																</c:if>			
 																<c:if test="${!item.statu}">

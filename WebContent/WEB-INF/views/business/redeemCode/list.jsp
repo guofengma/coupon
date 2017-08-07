@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/init.jsp" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 <head>
     <meta charset="utf-8">
@@ -9,6 +10,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>礼品兑换系统</title>
+    <link rel="stylesheet" href="<%=path %>/assets/timepicker/css/bootstrap-datetimepicker.min.css">
+	<script src="<%=path%>/assets/timepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="<%=path%>/assets/timepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <html>
 <body>
@@ -51,34 +55,42 @@
 									<thead>
 										<tr>
 											<th>批次名称</th>
+											<th>状态</th>
 											<th>有效期</th>
+											<th>兑换码数量</th>
 											<th>描述信息</th>
+											<th>执行人</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach items="${redeemCodes.items}" var="item">
 											<tr class="odd gradeX">
-													<td>${item.name}</td>
-													<td>${item.startTime}--${item.endTime}</td>
-													<td>${item.description}</td>
+													<td>${item.batch}</td>
+													<td>
+														<input name='switch' value='${item.id}' data-on-text='启用' data-off-text='禁用' type='checkbox' <c:if test="${!item.used}">checked</c:if>/>
+													</td>
+													<td>${fn:substring(item.endTime,0,10)}</td>
+													<td>${item.children.size()}</td>
+													<td>${item.remark}</td>
+													<td>登录名:${item.user.name}；用户名:${item.user.displayName}</td>
 													<td>
 														<p>
 															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
 																<i class="icon-edit bigger-200"></i>
 																编辑
 															</a>&nbsp;&nbsp;
-															<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
-																<i class="icon-arrow-down bigger-200"></i>
+															<a href="javascript:del('<c:url value='/business/redeemCode/deleteBatch?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+																<i class="icon-trash bigger-200"></i>
 																删除
 															</a>&nbsp;&nbsp;
-															<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
-																<i class="icon-arrow-down bigger-200"></i>
+															<a href="javascript:import('<c:url value='/business/redeemCode/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
+																<i class="icon-folder-open-alt bigger-200"></i>
 																导入
 															</a>&nbsp;&nbsp;
-															<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
-																<i class="icon-arrow-down bigger-200"></i>
-																修改
+															<a href="javascript:offline('<c:url value='/business/redeemCode/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+																<i class="icon-eye-open bigger-200"></i>
+																查看
 															</a>
 														</p>
 													</td>
@@ -107,9 +119,135 @@
 		</div>
 	</div>	
 </div>
+
+<div class="modal fade" id="batchInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 class="modal-title">兑换码批次信息</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form-horizontal" role="form" id="batchFrom" action="<%=path%>/business/redeemCode/batchSave" method="post">
+							<input name="productId" id="productId" type="hidden" value="${product.id}"/> 
+							<input name="oldId" id="oldId" type="hidden" value="null"/>							
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">批次信息：</label>
+								<div class="col-sm-9">
+									<input type="text" id="batch" class="col-xs-10 col-sm-10" name="batch">
+								</div>
+							 </div> 
+							 
+							 <div class="space-4"></div> 
+							 <div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">有效期：</label>
+								<div class="col-sm-9 input-append date form_datetime " id='datetimepicker'>
+									<input size="16" value="" type="text" id="endTime" class="col-xs-10 col-sm-10" name="endTime" readonly>
+									<span class="add-on"><i class="icon-th"></i></span>
+								</div>
+							 </div> 
+							
+							<div class="space-4"></div> 
+							 	<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">描述信息：</label>
+								<div class="col-sm-9">
+									<input type="text" id="remark" class="col-xs-10 col-sm-10" name="remark">
+								</div>
+							 </div> 
+							 
+							 <div class="col-md-12">
+								<button class="btn-sm btn-success no-radius" type="button" onclick="saveBatchInfo()">
+									<i class="icon-ok bigger-200"></i>
+									保存
+								</button>
+								<button class="btn-sm btn-success no-radius" type="button" onclick="cancle()">
+									<i class="icon-remove bigger-200"></i>
+									取消
+								</button>
+							</div>
+						</form> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>			
+</div>
 </body>
 <script type="text/javascript">
+$("input[name='switch']").each(function(){
+	$(this).bootstrapSwitch();
+	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+		$.ajax({
+			url:"<%=path%>/business/redeemCode/changeBatchState",
+		    dataType:"json",   
+		    async:false,
+			data:{	"id":$(this).val(),
+					"state":state
+				},
+		    type:"GET",   //请求方式
+		    success:function(result){
+		      	alert(result.msg);
+		    },
+		    error:function(){
+				alert("启用该批次兑换码失败！")
+		    }
+		});
+	});
+});
 
+$("#datetimepicker").datetimepicker({
+	format: "yyyy-mm-dd",
+    autoclose: true,
+    todayBtn: true,
+    pickerPosition: "bottom-left",
+    language:"zh-CN",
+    minView:"month"
+    });
+
+function add(){
+	$("#batch").val('');
+	$("#remark").val('');
+	$("#endTime").val('');
+	$("#batchInfo").modal("show");
+}
+
+function cancle(){
+	$("#batchInfo").modal("hide");
+}
+
+function edit(param){
+	$("#oldId").val(param);
+	$.ajax({
+		url:"<%=path%>/business/redeemCode/editBatch",
+	    dataType:"json",   
+	    async:false,
+		data:{"id":param},
+	    type:"GET",   //请求方式
+	    success:function(result){
+	       $("#batch").val(result.batch);
+		   $("#remark").val(result.remark);
+		   $("#endTime").val(result.endTime);
+		   console.log(result);		   
+	    },
+	    error:function(){
+			alert("读取批次信息失败！")
+	    }
+	});
+	$("#batchInfo").modal("show");
+}
+
+function saveBatchInfo(){
+	$("#batchFrom").submit();
+}
+
+function del(url){
+	var isDel =  confirm('确定删除该批次的兑换码吗？', '确认对话框');
+	if(isDel){
+		window.location.href=url;
+	}
+}
 </script>
 </html>
 	
