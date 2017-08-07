@@ -74,6 +74,7 @@ public class ProductAction extends BaseAction{
 		List items = upload.parseRequest(request);
 		Iterator iter = items.iterator();//用来获取普通input
 		Iterator iter1 = items.iterator();//用来上传文件
+		boolean fileChanged = false ;
 		while (iter.hasNext()) // 表单中有几个input标签，就循环几次
 		{
 			FileItem item = (FileItem) iter.next();
@@ -88,6 +89,8 @@ public class ProductAction extends BaseAction{
 					name = item.getString("utf-8");
 				if(item.getFieldName().equals("points"))
 					points = item.getString("utf-8");
+				if(item.getFieldName().equals("fileChanged"))
+					fileChanged = item.getString("utf-8").equals("true");
 			} else {
 				
 			}
@@ -96,11 +99,13 @@ public class ProductAction extends BaseAction{
 			
 		}else{
 			product = productService.findById(oldId);
-			String root = request.getServletContext().getRealPath("/");
-			String oldFilePath = root + "img\\"+product.getPicPath();
-			File oldfile = new File(oldFilePath);
-			if(oldfile.exists())
-				oldfile.delete();
+			if(fileChanged){
+				String root = request.getServletContext().getRealPath("/");
+				String oldFilePath = root + "img\\"+product.getPicPath();
+				File oldfile = new File(oldFilePath);
+				if(oldfile.exists())
+					oldfile.delete();
+			}
 		}
 		while (iter1.hasNext()) // 表单中有几个input标签，就循环几次
 		{
@@ -108,24 +113,27 @@ public class ProductAction extends BaseAction{
 			if (item1.isFormField()) {
 				
 			} else {
-				String fileName = item1.getName();
-				// 这里发现ie获取的是路径加文件名，chrome获取的是文件名，这里我们只需要文件名，所以有路径的要先去路径
-				fileName = fileName.substring(fileName.lastIndexOf("\\") + 1,
-						fileName.length());
-				String prefix = System.currentTimeMillis() + "";
-				File file = new File(request.getServletContext().getRealPath(
-						"/")
-						+ "img\\" + FolderUtil.getFolder());
-				if (!file.exists())
-					file.mkdirs();
-				File uploadedFile = new File(request.getServletContext()
-						.getRealPath("/")
-						+ "img\\"+FolderUtil.getFolder()
-						+ "\\"
-						+ prefix + fileName);
-				item1.write(uploadedFile);
-				product.setPicPath(FolderUtil.getFolder()+ "\\"
-						+ prefix + fileName);
+				if(fileChanged){
+					String fileName = item1.getName();
+					// 这里发现ie获取的是路径加文件名，chrome获取的是文件名，这里我们只需要文件名，所以有路径的要先去路径
+					fileName = fileName.substring(fileName.lastIndexOf("\\") + 1,
+							fileName.length());
+					String prefix = System.currentTimeMillis() + "";
+					File file = new File(request.getServletContext().getRealPath(
+							"/")
+							+ "img\\" + FolderUtil.getFolder());
+					if (!file.exists())
+						file.mkdirs();
+					File uploadedFile = new File(request.getServletContext()
+							.getRealPath("/")
+							+ "img\\"+FolderUtil.getFolder()
+							+ "\\"
+							+ prefix + fileName);
+					item1.write(uploadedFile);
+					product.setPicPath(FolderUtil.getFolder()+ "\\"
+							+ prefix + fileName);
+					product.setPicName(fileName);
+				}
 			}
 		}
 		Set<City> citys = cityService.findByIds(city.split(";"));
@@ -189,7 +197,7 @@ public class ProductAction extends BaseAction{
 		}
 		if(citys.size()!=0)
 			cityIds.deleteCharAt(cityIds.length()-1);
-		result.append("{\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription()+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
+		result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription()+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");

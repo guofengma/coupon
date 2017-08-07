@@ -78,10 +78,6 @@
 																	<i class="icon-edit bigger-200"></i>
 																	编辑
 																</a>&nbsp;&nbsp;
-																<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
-																	<i class="icon-trash bigger-200"></i>
-																	删除
-																</a>&nbsp;&nbsp;
 																<c:if test="${item.statu}">
 																	<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
 																		<i class="icon-arrow-down bigger-200"></i>
@@ -93,6 +89,10 @@
 																	</a>&nbsp;&nbsp;
 																</c:if>			
 																<c:if test="${!item.statu}">
+																<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+																	<i class="icon-trash bigger-200"></i>
+																	删除
+																</a>&nbsp;&nbsp;
 																	<a href="javascript:online('<c:url value='/business/product/online?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
 																		<i class="icon-arrow-up bigger-200"></i>
 																		上架
@@ -138,6 +138,7 @@
 						<form enctype="multipart/form-data" class="form-horizontal" role="form" id="productFrom" action="<%=path%>/business/product/save" method="post">
 							<input name="oldId" id="oldId" type="hidden" value="null"/> 
 							<input name="city" id="city" type="hidden" value=""/>
+							<input name="fileChanged" id="fileChanged" type="hidden" value="false"/>
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品名称：</label>
 								<div class="col-sm-9">
@@ -276,6 +277,7 @@ function imgPreview(fileDom){
         img.src = e.target.result;
     };
     reader.readAsDataURL(file);
+    $("#fileChanged").val('true');
 }
 
 function del(url){

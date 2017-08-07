@@ -25,6 +25,8 @@ public abstract class ProductEntity extends BaseEntity{
 	
 	protected String picPath ;
 	
+	protected String picName ;
+	
 	protected int points ;
 	
 	protected Date startTime ;
@@ -61,6 +63,14 @@ public abstract class ProductEntity extends BaseEntity{
 		this.picPath = picPath;
 	}
 
+	public String getPicName() {
+		return picName;
+	}
+
+	public void setPicName(String picName) {
+		this.picName = picName;
+	}
+	
 	public int getPoints() {
 		return points;
 	}
