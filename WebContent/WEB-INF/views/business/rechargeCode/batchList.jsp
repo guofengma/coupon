@@ -26,11 +26,8 @@
 	<div id="page-wrapper" style="height:100%;">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li>
-					<a href='<c:url value="/business/product/list"/>'><i class="icon-gift"></i> 商品管理</a>
-				</li>
 				<li class="active">
-					${product.name}--兑换码批次管理
+					<i class="icon-qrcode"></i> 积分码批次管理
 				</li>
 			</ul>
 		</div>
@@ -57,15 +54,15 @@
 											<th>批次名称</th>
 											<th>状态</th>
 											<th>有效期</th>
-											<th>兑换码总数量</th>
-											<th>兑换码剩余数量</th>
+											<th>积分码总数量</th>
+											<th>积分码剩余数量</th>
 											<th>描述信息</th>
 											<th>执行人</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${redeemCodes.items}" var="item">
+										<c:forEach items="${rechargeCodes.items}" var="item">
 											<tr class="odd gradeX">
 													<td>${item.batch}</td>
 													<td>
@@ -82,18 +79,22 @@
 																<i class="icon-edit bigger-200"></i>
 																编辑
 															</a>&nbsp;&nbsp;
-															<a href="javascript:del('<c:url value='/business/redeemCode/deleteBatch?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+															<a href="javascript:del('<c:url value='/business/rechargeCode/deleteBatch?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																<i class="icon-trash bigger-200"></i>
 																删除
 															</a>&nbsp;&nbsp;
-															<a href="javascript:openImportModal('${item.id}');" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-folder-open-alt bigger-200"></i>
-																导入
+															<a href="javascript:openMakeModal('${item.id}');" class="btn-sm btn-app btn-success no-radius" >
+																<i class="icon-random bigger-200"></i>
+																生成积分码
 															</a>&nbsp;&nbsp;
-															<a href="<c:url value='/business/redeemCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+															<a href="<c:url value='/business/rechargeCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-eye-open bigger-200"></i>
-																管理兑换码
-															</a>
+																管理积分码
+															</a>&nbsp;&nbsp;
+															<a href="<c:url value='/business/rechargeCode/exportExcel?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+																<i class="icon-share-alt bigger-200"></i>
+																导出为excel
+															</a>&nbsp;&nbsp;
 														</p>
 													</td>
 											</tr>
@@ -102,8 +103,8 @@
 								</table>
 							</div>
 							<c:import url ="../../common/paging.jsp">
-		        				<c:param name="pageModelName" value="redeemCodes"/>
-		        				<c:param name="urlAddress" value="/business/redeemCode/batchlist"/>
+		        				<c:param name="pageModelName" value="rechargeCodes"/>
+		        				<c:param name="urlAddress" value="/business/rechargeCode/batchlist"/>
 	       				 	</c:import>
 	       				 	
 	       				 	<!-- 模态框（Modal） -->
@@ -123,44 +124,39 @@
 </div>
 
 <!-- 导入兑换码模态框 -->
-<div class="modal fade" id="importmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
+<div class="modal fade" id="makemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 class="modal-title">导入兑换码</h3>
+				<h3 class="modal-title">制作积分码</h3>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<form enctype="multipart/form-data" class="form-horizontal" role="form" id="importFrom" action="<%=path%>/business/redeemCode/importRedeemCode" method="post">
-							<input name="fatherId" id="fatherId" type="hidden" value=""/> 					
-							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-2">选择Excel：</label>
+						<form class="form-horizontal" role="form" id="makeFrom" action="<%=path%>/business/rechargeCode/makerechargeCode" method="post">
+							<input name="fatherId" id="fatherId" type="hidden" value=""/> 					 
+							 
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-points">积分分值：</label>
 								<div class="col-sm-9">
-									<input accept=".xls,.xlsx" type=file id="form-file" class="col-xs-10 col-sm-10" name="file">
+									<input type="text" id="form-points" class="col-xs-10 col-sm-10" name="points">
 								</div>
 							 </div> 
 							 
-							<!--  <div class="space-4"></div>
-							  <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-2">导入结果：</label>
+							 <div class="space-4"></div> 							 
+							 <div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-count">制作数量：</label>
 								<div class="col-sm-9">
-									<textarea  rows="3" cols="20" class="col-xs-10 col-sm-10" name="msg">
-									</textarea>
+									<input type="text" id="form-count" class="col-xs-10 col-sm-10" name="count">
 								</div>
-							 </div>  -->
-							  	
+							 </div> 
 							 <div class="col-md-12">
-								<button class="btn-sm btn-success no-radius" type="button" onclick="importExcel()">
+								<button class="btn-sm btn-success no-radius" type="button" onclick="make()">
 									<i class="icon-ok bigger-200"></i>
-									导入
+									制作
 								</button>
-								<%-- <button class="btn-sm btn-success no-radius" type="button" onclick="back('${product.id}')">
-									<i class="icon-ok bigger-200"></i>
-									返回
-								</button> --%>
-								<button class="btn-sm btn-success no-radius" type="button" onclick="cancleImport()">
+								<button class="btn-sm btn-success no-radius" type="button" onclick="cancleMake()">
 									<i class="icon-remove bigger-200"></i>
 									取消
 								</button>
@@ -179,13 +175,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 class="modal-title">兑换码批次信息</h3>
+				<h3 class="modal-title">积分码批次信息</h3>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<form class="form-horizontal" role="form" id="batchFrom" action="<%=path%>/business/redeemCode/batchSave" method="post">
-							<input name="productId" id="productId" type="hidden" value="${product.id}"/> 
+						<form class="form-horizontal" role="form" id="batchFrom" action="<%=path%>/business/rechargeCode/batchSave" method="post">
 							<input name="oldId" id="oldId" type="hidden" value="null"/>							
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">批次信息：</label>
@@ -196,7 +191,7 @@
 							 
 							 <div class="space-4"></div> 
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">有效期：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">有效期至：</label>
 								<div class="col-sm-9 input-append date form_datetime " id='datetimepicker'>
 									<input size="16" value="" type="text" id="endTime" class="col-xs-10 col-sm-10" name="endTime" readonly>
 									<span class="add-on"><i class="icon-th"></i></span>
@@ -234,7 +229,7 @@ $("input[name='switch']").each(function(){
 	$(this).bootstrapSwitch();
 	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
 		$.ajax({
-			url:"<%=path%>/business/redeemCode/changeBatchState",
+			url:"<%=path%>/business/rechargeCode/changeBatchState",
 		    dataType:"json",   
 		    async:false,
 			data:{	"id":$(this).val(),
@@ -274,7 +269,7 @@ function cancle(){
 function edit(param){
 	$("#oldId").val(param);
 	$.ajax({
-		url:"<%=path%>/business/redeemCode/editBatch",
+		url:"<%=path%>/business/rechargeCode/editBatch",
 	    dataType:"json",   
 	    async:false,
 		data:{"id":param},
@@ -303,21 +298,23 @@ function del(url){
 	}
 }
 
-function openImportModal(param){
+function openMakeModal(param){
+	$("#form-count").val('');
+	$("#form-points").val('');
 	$("#fatherId").val(param);
-	$("#importmodal").modal("show");
+	$("#makemodal").modal("show");
 }
 
-function cancleImport(){
-	$("#importmodal").modal("hide");
+function cancleMake(){
+	$("#makemodal").modal("hide");
 }
 
 function back(param){
-	window.location.href="<%=path%>/business/redeemCode/list?id="+param;
+	window.location.href="<%=path%>/business/rechargeCode/list?id="+param;
 }
 
-function importExcel(){
-	$("#importFrom").submit();
+function make(){
+	$("#makeFrom").submit();
 }
 </script>
 </html>

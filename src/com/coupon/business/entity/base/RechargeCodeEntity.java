@@ -1,6 +1,5 @@
 package com.coupon.business.entity.base;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,16 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.coupon.base.entity.BaseEntity;
-import com.coupon.business.entity.Product;
-import com.coupon.business.entity.Record;
-import com.coupon.business.entity.RedeemCode;
+import com.coupon.business.entity.RechargeCode;
 import com.coupon.system.entity.User;
 
 @MappedSuperclass
-public abstract class RedeemCodeEntity extends BaseEntity {
+public class RechargeCodeEntity extends BaseEntity{
 	
 	protected String code ;//兑换码
 	
@@ -31,23 +27,20 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 	
 	protected String batch;//批次
 	
+	protected int points ;//充值分数
+	
+	protected boolean made ;//该批次是否已经制作
+	
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	protected  User user;
 	
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
-	protected RedeemCode parent;
+	protected RechargeCode parent;
 
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "parent")
-	protected List<RedeemCode> children;
-
-	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "redeemCode")
-	protected Record record;
-	
-	@ManyToOne
-	@JoinColumn(name = "productId")
-	protected  Product product;  //对应商品
+	protected List<RechargeCode> children;
 
 	public String getCode() {
 		return code;
@@ -89,6 +82,22 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 		this.batch = batch;
 	}
 
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	
+	public boolean isMade() {
+		return made;
+	}
+
+	public void setMade(boolean made) {
+		this.made = made;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -97,44 +106,28 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 		this.user = user;
 	}
 
-	public RedeemCode getParent() {
+	public RechargeCode getParent() {
 		return parent;
 	}
 
-	public void setParent(RedeemCode parent) {
+	public void setParent(RechargeCode parent) {
 		this.parent = parent;
 	}
 
-	public List<RedeemCode> getChildren() {
+	public List<RechargeCode> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<RedeemCode> children) {
+	public void setChildren(List<RechargeCode> children) {
 		this.children = children;
 	}
 	
-	public Record getRecord() {
-		return record;
-	}
-
-	public void setRecord(Record record) {
-		this.record = record;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-	
-	public List<RedeemCode> getUnUsedChildren(){
-		List<RedeemCode> redeemCodeList = new ArrayList<RedeemCode>();
-		for(RedeemCode temp : getChildren()){
+	public List<RechargeCode> getUnUsedChildren(){
+		List<RechargeCode> RechargeCodeList = new ArrayList<RechargeCode>();
+		for(RechargeCode temp : getChildren()){
 			if(!temp.isUsed())
-				redeemCodeList.add(temp);
+				RechargeCodeList.add(temp);
 		}
-		return redeemCodeList;
+		return RechargeCodeList;
 	}
 }

@@ -37,7 +37,7 @@
                     <a href="<c:url value=''/>" ><i class="glyphicon glyphicon-pencil"></i> 地址管理 </a>
                 </li>
                 <li>
-                    <a href="<c:url value=''/>" ><i class="glyphicon glyphicon-pencil"></i> 充值码管理 </a>
+                    <a href="<c:url value='/business/rechargeCode/batchlist'/>" ><i class="glyphicon glyphicon-pencil"></i> 积分码管理 </a>
                 </li>
            </ul>
          </li>

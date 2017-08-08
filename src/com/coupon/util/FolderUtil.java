@@ -10,8 +10,8 @@ public class FolderUtil {
 	public static String getFolder (){
 		Calendar now = Calendar.getInstance(); 
 		String year = now.get(Calendar.YEAR)+"";
-		String month = (now.get(Calendar.MONTH) + 1) +"";
-		String day = now.get(Calendar.DAY_OF_MONTH)+"";
+		String month = (now.get(Calendar.MONTH) + 1)<10? "0"+(now.get(Calendar.MONTH) + 1):""+(now.get(Calendar.MONTH) + 1);
+		String day = now.get(Calendar.DAY_OF_MONTH)<10? "0"+now.get(Calendar.DAY_OF_MONTH):""+now.get(Calendar.DAY_OF_MONTH);
 		return year + "-" + month + "-" + day ;
 	}
 }
