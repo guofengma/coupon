@@ -93,7 +93,6 @@ function initTable() {
             title: "状态",
             field: "used",
             searchable:false,
-            sortable:true,
             formatter: function (value, row, index) {
             	return generateSwitch(row.id,value);
             }
@@ -105,22 +104,47 @@ function initTable() {
             	if(value)
             		return '';
             	else
-            		return '修改';
+            		return "<a href=\"javascript:deleteRedeemCode('"+row.id+"')\" class='btn-sm btn-app btn-danger no-radius'><i class='icon-trash bigger-200'></i>删除</a>&nbsp;&nbsp;"
+            				+"<a href=\"javascript:editRedeemCode("+row.id+"')\" class='btn-sm btn-app btn-primary no-radius'><i class='icon-edit bigger-200'></i>修改</a>";
+            		
             }
         }
         ],
         onLoadSuccess:function(){
 	      	  $("input[name='switch']").each(function(){
-	      		$(this).bootstrapSwitch();
+	      		$(this).bootstrapSwitch({
+	      			disabled:true
+	      		});
 	         });
         },
         onSearch: function (text) {
         	 $("input[name='switch']").each(function(){
- 	      		$(this).bootstrapSwitch();
+ 	      		$(this).bootstrapSwitch({
+ 	      			disabled:true
+ 	      		});
  	         });
         },
 
     });
+}
+
+function deleteRedeemCode(param){
+	var isDel =  confirm('确定删除该兑换码吗？', '确认对话框');
+	if(isDel){
+		$.ajax({
+			url:"<%=path%>/business/redeemCode/deleteRedeemCode",
+		    dataType:"json",   
+		    async:false,
+			data:{"id":param},
+		    type:"GET",   //请求方式
+		    success:function(result){
+		       	 $('#tb_redeemCode').bootstrapTable('refresh');   
+		    },
+		    error:function(){
+				alert("读取批次信息失败！")
+		    }
+		});
+	}
 }
 </script>
 </html>

@@ -57,7 +57,8 @@
 											<th>批次名称</th>
 											<th>状态</th>
 											<th>有效期</th>
-											<th>兑换码数量</th>
+											<th>兑换码总数量</th>
+											<th>兑换码剩余数量</th>
 											<th>描述信息</th>
 											<th>执行人</th>
 											<th>操作</th>
@@ -72,6 +73,7 @@
 													</td>
 													<td>${fn:substring(item.endTime,0,10)}</td>
 													<td>${item.children.size()}</td>
+													<td>${item.unUsedChildren.size()}</td>
 													<td>${item.remark}</td>
 													<td>登录名:${item.user.name}；用户名:${item.user.displayName}</td>
 													<td>

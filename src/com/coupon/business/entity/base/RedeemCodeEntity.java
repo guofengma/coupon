@@ -1,6 +1,7 @@
 package com.coupon.business.entity.base;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -128,5 +129,12 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 		this.product = product;
 	}
 	
-	
+	public List<RedeemCode> getUnUsedChildren(){
+		List<RedeemCode> redeemCodeList = new ArrayList<RedeemCode>();
+		for(RedeemCode temp : getChildren()){
+			if(!temp.isUsed())
+				redeemCodeList.add(temp);
+		}
+		return redeemCodeList;
+	}
 }

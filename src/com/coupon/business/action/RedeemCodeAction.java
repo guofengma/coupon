@@ -89,7 +89,7 @@ public class RedeemCodeAction extends BaseAction{
 		String id = request.getParameter("id");
 		RedeemCode batch = redeemCodeService.findById(id);
 		StringBuilder result = new StringBuilder("[");
-		for(RedeemCode temp : batch.getChildren()){
+		for(RedeemCode temp : batch.getChildrenOrderByUsed()){
 			result.append("{\"code\":\""+temp.getCode()+"\",\"used\":"+temp.isUsed()+",\"id\":\""+temp.getId()+"\"},");
 		}
 		if(batch.getChildren().size()!=0)
@@ -160,7 +160,7 @@ public class RedeemCodeAction extends BaseAction{
 	}
 	
 	/*
-	 * 获取批次信息
+	 * 改变批次可用状况
 	 */
 	@RequestMapping(value = "/business/redeemCode/changeBatchState")
 	public void changeBatchState(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
@@ -212,6 +212,21 @@ public class RedeemCodeAction extends BaseAction{
 		}
 		model.addAttribute("id",batch.getProduct().getId());
 		return "redirect:batchlist";
+	}
+	
+	/*
+	 * 删除单个兑换码（硬删除）
+	 */
+	@RequestMapping(value = "/business/redeemCode/deleteRedeemCode")
+	public void deleteRedeemCode(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		RedeemCode redeemCode = redeemCodeService.findById(id);
+		redeemCode.setParent(null);;
+		redeemCode.setDeleted(true);
+		redeemCodeService.update(redeemCode); 
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{\"flag\":\"success\",\"msg\":\"删除成功\"}");
 	}
 	
 	@SuppressWarnings("resource")
