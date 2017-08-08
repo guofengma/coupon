@@ -1,13 +1,30 @@
 package com.coupon.business.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +39,7 @@ import com.coupon.business.service.ProductService;
 import com.coupon.business.service.RedeemCodeService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.service.UserService;
+import com.coupon.util.FolderUtil;
 
 @Controller
 public class RedeemCodeAction extends BaseAction{
@@ -33,8 +51,11 @@ public class RedeemCodeAction extends BaseAction{
 	@Autowired 
 	private UserService userService;
 	
-	@RequestMapping(value = "/business/redeemCode/list")
-	public String list(HttpServletRequest request, ModelMap model) {
+	/*
+	 * 根据product的id查找相关的批次，并分页
+	 */
+	@RequestMapping(value = "/business/redeemCode/batchlist")
+	public String batchlist(HttpServletRequest request, ModelMap model) {
 		super.addMenuParams(request, model);
 		String id = request.getParameter("id");
 		Product product = productService.findById(id);
@@ -45,8 +66,41 @@ public class RedeemCodeAction extends BaseAction{
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		IPageList<RedeemCode>  redeemCodes =  redeemCodeService.findBatch(pageNo, pageSize,id);
 		model.addAttribute("redeemCodes",redeemCodes);
+		return "business/redeemCode/batchList";
+	}
+	
+	/*
+	 * 单击批次后面的兑换码管理，跳转到兑换码页面
+	 */
+	@RequestMapping(value = "/business/redeemCode/list")
+	public String list(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		String id = request.getParameter("id");
+		RedeemCode batch = redeemCodeService.findById(id);
+		model.addAttribute("batch",batch);
 		return "business/redeemCode/list";
 	}
+	
+	/*
+	 *根据批次，获取批次下的兑换码
+	 */
+	@RequestMapping(value = "/business/redeemCode/getRedeemCodeByBatch")
+	public void getRedeemCodeByBatch(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		RedeemCode batch = redeemCodeService.findById(id);
+		StringBuilder result = new StringBuilder("[");
+		for(RedeemCode temp : batch.getChildren()){
+			result.append("{\"code\":\""+temp.getCode()+"\",\"used\":"+temp.isUsed()+",\"id\":\""+temp.getId()+"\"},");
+		}
+		if(batch.getChildren().size()!=0)
+			result.deleteCharAt(result.length()-1);
+		result.append("]");
+		System.out.println(result.toString());
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(result.toString());
+	}
+	
 	
 	@RequestMapping(value = "/business/redeemCode/batchSave")
 	public String batchSave(HttpServletRequest request, ModelMap model,String productId,String oldId,String batch,String endTime,String remark) throws ParseException {
@@ -69,7 +123,7 @@ public class RedeemCodeAction extends BaseAction{
 			redeemCodeService.update(redeemCode);
 		}
 		model.addAttribute("id",productId);
-		return "redirect:list";
+		return "redirect:batchlist";
 	}
 	/*
 	 * 删除该批次和该批次下的所有兑换码
@@ -87,7 +141,7 @@ public class RedeemCodeAction extends BaseAction{
 		}
 		redeemCodeService.batchUpdate(children);
 		model.addAttribute("id",redeemCode.getProduct().getId());
-		return "redirect:list";
+		return "redirect:batchlist";
 	}
 	
 	/*
@@ -118,5 +172,91 @@ public class RedeemCodeAction extends BaseAction{
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write("{\"flag\":\"success\",\"msg\":\"改变批次可用状况成功\"}");
+	}
+	
+	/*
+	 * 为某批次导入兑换码
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/business/redeemCode/importRedeemCode")
+	public String importRedeemCode(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws Exception {
+		super.addMenuParams(request, model);
+		@SuppressWarnings("unused")
+		String importResult = "";
+		RedeemCode batch = new RedeemCode();//是虚拟出来的批次
+		request.setCharacterEncoding("utf-8");
+		FileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		List items = upload.parseRequest(request);
+		Iterator iter = items.iterator();//用来上传文件
+		while (iter.hasNext()) // 表单中有几个input标签，就循环几次
+		{
+			FileItem item = (FileItem) iter.next();
+			if (item.isFormField()) {
+				if(item.getFieldName().equals("fatherId"))
+					batch = redeemCodeService.findById(item.getString("utf-8"));
+			} else {
+					String fileName = item.getName();
+					// 这里发现ie获取的是路径加文件名，chrome获取的是文件名，这里我们只需要文件名，所以有路径的要先去路径
+					fileName = fileName.substring(fileName.lastIndexOf("\\") + 1,
+							fileName.length());
+					String prefix = System.currentTimeMillis() + "";
+					File file = new File(request.getServletContext().getRealPath("/")
+							+ "excel\\" + FolderUtil.getFolder());
+					if (!file.exists())
+						file.mkdirs();
+					File uploadedFile = new File(request.getServletContext().getRealPath("/")+ "excel\\"+FolderUtil.getFolder()+ "\\"+ prefix + fileName);
+					item.write(uploadedFile);
+					importResult = importToBase(request.getServletContext().getRealPath("/")+ "excel\\"+FolderUtil.getFolder()+ "\\"+ prefix + fileName,batch.getId());
+			}
+		}
+		model.addAttribute("id",batch.getProduct().getId());
+		return "redirect:batchlist";
+	}
+	
+	@SuppressWarnings("resource")
+	private String importToBase(String filePath,String batchId) throws Exception{
+		RedeemCode batch = redeemCodeService.findById(batchId);
+		List<RedeemCode> addList = new ArrayList<RedeemCode>();
+		String result  = "" ;
+		int count = 0 ;
+	 		try { 
+	 			  String fileType = filePath.substring(filePath.lastIndexOf(".")+1);
+		 		  Workbook workbook = null;
+		          InputStream is = new FileInputStream(filePath);
+		          if (fileType.equalsIgnoreCase("xlsx")) {
+		            workbook = new XSSFWorkbook(is);
+		          }else if(fileType.equalsIgnoreCase("xls")){
+		            workbook = new HSSFWorkbook(is);
+		          }else {
+		        	throw new Exception("暂时只支持xlsx和xls格式的excel读取");
+		          }
+		          
+		          for (int numSheet = 0; numSheet < workbook.getNumberOfSheets(); numSheet++) {
+	        	        Sheet sheetAt = workbook.getSheetAt(numSheet);
+	        	        if (sheetAt == null) {
+	        	         continue;
+	        	        }
+	        	        // 循环行Row
+	        	        for (int rowNum = 0; rowNum <= sheetAt.getLastRowNum(); rowNum++) {
+		        	         Row row = sheetAt.getRow(rowNum);
+		        	         if (row != null) {
+		        	        	    count++;
+			                        row.getCell(0).setCellType(Cell.CELL_TYPE_STRING); 
+			                        RedeemCode temp = new RedeemCode();
+			                        temp.setParent(batch);
+			                        temp.setCode(row.getCell(0).getStringCellValue());
+			                        temp.setUsed(false);
+			                        addList.add(temp)  ;
+		        	         }
+	        	        }
+		            redeemCodeService.batchSave(addList);
+		            result = "成功添加兑换码"+count+"个";
+		        }
+	 		}catch (Exception e) {  
+	        	result = e.getMessage();
+	            e.printStackTrace();  
+		     }  
+	 	return result;
 	}
 }

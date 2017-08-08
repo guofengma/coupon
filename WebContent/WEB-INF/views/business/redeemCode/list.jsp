@@ -10,9 +10,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>礼品兑换系统</title>
-    <link rel="stylesheet" href="<%=path %>/assets/timepicker/css/bootstrap-datetimepicker.min.css">
-	<script src="<%=path%>/assets/timepicker/js/bootstrap-datetimepicker.min.js"></script>
-	<script src="<%=path%>/assets/timepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+	<link rel="stylesheet" href="<%=path%>/assets/bootstrapTable/dist/bootstrap-table.css">
+	<script src="<%=path%>/assets/bootstrapTable/dist/bootstrap-table.js"></script>
+	<script src="<%=path%>/assets/bootstrapTable/dist/locale/bootstrap-table-zh-CN.js"></script>
 </head>
 <html>
 <body>
@@ -29,8 +29,11 @@
 				<li>
 					<a href='<c:url value="/business/product/list"/>'><i class="icon-gift"></i> 商品管理</a>
 				</li>
+				<li>
+					<a href='<c:url value="/business/redeemCode/batchlist?id=${batch.product.id}"/>'><i class="icon-qrcode"></i> ${batch.product.name}--兑换码批次管理</a>
+				</li>
 				<li class="active">
-					${product.name}--兑换码管理
+					${batch.batch}--兑换码管理
 				</li>
 			</ul>
 		</div>
@@ -40,213 +43,84 @@
 					<div class="portlet-title">
 					</div>
 					<div class="portlet-body">
-						
-						<div class="table-toolbar" style="text-align: right;">
-							<div class="btn-group">
-									<a href="javascript:add()" class="btn-sm btn-app btn-success no-radius">
-										<i class="icon-plus bigger-200">添加批次</i>
-									</a>
-							</div>
-						</div>
-						
-						<div class="dataTables_wrapper form-inline" role="grid">
-							<div class="table-scrollable">
-								<table class="table table-striped table-bordered table-hover" id="data-table">
-									<thead>
-										<tr>
-											<th>批次名称</th>
-											<th>状态</th>
-											<th>有效期</th>
-											<th>兑换码数量</th>
-											<th>描述信息</th>
-											<th>执行人</th>
-											<th>操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach items="${redeemCodes.items}" var="item">
-											<tr class="odd gradeX">
-													<td>${item.batch}</td>
-													<td>
-														<input name='switch' value='${item.id}' data-on-text='启用' data-off-text='禁用' type='checkbox' <c:if test="${!item.used}">checked</c:if>/>
-													</td>
-													<td>${fn:substring(item.endTime,0,10)}</td>
-													<td>${item.children.size()}</td>
-													<td>${item.remark}</td>
-													<td>登录名:${item.user.name}；用户名:${item.user.displayName}</td>
-													<td>
-														<p>
-															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
-																<i class="icon-edit bigger-200"></i>
-																编辑
-															</a>&nbsp;&nbsp;
-															<a href="javascript:del('<c:url value='/business/redeemCode/deleteBatch?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
-																<i class="icon-trash bigger-200"></i>
-																删除
-															</a>&nbsp;&nbsp;
-															<a href="javascript:import('<c:url value='/business/redeemCode/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-folder-open-alt bigger-200"></i>
-																导入
-															</a>&nbsp;&nbsp;
-															<a href="javascript:offline('<c:url value='/business/redeemCode/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
-																<i class="icon-eye-open bigger-200"></i>
-																查看
-															</a>
-														</p>
-													</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
-							<c:import url ="../../common/paging.jsp">
-		        				<c:param name="pageModelName" value="redeemCodes"/>
-		        				<c:param name="urlAddress" value="/business/redeemCode/list"/>
-	       				 	</c:import>
-	       				 	
-	       				 	<!-- 模态框（Modal） -->
-							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
-							   aria-labelledby="myModalLabel" aria-hidden="true"  >
-								<div class="modal-dialog">
-									<div class="modal-content">
-									</div><!-- /.modal-content -->
-								</div><!-- /.modal -->
-	       				 	</div>
-						</div>
+						<table id="tb_redeemCode"></table>
 					</div>
             	</div>
             </div>
 		</div>
 	</div>	
 </div>
-
-<div class="modal fade" id="batchInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 class="modal-title">兑换码批次信息</h3>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-12">
-						<form class="form-horizontal" role="form" id="batchFrom" action="<%=path%>/business/redeemCode/batchSave" method="post">
-							<input name="productId" id="productId" type="hidden" value="${product.id}"/> 
-							<input name="oldId" id="oldId" type="hidden" value="null"/>							
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">批次信息：</label>
-								<div class="col-sm-9">
-									<input type="text" id="batch" class="col-xs-10 col-sm-10" name="batch">
-								</div>
-							 </div> 
-							 
-							 <div class="space-4"></div> 
-							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">有效期：</label>
-								<div class="col-sm-9 input-append date form_datetime " id='datetimepicker'>
-									<input size="16" value="" type="text" id="endTime" class="col-xs-10 col-sm-10" name="endTime" readonly>
-									<span class="add-on"><i class="icon-th"></i></span>
-								</div>
-							 </div> 
-							
-							<div class="space-4"></div> 
-							 	<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">描述信息：</label>
-								<div class="col-sm-9">
-									<input type="text" id="remark" class="col-xs-10 col-sm-10" name="remark">
-								</div>
-							 </div> 
-							 
-							 <div class="col-md-12">
-								<button class="btn-sm btn-success no-radius" type="button" onclick="saveBatchInfo()">
-									<i class="icon-ok bigger-200"></i>
-									保存
-								</button>
-								<button class="btn-sm btn-success no-radius" type="button" onclick="cancle()">
-									<i class="icon-remove bigger-200"></i>
-									取消
-								</button>
-							</div>
-						</form> 
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>			
-</div>
 </body>
 <script type="text/javascript">
-$("input[name='switch']").each(function(){
-	$(this).bootstrapSwitch();
-	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-		$.ajax({
-			url:"<%=path%>/business/redeemCode/changeBatchState",
-		    dataType:"json",   
-		    async:false,
-			data:{	"id":$(this).val(),
-					"state":state
-				},
-		    type:"GET",   //请求方式
-		    success:function(result){
-		      	alert(result.msg);
-		    },
-		    error:function(){
-				alert("启用该批次兑换码失败！")
-		    }
-		});
-	});
+function generateSwitch(id,used){
+	if(used)
+		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox' checked/>";
+	else
+		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox'/>";
+}
+
+$(function(){
+	initTable();
 });
 
-$("#datetimepicker").datetimepicker({
-	format: "yyyy-mm-dd",
-    autoclose: true,
-    todayBtn: true,
-    pickerPosition: "bottom-left",
-    language:"zh-CN",
-    minView:"month"
+function initTable() {
+	var batchId = '${batch.id}';
+    $('#tb_redeemCode').bootstrapTable({
+        method: 'get',
+        queryParams: { id: batchId },
+        detailView:false,//父子表
+        uniqueId: "id",
+        toolbar: '#toolbar',    //工具按钮用哪个容器
+        striped: true,      //是否显示行间隔色
+        cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: false,     //是否显示分页（*）
+        sortable: true,      //是否启用排序
+        sortOrder: "used asc",     //排序方式
+        url: "<%=path%>/business/redeemCode/getRedeemCodeByBatch",//这个接口需要处理bootstrap table传递的固定参数
+        search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: false,
+        minimumCountColumns: 2,    //最少允许的列数
+        clickToSelect: true,    //是否启用点击选中行
+        searchOnEnterKey: false,
+        search:true,
+        columns: [
+         {
+            title: "兑换码",
+            field: "code",
+            searchable:true
+        },
+        {
+            title: "状态",
+            field: "used",
+            searchable:false,
+            sortable:true,
+            formatter: function (value, row, index) {
+            	return generateSwitch(row.id,value);
+            }
+        },{
+        	title: "操作",
+            field: "used",
+            searchable:false,
+            formatter: function (value, row, index) {
+            	if(value)
+            		return '';
+            	else
+            		return '修改';
+            }
+        }
+        ],
+        onLoadSuccess:function(){
+	      	  $("input[name='switch']").each(function(){
+	      		$(this).bootstrapSwitch();
+	         });
+        },
+        onSearch: function (text) {
+        	 $("input[name='switch']").each(function(){
+ 	      		$(this).bootstrapSwitch();
+ 	         });
+        },
+
     });
-
-function add(){
-	$("#batch").val('');
-	$("#remark").val('');
-	$("#endTime").val('');
-	$("#batchInfo").modal("show");
-}
-
-function cancle(){
-	$("#batchInfo").modal("hide");
-}
-
-function edit(param){
-	$("#oldId").val(param);
-	$.ajax({
-		url:"<%=path%>/business/redeemCode/editBatch",
-	    dataType:"json",   
-	    async:false,
-		data:{"id":param},
-	    type:"GET",   //请求方式
-	    success:function(result){
-	       $("#batch").val(result.batch);
-		   $("#remark").val(result.remark);
-		   $("#endTime").val(result.endTime);
-		   console.log(result);		   
-	    },
-	    error:function(){
-			alert("读取批次信息失败！")
-	    }
-	});
-	$("#batchInfo").modal("show");
-}
-
-function saveBatchInfo(){
-	$("#batchFrom").submit();
-}
-
-function del(url){
-	var isDel =  confirm('确定删除该批次的兑换码吗？', '确认对话框');
-	if(isDel){
-		window.location.href=url;
-	}
 }
 </script>
 </html>

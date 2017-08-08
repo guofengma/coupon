@@ -80,9 +80,9 @@
 																	<i class="icon-edit bigger-200"></i>
 																	编辑
 																</a>&nbsp;&nbsp;
-																																	<a href="<c:url value='/business/redeemCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+																	<a href="<c:url value='/business/redeemCode/batchlist?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																		<i class="icon-qrcode bigger-200"></i>
-																		管理兑换码
+																		管理批次
 																	</a>&nbsp;&nbsp;
 																<c:if test="${item.statu}">
 																	<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
@@ -177,7 +177,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-2">选择图片：</label>
 								<div class="col-sm-9">
-									<input type=file id="form-file" class="col-xs-10 col-sm-10" name="file" onchange="imgPreview(this)">
+									<input accept="image/*" type="file" id="form-file" class="col-xs-10 col-sm-10" name="file" onchange="imgPreview(this)">
 								</div>
 							 </div> 
 							 
