@@ -17,7 +17,7 @@
     <![endif]-->
 </head>
 <html>
-<body>
+<body style="margin-top: 0px;">
 <!-- wrapper -->
 <div id="wrapper">
 	<!-- 网站头及导航栏 -->
@@ -26,7 +26,7 @@
 		<%@ include file="main/main_nav.jsp"%>
 	</nav>
 	<!--网页主体 -->
-	<div id="page-wrapper" style="height: 100%;">
+	<div id="page-wrapper" style="height: 100%;padding-top:50px">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-lg-12">

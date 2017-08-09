@@ -14,7 +14,7 @@
 	<script src="<%=path%>/assets/bootstrapTable/dist/locale/bootstrap-table-zh-CN.js"></script>
 </head>
 <html>
-<body>
+<body style="margin-top:0px">
 <div id="wrapper">
 <!-- 网站头及导航栏 -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="z-index:1080">
@@ -22,7 +22,7 @@
 		<%@ include file="../../main/main_nav.jsp"%>
 	</nav>
 	<!--网页主体 -->
-	<div id="page-wrapper" style="height:100%;">
+	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li class="active"><i class="icon-user"></i> 城市管理</li>
@@ -49,8 +49,10 @@
 </div>
 </body>
 <script type="text/javascript">
+var tableHeight ;
 $(function () {
     //1.初始化Table
+    tableHeight = $(document.body).height()-200;
     var oTable = new TableInit();
     oTable.Init();
 });
@@ -80,7 +82,7 @@ var TableInit = function () {
             pageList: [10, 25, 40],        //可供选择的每页的行数（*）
             strictSearch: true,
             showColumns: false,                  //是否显示所有的列
-            height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            height: tableHeight,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "id",                     //每一行的唯一标识，一般为主键列
             showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图

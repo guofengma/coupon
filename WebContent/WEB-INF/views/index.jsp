@@ -20,7 +20,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72"	 href="<%=path %>/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="57x57"	 href="<%=path %>/assets/ico/apple-touch-icon-57-precomposed.png">
 </head>
-<body>
+<body style="margin-top: 0px;padding-top:50px">
     <!-- Top content -->
 <div class="top-content">	
     <div class="inner-bg">

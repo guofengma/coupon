@@ -12,7 +12,7 @@
     <title>礼品兑换系统</title>
 </head>
 <html>
-<body>
+<body style="margin-top:0px">
 <div id="wrapper">
 <!-- 网站头及导航栏 -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="z-index:1080">
@@ -20,7 +20,7 @@
 		<%@ include file="../../main/main_nav.jsp"%>
 	</nav>
 	<!--网页主体 -->
-	<div id="page-wrapper" style="height:100%;">
+	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li class="active"><i class="icon-user"></i> 已审核客户</li>

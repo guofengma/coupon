@@ -65,7 +65,12 @@
 
 <%-- <script src="<%=path %>/assets/js/html5shiv.js"></script> --%>
 <%-- <script src="<%=path %>/assets/js/respond.min.js"></script> --%>
-
+<style type="text/css">
+.row{
+	   margin-right: 0px;
+	   margin-left: 0px;
+    }
+</style>
 <script type="text/javascript">
 function main_center_load(url){
 	$("#main_center").load("<%=path%>"+url);

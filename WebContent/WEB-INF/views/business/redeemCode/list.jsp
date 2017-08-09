@@ -15,7 +15,7 @@
 	<script src="<%=path%>/assets/bootstrapTable/dist/locale/bootstrap-table-zh-CN.js"></script>
 </head>
 <html>
-<body>
+<body style="margin-top:0px">
 <div id="wrapper">
 <!-- 网站头及导航栏 -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="z-index:1080">
@@ -23,7 +23,7 @@
 		<%@ include file="../../main/main_nav.jsp"%>
 	</nav>
 	<!--网页主体 -->
-	<div id="page-wrapper" style="height:100%;">
+	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li>
@@ -52,6 +52,7 @@
 </div>
 </body>
 <script type="text/javascript">
+var tableHeight ; 
 function generateSwitch(id,used){
 	if(used)
 		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox' checked/>";
@@ -60,6 +61,7 @@ function generateSwitch(id,used){
 }
 
 $(function(){
+	tableHeight = $(document.body).height()-200;
 	initTable();
 });
 
@@ -71,6 +73,7 @@ function initTable() {
         detailView:false,//父子表
         uniqueId: "id",
         toolbar: '#toolbar',    //工具按钮用哪个容器
+        height:tableHeight,
         striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: false,     //是否显示分页（*）
