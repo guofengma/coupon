@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <title>礼品兑换系统</title>
     <style type="text/css">
-   	 	.bootstrap-select .dropdown-toggle{width:158%}
+   	 	.bootstrap-select .dropdown-toggle{width:150%}
     </style>
 </head>
 <html>
@@ -196,6 +196,7 @@
 <script type="text/javascript">
 var isNew = false ;
 var id ;
+
 function clear(){//清除模态框信息
 		$("#form-name").val('');
 		$("#form-points").val('');
@@ -217,7 +218,8 @@ function contraryCheck(){//反选
 
 function add(){
 	clear();
-	$("#customerInfo").modal("show");
+	openModal("#customerInfo");
+	//$("#customerInfo").modal("show");
 	isNew = true ;
 }
 
@@ -241,7 +243,8 @@ function edit(param){
 			alert("读取客户信息失败！")
 	    }
 	});
-	$("#customerInfo").modal("show");
+	openModal("#customerInfo");
+	//$("#customerInfo").modal("show");
 	id = param ;
 	isNew = false ;
 }

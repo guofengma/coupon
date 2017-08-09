@@ -320,7 +320,8 @@ function add(){
 	 treeObj.checkAllNodes(false);
 	 treeObj.expandAll(false);
 	 document.getElementById("preview").src = "";
-	$("#productInfo").modal("show");
+	 //$("#productInfo").modal("show");
+	 openModal("#productInfo");
 }
 
 function edit(param){
@@ -359,7 +360,8 @@ function edit(param){
 			alert("读取城市信息失败！")
 	    }
 	});
-	$("#productInfo").modal("show");
+	//$("#productInfo").modal("show");
+	openModal("#productInfo");
 }
 
 </script>

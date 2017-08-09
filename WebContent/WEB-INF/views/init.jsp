@@ -78,6 +78,13 @@ function main_center_load(url){
 $(function(){
 	$("#wrapper").css("height",document.body.scrollHeight);
 });
+
+function openModal(id){
+	$(id).modal('show').css({  
+            width: '100%',  
+           'margin-top':'30px' 
+    });  
+}
 </script>
 
  

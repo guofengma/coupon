@@ -35,7 +35,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">登录名：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-username" class="col-xs-10 col-sm-5" name="username" value="${currentUsername}" readonly>
+									<input type="text" id="form-username" class="col-xs-10 col-sm-10" name="username" value="${currentUsername}" readonly>
 								</div>
 							 </div> 
 							 <div class="space-4"></div> 
@@ -43,14 +43,14 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">用户名：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-displayName" class="col-xs-10 col-sm-5" name="displayName">
+									<input type="text" id="form-displayName" class="col-xs-10 col-sm-10" name="displayName">
 								</div>
 							 </div> 
 							 <div class="space-4"></div> 							 
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-2">密码：</label>
 								<div class="col-sm-9">
-									<input type="text" id="form-password" class="col-xs-10 col-sm-5" name="password">
+									<input type="text" id="form-password" class="col-xs-10 col-sm-10" name="password">
 								</div>
 							 </div> 
 							 <div class="col-md-12">
@@ -70,16 +70,18 @@
 /* url后传递的参数：timeStamp，是时间戳，这个保证加载的不是缓存中的数据 */
 function showUserInfo()
 {
+	$("#form-displayName").val('');
 	var getTimestamp = new Date().getTime();
-	$("#userInfo").modal("show");
+	//$("#userInfo").modal("show");
+	openModal("#userInfo");
  	$.ajax({
 		url:"<%=request.getContextPath()%>/getUserInfo?timeStamp="+getTimestamp,
 		dataType:"json",
 		async:true,
 		type:"GET",
 		success:function(result){
-			$("#form-username").attr("value",result.username);
-			$("#form-displayName").attr("value",result.displayName);
+			$("#form-username").val(result.username);
+			$("#form-displayName").val(result.displayName);
 		},
 		error:function(){
 			alert("出错了");

@@ -259,7 +259,8 @@ function add(){
 	$("#batch").val('');
 	$("#remark").val('');
 	$("#endTime").val('');
-	$("#batchInfo").modal("show");
+	//$("#batchInfo").modal("show");
+	openModal("#batchInfo");
 }
 
 function cancle(){
@@ -284,7 +285,8 @@ function edit(param){
 			alert("读取批次信息失败！")
 	    }
 	});
-	$("#batchInfo").modal("show");
+	//$("#batchInfo").modal("show");
+	openModal("#batchInfo");
 }
 
 function saveBatchInfo(){
@@ -302,7 +304,8 @@ function openMakeModal(param){
 	$("#form-count").val('');
 	$("#form-points").val('');
 	$("#fatherId").val(param);
-	$("#makemodal").modal("show");
+	//$("#makemodal").modal("show");
+	openModal("#makemodal");
 }
 
 function cancleMake(){

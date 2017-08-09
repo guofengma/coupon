@@ -36,7 +36,7 @@
 						<div class="table-toolbar" style="text-align: right;">
 							<div class="btn-group">
 									<a href="<c:url value=''/>" class="btn-sm btn-app btn-success no-radius">
-										<i class="icon-plus bigger-200"></i>
+										<i class="icon-plus bigger-200">测试按钮</i>
 									</a>
 							</div>
 						</div>
