@@ -27,7 +27,7 @@
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li>
-					<a href='<c:url value="/business/rechargeCode/batchlist"/>'><i class="icon-qrcode"></i> 积分批次码管理</a>
+					<a href='<c:url value="/business/rechargeCode/batchlist"/>'><i class="icon-barcode"></i> 积分码批次管理</a>
 				</li>
 				<li class="active">
 					${batch.batch}--积分码管理

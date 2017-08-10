@@ -26,7 +26,7 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-user"></i> 待审核客户</li>
+				<li class="active"><i class="icon-lock"></i> 待审核客户</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -42,7 +42,7 @@
 										<i class="icon-plus bigger-200">添加客户</i>
 									</a>&nbsp;&nbsp;
 									<a href="javascript:multiCheck()" class="btn-sm btn-app btn-success no-radius">
-										<i class="icon-ok bigger-200">批量审核</i>
+										<i class="icon-check bigger-200">批量审核</i>
 									</a>
 							</div>
 						</div>
@@ -89,7 +89,7 @@
 																删除
 															</a>&nbsp;&nbsp;
 															<a href="javascript:check('<c:url value='/business/customer/check?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-ok bigger-200"></i>
+																<i class="icon-check bigger-200"></i>
 																审核
 															</a>
 														</p>

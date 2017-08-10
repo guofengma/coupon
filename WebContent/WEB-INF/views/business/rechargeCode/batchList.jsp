@@ -27,7 +27,7 @@
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li class="active">
-					<i class="icon-qrcode"></i> 积分码批次管理
+					<i class="icon-barcode"></i> 积分码批次管理
 				</li>
 			</ul>
 		</div>
@@ -88,7 +88,7 @@
 																生成积分码
 															</a>&nbsp;&nbsp;
 															<a href="<c:url value='/business/rechargeCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-eye-open bigger-200"></i>
+																<i class="icon-barcode bigger-200"></i>
 																管理积分码
 															</a>&nbsp;&nbsp;
 															<a href="<c:url value='/business/rechargeCode/exportExcel?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >

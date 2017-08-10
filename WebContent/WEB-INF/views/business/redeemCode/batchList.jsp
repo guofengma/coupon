@@ -30,7 +30,7 @@
 					<a href='<c:url value="/business/product/list"/>'><i class="icon-gift"></i> 商品管理</a>
 				</li>
 				<li class="active">
-					${product.name}--兑换码批次管理
+					<i class="icon-qrcode"></i>    ${product.name}--兑换码批次管理
 				</li>
 			</ul>
 		</div>
@@ -91,7 +91,7 @@
 																导入
 															</a>&nbsp;&nbsp;
 															<a href="<c:url value='/business/redeemCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-eye-open bigger-200"></i>
+																<i class="icon-qrcode bigger-200"></i>
 																管理兑换码
 															</a>
 														</p>

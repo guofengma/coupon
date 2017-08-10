@@ -25,7 +25,7 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-user"></i> 城市管理</li>
+				<li class="active"><i class="icon-building"></i> 城市管理</li>
 			</ul>
 		</div>
 		<div class="row">

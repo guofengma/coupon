@@ -81,8 +81,8 @@
 																	编辑
 																</a>&nbsp;&nbsp;
 																	<a href="<c:url value='/business/redeemCode/batchlist?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
-																		<i class="icon-qrcode bigger-200"></i>
-																		管理批次
+																		<i class="icon-wrench bigger-200"></i>
+																		管理兑换码批次
 																	</a>&nbsp;&nbsp;
 																<c:if test="${item.statu}">
 																	<a href="javascript:offline('<c:url value='/business/product/offline?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
@@ -95,10 +95,10 @@
 																	<i class="icon-trash bigger-200"></i>
 																	删除
 																</a>&nbsp;&nbsp;
-																	<a href="javascript:online('<c:url value='/business/product/online?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
-																		<i class="icon-arrow-up bigger-200"></i>
-																		上架
-																	</a>&nbsp;&nbsp;
+																<a href="javascript:online('<c:url value='/business/product/online?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
+																	<i class="icon-arrow-up bigger-200"></i>
+																	上架
+																</a>&nbsp;&nbsp;
 																</c:if>
 															</p>
 													</td>

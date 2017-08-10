@@ -26,7 +26,7 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-money"></i> 兑换服务地址</li>
+				<li class="active"><i class="icon-truck"></i> 兑换服务地址</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -111,7 +111,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 class="modal-title">服务地址信息</h3>
+				<h3 class="modal-title">兑换服务地址信息</h3>
 			</div>
 			<div class="modal-body">
 				<div class="row">

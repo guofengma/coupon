@@ -23,7 +23,7 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-user"></i> 已审核客户</li>
+				<li class="active"><i class="icon-unlock"></i> 已审核客户</li>
 			</ul>
 		</div>
 		<div class="row">
