@@ -59,6 +59,8 @@
 											<th>姓名</th>
 											<th>电话号码</th>
 											<th>剩余积分数量</th>
+											<th>所属城市</th>
+											<th>兑换服务地址</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -69,6 +71,13 @@
 												<td>${item.name }</td>
 												<td>${item.phone }</td>
 												<td>${item.point }</td>
+												<td>
+													<c:if test ="${item.city.parent!=null}">
+														${item.city.parent.name}
+													</c:if>
+													${item.city.name}
+												</td>
+												<td>${item.bank.name }</td>
 												<td>
 														<p>
 															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
@@ -161,8 +170,18 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right">  </label>
 								<div class="col-sm-9" style="text-align:left">
-									 <select class="selectpicker" id="sCity" name="sCity">
+									 <select class="selectpicker" id="sCity" name="sCity" onchange="sCityChange()">
 										 <option value="null">选择市县</option>
+									 </select>
+								</div>
+							</div>
+							
+							<div class="space-4"></div> 	
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right">兑换服务：</label>
+								<div class="col-sm-9" style="text-align:left">
+									 <select class="selectpicker" id="bank" name="bank">
+										 <option value="null">选择兑换服务地址</option>
 									 </select>
 								</div>
 							</div>
@@ -204,6 +223,7 @@ function clear(){//清除模态框信息
 		$("#form-remark").val('');
 		$("#fCity").val('null').trigger("change");
 		$("#sCity").val('null').trigger("change");
+		$("#bank").val('null').trigger("change");
 }
 
 function checkAll(){//全选
@@ -221,7 +241,6 @@ function contraryCheck(){//反选
 function add(){
 	clear();
 	openModal("#customerInfo");
-	//$("#customerInfo").modal("show");
 	isNew = true ;
 }
 
@@ -240,6 +259,7 @@ function edit(param){
 			$("#form-remark").val(result.remark);
 			$("#fCity").val(result.fCityId).trigger("change");
 			$("#sCity").val(result.sCityId).trigger("change");
+			$("#bank").val(result.bankId).trigger("change");
 	    },
 	    error:function(){
 			alert("读取客户信息失败！")
@@ -265,6 +285,7 @@ function saveCustomerInfo(){
 		"remark":$("#form-remark").val(),
 		"fCityId":$("#fCity").val(),
 		"sCityId":$("#sCity").val(),
+		"bankId":$("#bank").val()
 		},
 	    type:"POST",   //请求方式
 	    success:function(result){
@@ -327,6 +348,7 @@ function del(url){
 function fCityChange(){
 	var id = $("#fCity").val();
 	clearSCity();
+	clearBank();
 	if(id!='null'){
 		$.ajax({
 			url:"<%=path%>/system/city/getSCityUsedByFCityId",    //请求的url地址
@@ -336,8 +358,11 @@ function fCityChange(){
 		    type:"GET",   //请求方式
 		    success:function(result){
 			console.log(result)
-		        for(var i=0;i<result.length;i++){
-					$("#sCity").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+		        for(var i=0;i<result.sCity.length;i++){
+					$("#sCity").append("<option value='"+result.sCity[i].id+"'>"+result.sCity[i].name+"</option>");
+				}
+				for(var i=0;i<result.bank.length;i++){
+					$("#bank").append("<option value='"+result.bank[i].id+"'>"+result.bank[i].name+"</option>");
 				}
 		    },
 		    error:function(){
@@ -346,11 +371,40 @@ function fCityChange(){
 		});
 	}
 	$('#sCity').selectpicker('refresh');
+	$('#bank').selectpicker('refresh');
+}
+
+function sCityChange(){
+	var id = $("#sCity").val();
+	clearBank()
+	if(id!='null'){
+		$.ajax({
+			url:"<%=path%>/system/city/getBankBySCityId",    //请求的url地址
+		    dataType:"json",   
+		    async:false,
+		    data:{"id":id},
+		    type:"GET",   //请求方式
+		    success:function(result){
+				for(var i=0;i<result.length;i++){
+					$("#bank").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				}
+		    },
+		    error:function(){
+				alert("请求兑换服务地址失败！")
+		    }
+		});
+	}
+	$('#bank').selectpicker('refresh');
 }
 
 function clearSCity(){//清空二级城市下拉框所有内容（第一个默认的option不清除）
 	$("#sCity").empty();
 	$("#sCity").append("<option value='null'>选择市县</option>"); 
+}
+
+function clearBank(){
+	$("#bank").empty();
+	$("#bank").append("<option value='null'>选择服务兑换地址</option>"); 
 }
 </script>
 </html>

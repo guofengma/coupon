@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageListUtil;
+import com.coupon.business.entity.Bank;
 import com.coupon.business.entity.Customer;
+import com.coupon.business.service.BankService;
 import com.coupon.business.service.CustomerService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
@@ -33,6 +35,8 @@ public class CustomerAction extends BaseAction{
 	@Autowired CustomerService customerService;
 	
 	@Autowired CityService cityService;
+	
+	@Autowired BankService bankService;
 	
 	@RequestMapping(value = "/business/customer/list")
 	public String list(HttpServletRequest request, ModelMap model) {
@@ -123,8 +127,11 @@ public class CustomerAction extends BaseAction{
 		customer.setDeleted(false);
 		String fCityId = request.getParameter("fCityId");
 		String sCityId = request.getParameter("sCityId");
+		String bankId = request.getParameter("bankId");
 		City fCity = cityService.findById(fCityId);
 		City sCity = cityService.findById(sCityId);
+		Bank bank = bankService.findById(bankId);
+		customer.setBank(bank);
 		User user = userService.findByUserName(MyRealm.hardName);
 		customer.setUser(user);
 		if(sCity==null)
@@ -162,7 +169,15 @@ public class CustomerAction extends BaseAction{
 		StringBuilder result = new StringBuilder();
 		Customer customer = customerService.findById(id);
 		result.append("{\"name\":\""+customer.getName()+"\",\"points\":"+customer.getPoint()+",\"phone\":\""+customer.getPhone()+"\",\"remark\":\""+customer.getRemark()+"\",");
+		if(customer.getBank()==null){
+			result.append("\"bankId\":\"null\",");
+		}else{
+			result.append("\"bankId\":\""+customer.getBank().getId()+"\",");
+		}
 		City city = customer.getCity();
+		if(city==null){//录入信息时没有录入所属城市的信息
+			result.append("\"fCityId\":\"null\",\"sCityId\":\"null\"}");
+		}
 		if(city.getParent()==null){//说明属于一级行政单位
 			result.append("\"fCityId\":\""+city.getId()+"\",\"sCityId\":\"null\"}");
 		}else{

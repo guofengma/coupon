@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.coupon.base.action.BaseAction;
+import com.coupon.business.entity.Bank;
 import com.coupon.system.entity.City;
 import com.coupon.system.service.CityService;
 
@@ -68,9 +69,10 @@ public class CityAction extends BaseAction{
 	public void getSCityUsedByFCityId(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fid = request.getParameter("id");
 		City fCity = cityService.findById(fid);
-		StringBuilder result = new StringBuilder("[");
+		StringBuilder result = new StringBuilder("{\"sCity\":[");
 		List<City> sCity = fCity.getChildren();
 		boolean hasSCityUsed = false ;
+		boolean hasBank = false ;
 		for(City temp : sCity){
 			 if(temp.isUsed()){
 				 hasSCityUsed = true ;
@@ -80,11 +82,49 @@ public class CityAction extends BaseAction{
 		 if(hasSCityUsed){
 			 result.deleteCharAt(result.length()-1);
 		 }
-		 result.append("]");
+		 result.append("],\"bank\":[");
+		 //请求一级城市下的兑换服务地址
+		 List<Bank> banks = fCity.getBank();
+		 for(Bank bank : banks){
+			 if(!bank.getDeleted()){
+				 hasBank = true ;
+				 result.append("{\"id\":\""+bank.getId()+"\",\"name\":\""+bank.getName()+"\"},");
+			 }
+		 }
+		 if(hasBank){
+			 result.deleteCharAt(result.length()-1);
+		 }
+		 result.append("]}");
+		 System.out.println(result.toString());
 		 response.setContentType("application/json");
 	 	 response.setCharacterEncoding("utf-8");
 	 	 response.getWriter().write(result.toString());
 	}
+	
+	@RequestMapping(value = "/system/city/getBankBySCityId")
+	public void getBankBySCityId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		City sCity = cityService.findById(id);
+		StringBuilder result = new StringBuilder("[");
+		boolean hasBank = false;
+		 //请求二级城市下的兑换服务地址
+		 List<Bank> banks = sCity.getBank();
+		 for(Bank bank : banks){
+			 if(!bank.getDeleted()){
+				 hasBank = true ;
+				 result.append("{\"id\":\""+bank.getId()+"\",\"name\":\""+bank.getName()+"\"},");
+			 }
+		 }
+		 if(hasBank){
+			 result.deleteCharAt(result.length()-1);
+		 }
+		 result.append("]");
+		 System.out.println(result.toString());
+		 response.setContentType("application/json");
+	 	 response.setCharacterEncoding("utf-8");
+	 	 response.getWriter().write(result.toString());
+	}
+	
 	
 	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/changeState")
