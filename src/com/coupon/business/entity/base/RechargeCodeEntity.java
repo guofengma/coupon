@@ -19,7 +19,7 @@ public class RechargeCodeEntity extends BaseEntity{
 	
 	protected String code ;//兑换码
 	
-	protected boolean used ;//是否已经使用
+	protected boolean used ;//用户是否已经使用它去充值了
 	
 	protected Date startTime;//有效期开始时间
 	
@@ -30,6 +30,8 @@ public class RechargeCodeEntity extends BaseEntity{
 	protected int points ;//充值分数
 	
 	protected boolean made ;//该批次是否已经制作
+	
+	protected boolean given;//该兑换码是否发放给用户了
 	
 	@ManyToOne
 	@JoinColumn(name = "userId")
@@ -98,6 +100,14 @@ public class RechargeCodeEntity extends BaseEntity{
 		this.made = made;
 	}
 
+	public boolean isGiven() {
+		return given;
+	}
+
+	public void setGiven(boolean given) {
+		this.given = given;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -126,6 +136,15 @@ public class RechargeCodeEntity extends BaseEntity{
 		List<RechargeCode> RechargeCodeList = new ArrayList<RechargeCode>();
 		for(RechargeCode temp : getChildren()){
 			if(!temp.isUsed())
+				RechargeCodeList.add(temp);
+		}
+		return RechargeCodeList;
+	}
+	
+	public List<RechargeCode> getUnGivenChildren(){
+		List<RechargeCode> RechargeCodeList = new ArrayList<RechargeCode>();
+		for(RechargeCode temp : getChildren()){
+			if(!temp.isGiven())
 				RechargeCodeList.add(temp);
 		}
 		return RechargeCodeList;

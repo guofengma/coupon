@@ -56,6 +56,12 @@ function generateSwitch(id,used){
 	else
 		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox'/>";
 }
+function generateSwitch1(id,grant){
+	if(grant)
+		return "<input value='"+id+"'name='switch"+"' data-on-text='已领取' data-off-text='未领取' type='checkbox' checked/>";
+	else
+		return "<input value='"+id+"'name='switch"+"' data-on-text='已领取' data-off-text='未领取' type='checkbox'/>";
+}
 
 $(function(){
 	tableHeight = $(document.body).height()-200;
@@ -95,13 +101,22 @@ function initTable() {
             searchable:false
         },
         {
-            title: "状态",
+            title: "领取状态",
+            field: "given",
+            searchable:false,
+            formatter: function (value, row, index) {
+            	return generateSwitch1(row.id,value);
+            }
+        },
+        {
+            title: "使用状态",
             field: "used",
             searchable:false,
             formatter: function (value, row, index) {
             	return generateSwitch(row.id,value);
             }
-        },{
+        },
+        {
         	title: "操作",
             field: "used",
             searchable:false,

@@ -23,7 +23,7 @@ public class RechargeCode extends RechargeCodeEntity implements Comparable<Recha
 	@Override
 	public int compareTo(RechargeCode o) {
 		RechargeCode rechargeCode = (RechargeCode)o;
-		return (""+this.getPoints()+this.isUsed()).compareTo(""+rechargeCode.getPoints()+rechargeCode.isUsed());
+		return (""+this.getPoints()+this.isGiven()+this.isUsed()).compareTo(""+rechargeCode.getPoints()+rechargeCode.isGiven()+rechargeCode.isUsed());
 	}
 
 }

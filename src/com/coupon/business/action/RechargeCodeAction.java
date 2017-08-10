@@ -170,7 +170,7 @@ public class RechargeCodeAction extends BaseAction{
 		RechargeCode batch = rechargeCodeService.findById(id);
 		StringBuilder result = new StringBuilder("[");
 		for(RechargeCode temp : batch.getChildrenOrderByUsed()){
-			result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"used\":"+temp.isUsed()+",\"id\":\""+temp.getId()+"\"},");
+			result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"used\":"+temp.isUsed()+",\"given\":"+temp.isGiven()+",\"id\":\""+temp.getId()+"\"},");
 		}
 		if(batch.getChildren().size()!=0)
 			result.deleteCharAt(result.length()-1);
@@ -196,7 +196,7 @@ public class RechargeCodeAction extends BaseAction{
 			 }
 			 File excelFile = new File(fileDir);
 			     excelFile.createNewFile();
-			 createExcel(fileDir,"sheet1",new String[]{"分值","积分码","状态"});
+			 createExcel(fileDir,"sheet1",new String[]{"分值","积分码","领取状态","使用状态"});
 			 if(sheetExist(fileDir,"sheet1"))
 				 writeToExcel(fileDir,"sheet1",batch.getChildrenOrderByUsed());
 			 //设置文件MIME类型  
@@ -340,9 +340,11 @@ public class RechargeCodeAction extends BaseAction{
                     HSSFCell cell1 = newRow.createCell(0);
                     HSSFCell cell2 = newRow.createCell(1); 
                     HSSFCell cell3 = newRow.createCell(2); 
+                    HSSFCell cell4 = newRow.createCell(3);
                     cell1.setCellValue(list.get(rowId).getPoints()+"");  
-                    cell2.setCellValue(list.get(rowId).getCode().toString());  
-                    cell3.setCellValue(list.get(rowId).isUsed()?"已使用":"未使用");  
+                    cell2.setCellValue(list.get(rowId).getCode().toString()); 
+                    cell4.setCellValue(list.get(rowId).isGiven()?"已领取":"未领取");  
+                    cell4.setCellValue(list.get(rowId).isUsed()?"已使用":"未使用");  
                 }
             }  
             out = new FileOutputStream(fileDir);  

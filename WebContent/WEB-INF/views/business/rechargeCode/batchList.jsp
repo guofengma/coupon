@@ -55,7 +55,8 @@
 											<th>状态</th>
 											<th>有效期</th>
 											<th>积分码总数量</th>
-											<th>积分码剩余数量</th>
+											<th>积分码未领取数量</th>
+											<th>制作状态</th>
 											<th>描述信息</th>
 											<th>执行人</th>
 											<th>操作</th>
@@ -70,7 +71,11 @@
 													</td>
 													<td>${fn:substring(item.endTime,0,10)}</td>
 													<td>${item.children.size()}</td>
-													<td>${item.unUsedChildren.size()}</td>
+													<td>${item.unGivenChildren.size()}</td>
+													<td>
+														<c:if test="${item.made}">已制作</c:if>
+														<c:if test="${!item.made}">未制作</c:if>
+													</td>
 													<td>${item.remark}</td>
 													<td>登录名:${item.user.name}；用户名:${item.user.displayName}</td>
 													<td>
