@@ -17,7 +17,9 @@ public abstract class BankEntity extends BaseEntity{
 	
 	protected String name ;//银行名
 	
-	protected String address ;//银行地址
+	protected String address ;//银行通讯地址
+	
+	protected String phone;//联系电话
 	
 	@ManyToOne
 	@JoinColumn(name = "cityId")
@@ -40,6 +42,14 @@ public abstract class BankEntity extends BaseEntity{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public City getCity() {

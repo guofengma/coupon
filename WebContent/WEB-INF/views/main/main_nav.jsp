@@ -23,7 +23,21 @@
          </li> 
          <li>
             <a href="<c:url value='/system/user/list'/>"><i class="glyphicon glyphicon-star"></i> 员工管理<i></i></a>
-         </li>     
+         </li> 
+         <li>
+            <a href="#search" data-toggle="collapse" class="nav-header collapsed" ><i class="glyphicon glyphicon-search" ></i> 信息查询 <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="search" class="nav nav-list collapse" style="height:0px;" >
+                <li>
+            		<a href="<c:url value=''/>"><i class="glyphicon glyphicon-star"></i> 商品兑换码<i></i></a>
+         		</li> 
+                <li>
+                    <a href="<c:url value=''/>" ><i class="glyphicon glyphicon-pencil"></i> 客户信息 </a>
+                </li>
+                <li>
+                    <a href="<c:url value=''/>" ><i class="glyphicon glyphicon-pencil"></i> e兑卡兑换码 </a>
+                </li>
+           </ul>
+         </li>    
          <li>
             <a href="#system" data-toggle="collapse" class="nav-header collapsed" ><i class="glyphicon glyphicon-list" ></i> 系统管理 <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="system" class="nav nav-list collapse" style="height:0px;" >
@@ -34,7 +48,7 @@
                     <a href="<c:url value='/system/city/list'/>" ><i class="glyphicon glyphicon-pencil"></i> 城市管理 </a>
                 </li>
                 <li>
-                    <a href="<c:url value=''/>" ><i class="glyphicon glyphicon-pencil"></i> 地址管理 </a>
+                    <a href="<c:url value='/business/bank/list'/>" ><i class="glyphicon glyphicon-pencil"></i> 地址管理 </a>
                 </li>
                 <li>
                     <a href="<c:url value='/business/rechargeCode/batchlist'/>" ><i class="glyphicon glyphicon-pencil"></i> 积分码管理 </a>
