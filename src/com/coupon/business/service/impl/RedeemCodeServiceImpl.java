@@ -1,5 +1,7 @@
 package com.coupon.business.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +26,10 @@ public class RedeemCodeServiceImpl extends BaseServiceImpl<RedeemCode, String> i
 	@Override
 	public IPageList<RedeemCode> findBatch(int pageNo, int pageSize,String productId) {
 		return getRedeemCodeDao().findBatch(pageNo, pageSize,productId);
+	}
+
+	@Override
+	public List<RedeemCode> findByCondition(String[] condition) {
+		return getRedeemCodeDao().findByCondition(condition);
 	}
 }

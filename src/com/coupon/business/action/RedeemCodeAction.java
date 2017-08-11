@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,6 +39,8 @@ import com.coupon.business.entity.RedeemCode;
 import com.coupon.business.service.ProductService;
 import com.coupon.business.service.RedeemCodeService;
 import com.coupon.security.MyRealm;
+import com.coupon.system.entity.City;
+import com.coupon.system.service.CityService;
 import com.coupon.system.service.UserService;
 import com.coupon.util.FolderUtil;
 
@@ -50,6 +53,8 @@ public class RedeemCodeAction extends BaseAction{
 	private RedeemCodeService redeemCodeService ;
 	@Autowired 
 	private UserService userService;
+	@Autowired 
+	private CityService cityService;
 	
 	/*
 	 * 根据product的id查找相关的批次，并分页
@@ -80,6 +85,43 @@ public class RedeemCodeAction extends BaseAction{
 		model.addAttribute("batch",batch);
 		return "business/redeemCode/list";
 	}
+	
+	/*
+	 * 根据查询条件，查询符合条件的兑换码
+	 */
+	@RequestMapping(value = "/search/redeemCode/findByCondition")
+	public String findByCondition(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		List<City> fCityUsedList = cityService.getFCityUsed();
+		model.addAttribute("fCityUsedList",fCityUsedList);
+		String exStartTime = request.getParameter("exStartTime")==null?"":request.getParameter("exStartTime");
+		String exEndTime = request.getParameter("exEndTime")==null?"":request.getParameter("exEndTime");
+		String startTime = request.getParameter("startTime")==null?"":request.getParameter("startTime");
+		String endTime = request.getParameter("endTime")==null?"":request.getParameter("endTime");
+		String name = request.getParameter("name")==null?"": request.getParameter("name");
+		String code = request.getParameter("code")==null?"":request.getParameter("code");
+		String statu = request.getParameter("statu")==null?"null":request.getParameter("statu");
+		String fCity = request.getParameter("fCity")==null?"null":request.getParameter("fCity");
+		String sCity = request.getParameter("sCity")==null?"null":request.getParameter("sCity");
+		String city = sCity.equals("null")?fCity:sCity;
+		String phone = request.getParameter("phone")==null?"":request.getParameter("phone");
+		String condition[] = new String[]{exStartTime,exEndTime,startTime,endTime,name,code,statu,city,phone};
+		List<RedeemCode> redeemCodes = redeemCodeService.findByCondition(condition);
+		model.addAttribute("redeemCodes",redeemCodes);
+		model.addAttribute("exStartTime",exStartTime);
+		model.addAttribute("exEndTime",exEndTime);
+		model.addAttribute("startTime",startTime);
+		model.addAttribute("endTime",endTime);
+		model.addAttribute("name",name);
+		model.addAttribute("code",code);
+		model.addAttribute("statu",statu);
+		model.addAttribute("fCity",fCity);
+		model.addAttribute("sCity",sCity);
+		model.addAttribute("phone",phone);
+		model.addAttribute("date",FolderUtil.getFolder());
+		return "search/redeemCode/list";
+	}
+	
 	
 	/*
 	 *根据批次，获取批次下的兑换码

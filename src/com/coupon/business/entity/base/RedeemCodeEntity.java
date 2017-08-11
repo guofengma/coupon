@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -42,10 +43,10 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "parent")
 	protected List<RedeemCode> children;
 
-	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "redeemCode")
+	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "redeemCode",fetch=FetchType.EAGER)
 	protected Record record;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "productId")
 	protected  Product product;  //对应商品
 

@@ -26,9 +26,9 @@
          </li> 
          <li>
             <a href="#search" data-toggle="collapse" class="nav-header collapsed" ><i class="glyphicon glyphicon-search" ></i> 信息查询 <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="search" class="nav nav-list collapse" style="height:0px;" >
+            <ul id="search" class="nav nav-list collapse" style="height:0px;">
                 <li>
-            		<a href="<c:url value=''/>"><i class="icon-qrcode"></i> 商品兑换码<i></i></a>
+            		<a href="<c:url value='/search/redeemCode/findByCondition'/>"><i class="icon-qrcode"></i> 商品兑换码<i></i></a>
          		</li> 
                 <li>
                     <a href="<c:url value=''/>" ><i class="icon-group"></i> 客户信息 </a>

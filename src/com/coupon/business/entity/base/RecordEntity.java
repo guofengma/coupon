@@ -15,7 +15,11 @@ public abstract class RecordEntity extends BaseEntity{
 	
 	@OneToOne
 	@JoinColumn(name = "redeemCodeId")
-	protected RedeemCode redeemCode;  //兑换记录对应客户
+	protected RedeemCode redeemCode;  //兑换记录对应的商品兑换码
+	
+	@OneToOne
+	@JoinColumn(name = "rechargeCodeId")
+	protected RedeemCode rechargeCode;  //兑换记录对应的e兑卡兑换码（充值积分卡）
 
 	@ManyToOne
 	@JoinColumn(name = "customerId")
@@ -23,7 +27,13 @@ public abstract class RecordEntity extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "productId")
-	protected Product product;  //对应兑换服务地址
+	protected Product product;  //对应商品
+	
+	protected int points ;//发生交易的时候所需要的积分（充值或消费）
+	
+	protected boolean  raise;//标记是充值还是消费，true为充值，false为消费
+	
+	protected String description ;//发生交易时的备注
 
 	public RedeemCode getRedeemCode() {
 		return redeemCode;
@@ -31,6 +41,14 @@ public abstract class RecordEntity extends BaseEntity{
 
 	public void setRedeemCode(RedeemCode redeemCode) {
 		this.redeemCode = redeemCode;
+	}
+	
+	public RedeemCode getRechargeCode() {
+		return rechargeCode;
+	}
+
+	public void setRechargeCode(RedeemCode rechargeCode) {
+		this.rechargeCode = rechargeCode;
 	}
 
 	public Customer getCustomer() {
@@ -49,5 +67,27 @@ public abstract class RecordEntity extends BaseEntity{
 		this.product = product;
 	}
 	
-	
+	public int getPoints() {
+		return points;
+	}
+
+	public boolean isRaise() {
+		return raise;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	public void setRaise(boolean raise) {
+		this.raise = raise;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
