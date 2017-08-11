@@ -27,10 +27,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
+import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.business.entity.RechargeCode;
+import com.coupon.business.entity.RedeemCode;
 import com.coupon.business.service.RechargeCodeService;
 import com.coupon.security.MyRealm;
+import com.coupon.system.entity.City;
+import com.coupon.system.service.CityService;
 import com.coupon.system.service.UserService;
 import com.coupon.util.FolderUtil;
 import com.coupon.util.RandomCode;
@@ -42,6 +46,8 @@ public class RechargeCodeAction extends BaseAction{
 	private RechargeCodeService rechargeCodeService ;
 	@Autowired 
 	private UserService userService;
+	@Autowired 
+	private CityService cityService;
 	
 	private static HSSFWorkbook workbook = null;  
 	/*
@@ -57,6 +63,48 @@ public class RechargeCodeAction extends BaseAction{
 		IPageList<RechargeCode>  rechargeCodes =  rechargeCodeService.findBatch(pageNo, pageSize);
 		model.addAttribute("rechargeCodes",rechargeCodes);
 		return "business/rechargeCode/batchList";
+	}
+	
+	/*
+	 * 根据查询条件，查询符合条件的e兑卡兑换码
+	 */
+	@RequestMapping(value = "/search/rechargeCode/findByCondition")
+	public String findByCondition(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		int pageNo = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_NO_NAME, PageListUtil.DEFAULT_PAGE_NO);
+		int pageSize = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
+		List<City> fCityUsedList = cityService.getFCityUsed();
+		model.addAttribute("fCityUsedList",fCityUsedList);
+		String madeStartTime = request.getParameter("madeStartTime")==null?"":request.getParameter("madeStartTime");
+		String madeEndTime = request.getParameter("madeEndTime")==null?"":request.getParameter("madeEndTime");
+		String startTime = request.getParameter("startTime")==null?"":request.getParameter("startTime");
+		String endTime = request.getParameter("endTime")==null?"":request.getParameter("endTime");
+		String batch = request.getParameter("batch")==null?"": request.getParameter("batch");
+		String points = request.getParameter("points")==null?"":request.getParameter("points");
+		String code = request.getParameter("code")==null?"":request.getParameter("code");
+		String statu = request.getParameter("statu")==null?"null":request.getParameter("statu");
+		String fCity = request.getParameter("fCity")==null?"null":request.getParameter("fCity");
+		String sCity = request.getParameter("sCity")==null?"null":request.getParameter("sCity");
+		String city = sCity.equals("null")?fCity:sCity;
+		String phone = request.getParameter("phone")==null?"":request.getParameter("phone");
+		String condition[] = new String[]{madeStartTime,madeEndTime,startTime,endTime,batch,points,code,statu,city,phone};
+		PageList<RechargeCode> rechargeCodes = rechargeCodeService.findByCondition(pageNo,pageSize,condition);
+		model.addAttribute("rechargeCodes",rechargeCodes);
+		model.addAttribute("madeStartTime",madeStartTime);
+		model.addAttribute("madeEndTime",madeEndTime);
+		model.addAttribute("startTime",startTime);
+		model.addAttribute("endTime",endTime);
+		model.addAttribute("batch",batch);
+		model.addAttribute("points",points);
+		model.addAttribute("code",code);
+		model.addAttribute("statu",statu);
+		model.addAttribute("fCity",fCity);
+		model.addAttribute("sCity",sCity);
+		model.addAttribute("phone",phone);
+		model.addAttribute("date",FolderUtil.getFolder());
+		return "search/rechargeCode/list";
 	}
 	
 

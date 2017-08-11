@@ -5,13 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.coupon.base.entity.BaseEntity;
 import com.coupon.business.entity.RechargeCode;
+import com.coupon.business.entity.Record;
 import com.coupon.system.entity.User;
 
 @MappedSuperclass
@@ -43,6 +46,9 @@ public class RechargeCodeEntity extends BaseEntity{
 
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "parent")
 	protected List<RechargeCode> children;
+	
+	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "rechargeCode",fetch=FetchType.EAGER)
+	protected Record record;
 
 	public String getCode() {
 		return code;
@@ -132,6 +138,14 @@ public class RechargeCodeEntity extends BaseEntity{
 		this.children = children;
 	}
 	
+	public Record getRecord() {
+		return record;
+	}
+
+	public void setRecord(Record record) {
+		this.record = record;
+	}
+
 	public List<RechargeCode> getUnUsedChildren(){
 		List<RechargeCode> RechargeCodeList = new ArrayList<RechargeCode>();
 		for(RechargeCode temp : getChildren()){
