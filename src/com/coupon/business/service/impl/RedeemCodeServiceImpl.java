@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coupon.base.common.paging.IPageList;
+import com.coupon.base.common.paging.PageList;
 import com.coupon.base.service.impl.BaseServiceImpl;
 import com.coupon.business.dao.RedeemCodeDao;
 import com.coupon.business.entity.RedeemCode;
@@ -29,7 +30,7 @@ public class RedeemCodeServiceImpl extends BaseServiceImpl<RedeemCode, String> i
 	}
 
 	@Override
-	public List<RedeemCode> findByCondition(String[] condition) {
-		return getRedeemCodeDao().findByCondition(condition);
+	public PageList<RedeemCode> findByCondition(int pageNo, int pageSize, String[] condition) {
+		return getRedeemCodeDao().findByCondition(pageNo,pageSize,condition);
 	}
 }

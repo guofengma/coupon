@@ -34,7 +34,7 @@
                     <a href="<c:url value=''/>" ><i class="icon-group"></i> 客户信息 </a>
                 </li>
                 <li>
-                    <a href="<c:url value='/search/rechargeCode/findByCondition?batch=&points=&code=&statu=null&madeStartTime=&madeEndTime=&startTime=&endTime=&fCity=null&sCity=null&phone='/>" ><i class="icon-barcode"></i> e兑卡兑换码 </a>
+                    <a href="<c:url value='/search/rechargeCode/findByCondition'/>" ><i class="icon-barcode"></i> e兑卡兑换码 </a>
                 </li>
            </ul>
          </li>    

@@ -39,7 +39,7 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 	@Override
 	public PageList<RechargeCode> findByCondition(int pageNo, int pageSize, String[] condition) {
 		StringBuilder sql = new StringBuilder("from RechargeCode r where r.deleted = false and r.parent is not null");
-		if(!condition[8].equals("null")||!condition[9].equals(""))
+		if(condition[7].equals("2")||!condition[8].equals("null")||!condition[9].equals(""))
 			sql.append(" and r.record is not null");
 		if(!condition[0].equals(""))
 			sql.append(" and r.createTime >= '"+condition[0]+"'");
@@ -65,10 +65,10 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 			sql.append(" and r.record.customer.city.id = '"+condition[8]+"'");
 		if(!condition[9].equals(""))
 			sql.append(" and r.record.customer.phone = '"+condition[9]+"'");
-		String sql1 = sql + " order by r.parent.endTime desc , used asc";
+		String sql1 = sql + " order by r.parent.batchdesc , r.points desc , r.parent.endTime desc , used asc";
 		System.out.println(sql1);
 		int first = (pageNo - 1) * pageSize;
-		List<RechargeCode> items = this.queryByHql(sql1.toString(), null,
+		List<RechargeCode> items = this.queryByHql(sql1, null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
 				"select count(*) "+sql, null)

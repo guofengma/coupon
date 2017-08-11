@@ -33,6 +33,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
+import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.business.entity.Product;
 import com.coupon.business.entity.RedeemCode;
@@ -94,6 +95,10 @@ public class RedeemCodeAction extends BaseAction{
 		super.addMenuParams(request, model);
 		List<City> fCityUsedList = cityService.getFCityUsed();
 		model.addAttribute("fCityUsedList",fCityUsedList);
+		int pageNo = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_NO_NAME, PageListUtil.DEFAULT_PAGE_NO);
+		int pageSize = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		String exStartTime = request.getParameter("exStartTime")==null?"":request.getParameter("exStartTime");
 		String exEndTime = request.getParameter("exEndTime")==null?"":request.getParameter("exEndTime");
 		String startTime = request.getParameter("startTime")==null?"":request.getParameter("startTime");
@@ -106,7 +111,7 @@ public class RedeemCodeAction extends BaseAction{
 		String city = sCity.equals("null")?fCity:sCity;
 		String phone = request.getParameter("phone")==null?"":request.getParameter("phone");
 		String condition[] = new String[]{exStartTime,exEndTime,startTime,endTime,name,code,statu,city,phone};
-		List<RedeemCode> redeemCodes = redeemCodeService.findByCondition(condition);
+		PageList<RedeemCode> redeemCodes = redeemCodeService.findByCondition(pageNo,pageSize,condition);
 		model.addAttribute("redeemCodes",redeemCodes);
 		model.addAttribute("exStartTime",exStartTime);
 		model.addAttribute("exEndTime",exEndTime);

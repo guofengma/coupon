@@ -67,10 +67,10 @@
 										</tr>
 									</thead>
 									<tbody>
-									<c:forEach items="${redeemCodes}" var="item" varStatus="status">
+									<c:forEach items="${redeemCodes.items}" var="item" varStatus="status">
 											<tr class="odd gradeX">
 												<td>${status.count}</td>
-												<td>${item.parent.id}</td>
+												<td>${item.parent.batch}</td>
 												<td>${item.parent.product.name}</td>
 												<td>${item.code}</td>
 												<td>
@@ -106,6 +106,21 @@
 									</tbody>
 								</table>
 							</div>
+							
+							<c:import url ="../../common/paging.jsp">
+		        				<c:param name="pageModelName" value="redeemCodes"/>
+		        				<c:param name="urlAddress" value="/search/redeemCode/findByCondition"/>
+	       				 	</c:import>
+	       				 	
+	       				 	<!-- 模态框（Modal） -->
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+							   aria-labelledby="myModalLabel" aria-hidden="true"  >
+								<div class="modal-dialog">
+									<div class="modal-content">
+									</div><!-- /.modal-content -->
+								</div><!-- /.modal -->
+	       				 	</div>
+	       				 	
 						</div>
 					</div>
             	</div>
@@ -127,17 +142,17 @@
 					<div class="col-md-12">
 						<form class="form-horizontal" role="form" id="searchFrom" action="<%=path%>/search/redeemCode/findByCondition" method="post">				 
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-name">商品名称：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="name">商品名称：</label>
 								<div class="col-sm-9">
-									<input type="text" value="${name}" id="form-name" class="col-xs-10 col-sm-11" name="name">
+									<input type="text" value="${name}" id="name" class="col-xs-10 col-sm-11" name="name">
 								</div>
 							 </div>
 							 
 							 <div class="space-4"></div>
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-code">卡号密钥：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="code">卡号密钥：</label>
 								<div class="col-sm-9">
-									<input type="text" value="${code}" id="form-code" class="col-xs-10 col-sm-11" name="code">
+									<input type="text" value="${code}" id="code" class="col-xs-10 col-sm-11" name="code">
 								</div>
 							 </div> 
 							 
@@ -264,6 +279,18 @@ function cancleSearch(){
 }
 
 function search(){
+	var name = $("#name").val();
+	var code = $("#code").val();
+	var statu = $("#statu").val();
+	var exStartTime = $("#exStartTime").val();
+	var exEndTime = $("#exEndTime").val();
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	var fCity = $("#fCity").val();
+	var sCity = $("#sCity").val();
+	var phone = $("#phone").val();
+	var url ="<%=path%>/search/redeemCode/findByCondition?name="+name+"&code="+code+"&statu="+statu+"&exStartTime="+exStartTime+"&exEndTime="+exEndTime+"&startTime="+startTime+"&endTime="+endTime+"&fCity="+fCity+"&sCity="+sCity+"&phone="+phone;
+	$("#searchFrom").attr("action",url)
 	$("#searchFrom").submit();
 }
 

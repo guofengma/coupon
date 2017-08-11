@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.coupon.base.common.paging.IPageList;
+import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.base.dao.impl.BaseDaoImpl;
 import com.coupon.business.dao.RedeemCodeDao;
@@ -37,9 +38,9 @@ public class RedeemCodeDaoImpl extends BaseDaoImpl<RedeemCode, String> implement
 	 * String condition[] = new String[]{exStartTime,exEndTime,startTime,endTime,name,code,statu,city,phone}
 	 */
 	@Override
-	public List<RedeemCode> findByCondition(String[] condition) {
+	public PageList<RedeemCode> findByCondition(int pageNo , int pageSize ,String[] condition) {
 		StringBuilder sql = new StringBuilder("from RedeemCode r where r.deleted = false and r.parent is not null");
-		if(!condition[0].equals("")||!condition[1].equals("")||!condition[6].equals("null")||!condition[7].equals("null")||!condition[8].equals(""))
+		if(!condition[0].equals("")||!condition[1].equals("")||!condition[6].equals("null")||condition[6].equals("2")||!condition[7].equals("null")||!condition[8].equals(""))
 			sql.append(" and r.record is not null");
 		if(!condition[0].equals(""))
 			sql.append(" and r.record.createTime >= '"+condition[0]+"'");
@@ -63,10 +64,13 @@ public class RedeemCodeDaoImpl extends BaseDaoImpl<RedeemCode, String> implement
 			sql.append(" and r.record.customer.city.id = '"+condition[7]+"'");
 		if(!condition[8].equals(""))
 			sql.append(" and r.record.customer.phone = '"+condition[8]+"'");
-		sql.append(" order by r.parent.endTime desc , used asc");
+		String sql1 = sql+ " order by r.parent.product.name desc, r.parent.batch desc, r.parent.endTime desc , used asc";
 		System.out.println(sql);
-		return (List<RedeemCode>) this.queryByHql(sql.toString(),
-				null);
+		int first = (pageNo - 1) * pageSize;
+		List<RedeemCode> items = this.queryByHql(sql1, null,first, pageSize);
+		int count = Integer.parseInt(this.findUnique("select count(*) " + sql, null).toString());
+		System.out.println(count);
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
 }
