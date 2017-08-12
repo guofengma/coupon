@@ -1,8 +1,10 @@
 package com.coupon.business.entity.base;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -35,7 +37,7 @@ public abstract class CustomerEntity extends BaseEntity{
 	@JoinColumn(name = "cityId")
 	protected City city;  //所属城市
 	
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer" ,fetch=FetchType.EAGER)
 	protected List<Record> record; //对应兑换记录
 	
 	@ManyToOne
@@ -45,6 +47,14 @@ public abstract class CustomerEntity extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name = "checkUserId")
 	protected User checkUser;  //审核人员
+	
+	@ManyToOne
+	@JoinColumn(name = "latestChargeUserId")
+	protected User latestChargeUser;  //最近一次充值人员
+	
+	protected Date latestChargeTime;//最近一次充值时间
+	
+	protected int totalAddUp;//累计兑换积分数量
 
 	public String getPhone() {
 		return phone;
@@ -124,6 +134,30 @@ public abstract class CustomerEntity extends BaseEntity{
 
 	public void setCheckUser(User checkUser) {
 		this.checkUser = checkUser;
+	}
+
+	public User getLatestChargeUser() {
+		return latestChargeUser;
+	}
+
+	public Date getLatestChargeTime() {
+		return latestChargeTime;
+	}
+
+	public int getTotalAddUp() {
+		return totalAddUp;
+	}
+
+	public void setLatestChargeUser(User latestChargeUser) {
+		this.latestChargeUser = latestChargeUser;
+	}
+
+	public void setLatestChargeTime(Date latestChargeTime) {
+		this.latestChargeTime = latestChargeTime;
+	}
+
+	public void setTotalAddUp(int totalAddUp) {
+		this.totalAddUp = totalAddUp;
 	}
 	
 }

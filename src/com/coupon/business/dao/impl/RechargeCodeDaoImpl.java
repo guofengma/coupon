@@ -65,7 +65,7 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 			sql.append(" and r.record.customer.city.id = '"+condition[8]+"'");
 		if(!condition[9].equals(""))
 			sql.append(" and r.record.customer.phone = '"+condition[9]+"'");
-		String sql1 = sql + " order by r.parent.batchdesc , r.points desc , r.parent.endTime desc , used asc";
+		String sql1 = sql + " order by r.parent.batch desc , r.points desc , r.parent.endTime desc , used asc";
 		System.out.println(sql1);
 		int first = (pageNo - 1) * pageSize;
 		List<RechargeCode> items = this.queryByHql(sql1, null,

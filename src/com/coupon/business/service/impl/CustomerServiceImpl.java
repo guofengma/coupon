@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coupon.base.common.paging.IPageList;
+import com.coupon.base.common.paging.PageList;
 import com.coupon.base.service.impl.BaseServiceImpl;
 import com.coupon.business.dao.CustomerDao;
 import com.coupon.business.entity.Customer;
@@ -41,5 +42,10 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> imple
 	@Override
 	public List<Customer> findByIds(String[] ids) {
 		return getCustomerDao().findByIds(ids);
+	}
+
+	@Override
+	public PageList<Customer> findByCondition(int pageNo, int pageSize, String[] condition) {
+		return getCustomerDao().findByCondition(pageNo,pageSize,condition);
 	}
 }

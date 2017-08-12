@@ -31,7 +31,7 @@
             		<a href="<c:url value='/search/redeemCode/findByCondition'/>"><i class="icon-qrcode"></i> 商品兑换码<i></i></a>
          		</li> 
                 <li>
-                    <a href="<c:url value=''/>" ><i class="icon-group"></i> 客户信息 </a>
+                    <a href="<c:url value='/search/customer/findByCondition'/>" ><i class="icon-group"></i> 客户信息 </a>
                 </li>
                 <li>
                     <a href="<c:url value='/search/rechargeCode/findByCondition'/>" ><i class="icon-barcode"></i> e兑卡兑换码 </a>

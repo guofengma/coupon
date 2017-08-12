@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
+import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.business.entity.Bank;
 import com.coupon.business.entity.Customer;
+import com.coupon.business.entity.RechargeCode;
 import com.coupon.business.service.BankService;
 import com.coupon.business.service.CustomerService;
 import com.coupon.security.MyRealm;
@@ -26,6 +28,7 @@ import com.coupon.system.entity.Role;
 import com.coupon.system.entity.User;
 import com.coupon.system.service.CityService;
 import com.coupon.system.service.UserService;
+import com.coupon.util.FolderUtil;
 
 @Controller
 public class CustomerAction extends BaseAction{
@@ -73,6 +76,39 @@ public class CustomerAction extends BaseAction{
 		return "business/customer/"+(check?"checkLsit":"uncheckList");		
 	}
 	
+	/*
+	 * 根据查询条件，查询符合条件的客户
+	 */
+	@RequestMapping(value = "/search/customer/findByCondition")
+	public String findByCondition(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		int pageNo = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_NO_NAME, PageListUtil.DEFAULT_PAGE_NO);
+		int pageSize = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
+		List<City> fCityUsedList = cityService.getFCityUsed();
+		model.addAttribute("fCityUsedList",fCityUsedList);
+		String startTime = request.getParameter("startTime")==null?"":request.getParameter("startTime");
+		String endTime = request.getParameter("endTime")==null?"":request.getParameter("endTime");
+		String name = request.getParameter("name")==null?"": request.getParameter("name");
+		String latestName = request.getParameter("latestName")==null?"":request.getParameter("latestName");
+		String fCity = request.getParameter("fCity")==null?"null":request.getParameter("fCity");
+		String sCity = request.getParameter("sCity")==null?"null":request.getParameter("sCity");
+		String city = sCity.equals("null")?fCity:sCity;
+		String phone = request.getParameter("phone")==null?"":request.getParameter("phone");
+		String condition[] = new String[]{startTime,endTime,name,latestName,city,phone};
+		PageList<Customer> customers = customerService.findByCondition(pageNo,pageSize,condition);
+		model.addAttribute("customers",customers);
+		model.addAttribute("startTime",startTime);
+		model.addAttribute("endTime",endTime);
+		model.addAttribute("name",name);
+		model.addAttribute("latestName",latestName);
+		model.addAttribute("fCity",fCity);
+		model.addAttribute("sCity",sCity);
+		model.addAttribute("phone",phone);
+		model.addAttribute("date",FolderUtil.getFolder());
+		return "search/customer/list";
+	}
 	
 	/*
 	 * 单个审核新增的用户

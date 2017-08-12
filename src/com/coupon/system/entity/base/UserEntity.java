@@ -51,6 +51,9 @@ public abstract class UserEntity extends BaseEntity {
 	
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "checkUser")
 	protected List<Customer> beCheckedCustomer;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "latestChargeUser")
+	protected List<Customer> beLatestChargeUser;
 
 	public List<Customer> getBeCheckedCustomer() {
 		return beCheckedCustomer;
@@ -60,6 +63,14 @@ public abstract class UserEntity extends BaseEntity {
 		this.beCheckedCustomer = beCheckedCustomer;
 	}
 	
+	public List<Customer> getBeLatestChargeUser() {
+		return beLatestChargeUser;
+	}
+
+	public void setBeLatestChargeUser(List<Customer> beLatestChargeUser) {
+		this.beLatestChargeUser = beLatestChargeUser;
+	}
+
 	public String getDisplayName() {
 		return displayName;
 	}
