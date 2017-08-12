@@ -1,5 +1,7 @@
 package com.coupon.business.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,10 @@ public class RecordServiceImpl extends BaseServiceImpl<Record, String> implement
 	@Override
 	public IPageList<Record> findUndealByStaff(int pageNo, int pageSize, String userId) {
 		return getRecordDao().findUndealByStaff(pageNo, pageSize,userId);
+	}
+
+	@Override
+	public List<Record> findByIds(String[] ids) {
+		return getRecordDao().findByIds(ids);
 	}
 }

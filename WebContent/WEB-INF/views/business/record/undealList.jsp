@@ -40,19 +40,25 @@
 					<div class="portlet-body">
 						
 						<div class="table-toolbar" style="text-align: right;">
-							<!-- <div class="btn-group">
-									<a href="javascript:add()" class="btn-sm btn-app btn-success no-radius">
-										<i class="icon-plus bigger-200">添加商品</i>
-									</a>
-							</div> -->
+							<div class="btn-group">
+								<a href="javascript:multiCheck('true')" class="btn-sm btn-app btn-success no-radius">
+									<i class="icon-thumbs-up bigger-200">批量审核通过</i>
+								</a>&nbsp;&nbsp;
+								<a href="javascript:multiCheck('false')" class="btn-sm btn-app btn-success no-radius">
+									<i class="icon-thumbs-down bigger-200">批量审核不通过</i>
+								</a>
+							</div>
 						</div>
 						
 						<div class="dataTables_wrapper form-inline" role="grid">
 							<div class="table-scrollable">
-								<table class="table table-striped table-bordered table-hover" id="data-table">
+								<table class="table table-striped table-bordered table-hover" id="record-table">
 									<thead>
 										<tr>
-											<th>序号</th>
+											<th>
+												<input type="checkbox" id="checkAll" onclick="checkAll()">全选
+												<input type="checkbox" id="contraryCheck" onclick="contraryCheck()">反选
+											</th>
 											<th>送审员工</th>
 											<th>审核员工</th>
 											<th>客户姓名</th>
@@ -63,9 +69,13 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${records.items}" var="item" varStatus="statu">
+										<c:forEach items="${records.items}" var="item">
 											<tr class="odd gradeX">
-													<td>${statu.count}</td>
+													<td>
+														<c:if test="${!item.deal}">
+															<input type="checkbox" value="${item.id}" name="record">
+														</c:if>
+													</td>
 													<td>${item.user.displayName}</td>
 													<td>${item.checkUser.displayName}</td>
 													<td>${item.customer.name}</td>
@@ -133,6 +143,48 @@ function check(url){
 	var isChecked =  confirm(msg, '确认对话框');
 	if(isChecked){
 		window.location.href=url;
+	}
+}
+
+function checkAll(){//全选
+	   $("#record-table").find("input[type=checkbox][name=record]").each(function(){
+		$(this).prop("checked", $('#checkAll').is(':checked'));
+	});
+}
+
+function contraryCheck(){//反选
+	$("#record-table").find("input[type=checkbox][name=record]").each(function(){
+		$(this).prop("checked",!$(this).is(':checked'));
+	});
+}
+
+function multiCheck(pass){//批量审核
+	var ids = [];
+	 $("#record-table").find("input[type=checkbox][name=record]").each(function(){
+		if($(this).is(':checked'))
+			ids.push($(this).val());
+	});
+	if(ids.length==0){
+		alert("请选记录，再进行审核");
+		return false;
+	}
+	var isChecked =  confirm('确定批量审核勾选的充值记录吗？', '确认对话框');
+	if(isChecked){
+		$.ajax({
+			url:"<%=path%>/business/record/multiCheck",    //请求的url地址
+		    dataType:"json",   
+		    async:false,
+		    data:{"ids":ids.join(";"),
+				"pass":pass},
+		    type:"GET",   //请求方式
+		    success:function(result){
+				alert("批量审核记录成功");
+				window.location.href="<%=path%>/business/record/undeal";
+		    },
+		    error:function(){
+				alert("批量审核用户失败！")
+		    }
+		});
 	}
 }
 </script>

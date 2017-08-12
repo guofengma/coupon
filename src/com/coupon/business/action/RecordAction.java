@@ -1,9 +1,12 @@
 package com.coupon.business.action;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -89,7 +92,7 @@ public class RecordAction extends BaseAction{
 	}
 	
 	/*
-	 * 单个审核新增的用户
+	 * 单个审核新增的记录（后台充值）
 	 */
 	@RequestMapping(value = "/business/record/check")
 	public String check(HttpServletRequest request, ModelMap model) {
@@ -121,5 +124,32 @@ public class RecordAction extends BaseAction{
 		record.setDeal(false);
 		recordService.update(record);
 		return "redirect:undeal";
+	}
+	
+	/*
+	 * 批量审核新增的用户
+	 */
+	@RequestMapping(value = "/business/record/multiCheck")
+	public void multiCheck(HttpServletRequest request, ModelMap model ,HttpServletResponse response) throws IOException {
+		User user = userService.findByUserName(MyRealm.hardName);
+		String ids[] = request.getParameter("ids").split(";");
+		boolean pass = request.getParameter("pass").equals("true");
+		List<Record> records = recordService.findByIds(ids);
+		for(Record record : records){
+			Customer customer = record.getCustomer();
+			record.setDeal(pass);
+			record.setCheckUser(user);
+			record.setDeal(true);
+			if(pass){//通过审核
+				record.setStatu(true);
+				customer.setTotalAddUp(customer.getPoint()+record.getPoints());
+				customer.setPoint(customer.getPoint()+record.getPoints());
+			}
+			recordService.update(record);
+			customerService.update(customer);
+		}
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{\"msg\":\"批量审核用户成功\"}");
 	}
 }

@@ -72,4 +72,15 @@ public class RecordDaoImpl extends BaseDaoImpl<Record, String> implements Record
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
+	@Override
+	public List<Record> findByIds(String[] ids) {
+		StringBuilder id = new StringBuilder();
+		for(String temp : ids){
+			id.append("'"+temp+"',");
+		}
+		id.deleteCharAt(id.length()-1);
+		return (List<Record>) this.queryByHql("from Record where id in ("+id.toString()+")",
+				null);
+	}
+
 }

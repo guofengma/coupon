@@ -1,5 +1,7 @@
 package com.coupon.business.service;
 
+import java.util.List;
+
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.service.BaseService;
@@ -14,5 +16,7 @@ public interface RecordService extends BaseService<Record , String>{
 	IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityId);
 
 	IPageList<Record> findUndealByStaff(int pageNo, int pageSize, String userId);
+
+	List<Record> findByIds(String[] ids);
 
 }

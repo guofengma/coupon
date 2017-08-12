@@ -1,5 +1,7 @@
 package com.coupon.business.dao;
 
+import java.util.List;
+
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.dao.BaseDao;
@@ -14,5 +16,7 @@ public interface RecordDao extends BaseDao<Record , String>{
 	IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityId);
 
 	IPageList<Record> findUndealByStaff(int pageNo, int pageSize, String userId);
+
+	List<Record> findByIds(String[] ids);
 
 }
