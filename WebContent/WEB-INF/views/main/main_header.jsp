@@ -16,6 +16,8 @@
 			<li><a href="<c:url value='/logout'/>"><i class="icon-off"></i> 注销</a></li>
 			<li class="divider"></li>
 			<li><a href="javascript:showUserInfo();"><i class="icon-cog"></i> 修改密码</a></li>
+			<li class="divider"></li>
+			<li><a href="<c:url value='/business/record/undeal'/>"><i class="icon-comment"></i> 待办事项</a></li>
 		</ul>
 	</li>
 </ul>

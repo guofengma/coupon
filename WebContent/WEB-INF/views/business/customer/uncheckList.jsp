@@ -41,8 +41,11 @@
 									<a href="javascript:add()" class="btn-sm btn-app btn-success no-radius">
 										<i class="icon-plus bigger-200">添加客户</i>
 									</a>&nbsp;&nbsp;
-									<a href="javascript:multiCheck()" class="btn-sm btn-app btn-success no-radius">
-										<i class="icon-check bigger-200">批量审核</i>
+									<a href="javascript:multiCheck('true')" class="btn-sm btn-app btn-success no-radius">
+										<i class="icon-thumbs-up bigger-200">批量审核通过</i>
+									</a>&nbsp;&nbsp;
+									<a href="javascript:multiCheck('false')" class="btn-sm btn-app btn-success no-radius">
+										<i class="icon-thumbs-down bigger-200">批量审核不通过</i>
 									</a>
 							</div>
 						</div>
@@ -61,13 +64,18 @@
 											<th>剩余积分数量</th>
 											<th>所属城市</th>
 											<th>兑换服务地址</th>
+											<th>处理状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach items="${customers.items}" var="item">
 											<tr class="odd gradeX">
-												<td><input type="checkbox" value="${item.id}" name="customer"></td>
+												<td>
+													<c:if test="${!item.deal}">
+														<input type="checkbox" value="${item.id}" name="customer">
+													</c:if>
+												</td>
 												<td>${item.name }</td>
 												<td>${item.phone }</td>
 												<td>${item.point }</td>
@@ -79,6 +87,14 @@
 												</td>
 												<td>${item.bank.name }</td>
 												<td>
+													<c:if test ="${item.deal}">
+														已处理，未通过
+													</c:if>
+													<c:if test ="${!item.deal}">
+														未处理
+													</c:if>
+												</td>
+												<td>
 														<p>
 															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
 																<i class="icon-edit bigger-200"></i>
@@ -88,10 +104,22 @@
 																<i class="icon-trash bigger-200"></i>
 																删除
 															</a>&nbsp;&nbsp;
-															<a href="javascript:check('<c:url value='/business/customer/check?id=${item.id}'/>');" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-check bigger-200"></i>
-																审核
-															</a>
+															<c:if test="${!item.deal}">
+																<a href="javascript:check('<c:url value='/business/customer/check?id=${item.id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
+																	<i class="icon-thumbs-up bigger-200"></i>
+																	审核通过
+																</a>&nbsp;&nbsp;
+																<a href="javascript:check('<c:url value='/business/customer/check?id=${item.id}&pass=false'/>');" class="btn-sm btn-app btn-success no-radius" >
+																	<i class="icon-thumbs-down bigger-200"></i>
+																	审核不通过
+																</a>&nbsp;&nbsp;
+															</c:if>
+															<c:if test="${item.deal}">
+																<a href="<c:url value='/business/customer/requestCheck?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+																	<i class="icon-share-alt bigger-200"></i>
+																	重新发送审核请求
+																</a>&nbsp;&nbsp;
+															</c:if>
 														</p>
 												</td>
 											</tr>
@@ -289,7 +317,10 @@ function saveCustomerInfo(){
 		},
 	    type:"POST",   //请求方式
 	    success:function(result){
-			alert("保存客户信息成功");
+			if(isNew)
+				alert("新建客户信息成功，等待审核！");
+			else
+				alert("修改客户信息成功");
 			window.location.href="<%=path%>/business/customer/list?statu=uncheck";
 	    },
 	    error:function(){
@@ -302,14 +333,14 @@ function cancle(){
 	$("#customerInfo").modal("hide");
 }
 
-function multiCheck(){//批量审核
+function multiCheck(pass){//批量审核
 	var ids = [];
 	 $("#customer-table").find("input[type=checkbox][name=customer]").each(function(){
 		if($(this).is(':checked'))
 			ids.push($(this).val());
 	});
 	if(ids.length==0){
-		alert("请选择客户，再通过审核");
+		alert("请选择客户，再进行审核");
 		return false;
 	}
 	var isChecked =  confirm('确定批量审核勾选的用户吗？', '确认对话框');
@@ -318,7 +349,8 @@ function multiCheck(){//批量审核
 			url:"<%=path%>/business/customer/multiCheck",    //请求的url地址
 		    dataType:"json",   
 		    async:false,
-		    data:{"ids":ids.join(";")},
+		    data:{"ids":ids.join(";"),
+				"pass":pass},
 		    type:"GET",   //请求方式
 		    success:function(result){
 				alert("批量审核用户成功");
@@ -332,7 +364,9 @@ function multiCheck(){//批量审核
 }
 
 function check(url){
-	var isChecked =  confirm('确定该用户通过审核吗？', '确认对话框');
+	var pass = url.substring(url.length-4,url.length)=='true';
+	var msg = pass?"你确定通过该用户的审核吗？":"你确定不通过该用户的审核吗？"
+	var isChecked =  confirm(msg, '确认对话框');
 	if(isChecked){
 		window.location.href=url;
 	}

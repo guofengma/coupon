@@ -55,11 +55,22 @@ public abstract class UserEntity extends BaseEntity {
 		this.record = record;
 	}
 
+	public List<Record> getBeCheckedRecord() {
+		return beCheckedRecord;
+	}
+
+	public void setBeCheckedRecord(List<Record> beCheckedRecord) {
+		this.beCheckedRecord = beCheckedRecord;
+	}
+
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
 	protected List<Customer> customer;
 	
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
-	protected List<Record> record;
+	protected List<Record>  record;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "checkUser")
+	protected List<Record> beCheckedRecord;
 	
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "checkUser")
 	protected List<Customer> beCheckedCustomer;

@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.base.dao.impl.BaseDaoImpl;
 import com.coupon.business.dao.RecordDao;
+import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Record;
 
 @Repository
@@ -26,6 +28,45 @@ public class RecordDaoImpl extends BaseDaoImpl<Record, String> implements Record
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
 				"select count(*) from Record r where r.deleted=false and r.customer.id = '"+customerId +"'", null)
+				.toString());
+		System.out.println(count);
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+	}
+
+	@Override
+	public IPageList<Record> findUndealByAdmin(int pageNo, int pageSize) {
+		int first = (pageNo - 1) * pageSize;
+		List<Record> items = this.queryByHql(
+				"from Record r where r.deleted=false and r.statu = false order by createTime desc", null,
+				first, pageSize);
+		int count = Integer.parseInt(this.findUnique(
+				"select count(*) from Record r where r.deleted=false and r.statu = false", null)
+				.toString());
+		System.out.println(count);
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+	}
+
+	@Override
+	public IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityId) {
+		int first = (pageNo - 1) * pageSize;
+		List<Record> items = this.queryByHql(
+				"from Record r where r.deleted=false and r.statu = false and r.customer.city.id ='"+cityId+"' order by createTime desc", null,
+				first, pageSize);
+		int count = Integer.parseInt(this.findUnique(
+				"select count(*) from Record r where r.deleted=false and r.statu = false and r.customer.city.id ='"+cityId+"' ", null)
+				.toString());
+		System.out.println(count);
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+	}
+
+	@Override
+	public IPageList<Record> findUndealByStaff(int pageNo, int pageSize, String userId) {
+		int first = (pageNo - 1) * pageSize;
+		List<Record> items = this.queryByHql(
+				"from Record r where r.deleted=false and r.statu = false and r.user.id ='"+userId+"' order by createTime desc", null,
+				first, pageSize);
+		int count = Integer.parseInt(this.findUnique(
+				"select count(*) from Record r where r.deleted=false and r.statu = false and r.user.id ='"+userId+"' ", null)
 				.toString());
 		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);

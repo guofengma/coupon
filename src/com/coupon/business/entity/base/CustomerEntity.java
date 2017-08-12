@@ -27,7 +27,9 @@ public abstract class CustomerEntity extends BaseEntity{
 	
 	protected String password ; //登录密码
 	
-	protected boolean statu;
+	protected boolean statu;//是否通过审核
+	
+	protected boolean deal;//是否被管理员处理（点击通过审核或不通过审核时置为true）
 	
 	@ManyToOne
 	@JoinColumn(name = "bankId")
@@ -94,6 +96,14 @@ public abstract class CustomerEntity extends BaseEntity{
 
 	public void setStatu(boolean statu) {
 		this.statu = statu;
+	}
+
+	public boolean isDeal() {
+		return deal;
+	}
+
+	public void setDeal(boolean deal) {
+		this.deal = deal;
 	}
 
 	public Bank getBank() {

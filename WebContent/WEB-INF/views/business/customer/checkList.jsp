@@ -34,11 +34,11 @@
 					<div class="portlet-body">
 						
 						<div class="table-toolbar" style="text-align: right;">
-							<div class="btn-group">
+							<%-- <div class="btn-group">
 									<a href="<c:url value=''/>" class="btn-sm btn-app btn-success no-radius">
 										<i class="icon-plus bigger-200">测试按钮</i>
 									</a>
-							</div>
+							</div> --%>
 						</div>
 						
 						<div class="dataTables_wrapper form-inline" role="grid">
@@ -59,16 +59,12 @@
 													<td>${item.phone }</td>
 													<td>${item.point }</td>
 													<td>
-															<p>
-																<a href="<c:url value='/business/product/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
-																	<i class="icon-edit bigger-200"></i>
-																	编辑
-																</a>&nbsp;&nbsp;
-																<a href="javascript:del('<c:url value='/business/product/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
-																	<i class="icon-trash bigger-200"></i>
-																	删除
-																</a>
-															</p>
+														<p>
+															<a href="javascript:showModal('${item.name}','${item.id}');" class="btn-sm btn-app btn-primary no-radius" >
+																<i class="icon-plus bigger-200"></i>
+																充值
+															</a>
+														</p>
 													</td>
 											</tr>
 										</c:forEach>
@@ -95,15 +91,77 @@
 		</div>
 	</div>	
 </div>
+
+<div class="modal fade" id="rechargeInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 class="modal-title">后台充值</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<form class="form-horizontal" role="form" id="rechargeForm"> 
+							<input type="hidden" value="" name="id" id="id"/>
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="phone">客户姓名：</label>
+								<div class="col-sm-9">
+									<input type="text" id="name" class="col-xs-10 col-sm-10" name="name" readonly>
+								</div>
+							 </div> 
+							 <div class="space-4"></div> 
+							 <div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="point">充值分数：</label>
+									<div class="col-sm-9">
+										<input type="text" id="point" class="col-xs-10 col-sm-10" name="point">
+									</div>
+							 </div> 
+							 <div class="col-md-12">
+								<button class="btn-sm btn-success no-radius" type="button" onclick="recharge()">
+									<i class="icon-ok bigger-200"></i>
+									充值
+								</button>
+								<button class="btn-sm btn-success no-radius" type="button" onclick="cancle()">
+									<i class="icon-remove bigger-200"></i>
+									取消
+								</button>
+							</div>
+						</form> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>			
+</div>
 </body>
 <script type="text/javascript">
+function showModal(name,id){
+	$("#id").val(id);
+	$("#name").val(name);
+	$("#point").val('');
+	openModal("#rechargeInfo");
+}
 
-
-function del(url){
-	var isDel =  confirm('确定删除该用户吗？', '确认对话框');
-	if(isDel){
-		window.location.href=url;
-	}
+function recharge(){
+	var point = $("#point").val();
+	var id = $("#id").val();
+	$.ajax({
+		url:"<%=path%>/business/customer/recharge",    //请求的url地址
+	    dataType:"json",   
+	    async:false,
+		    data:{"id":id,
+			"point":point
+		},
+	    type:"GET",   //请求方式
+	    success:function(result){
+			$("#rechargeInfo").modal("hide");
+			alert("充值成功，等待审核！")
+	    },
+	    error:function(){
+			alert("请求下级城市失败！")
+	    }
+	});
 }
 </script>
 </html>

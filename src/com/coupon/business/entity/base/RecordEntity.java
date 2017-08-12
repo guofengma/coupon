@@ -29,7 +29,11 @@ public abstract class RecordEntity extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "userId")
-	protected User user;  //员工操作记录
+	protected User user;  //新增记录的员工
+	
+	@ManyToOne
+	@JoinColumn(name = "checkUserId")
+	protected User checkUser;  //审核记录的员工
 	
 	@ManyToOne
 	@JoinColumn(name = "productId")
@@ -38,6 +42,10 @@ public abstract class RecordEntity extends BaseEntity{
 	protected int points ;//发生交易的时候所需要的积分（充值或消费）
 	
 	protected boolean  raise;//标记是充值还是消费，true为充值，false为消费
+	
+	protected boolean statu ;//是否已经通过审核
+	
+	protected boolean deal;//是否被管理员处理（点击通过审核或不通过审核时置为true）
 	
 	protected String description ;//发生交易时的备注
 
@@ -73,6 +81,14 @@ public abstract class RecordEntity extends BaseEntity{
 		this.user = user;
 	}
 
+	public User getCheckUser() {
+		return checkUser;
+	}
+
+	public void setCheckUser(User checkUser) {
+		this.checkUser = checkUser;
+	}
+
 	public Product getProduct() {
 		return product;
 	}
@@ -99,6 +115,22 @@ public abstract class RecordEntity extends BaseEntity{
 
 	public void setRaise(boolean raise) {
 		this.raise = raise;
+	}
+
+	public boolean isStatu() {
+		return statu;
+	}
+
+	public void setStatu(boolean statu) {
+		this.statu = statu;
+	}
+
+	public boolean isDeal() {
+		return deal;
+	}
+
+	public void setDeal(boolean deal) {
+		this.deal = deal;
 	}
 
 	public void setDescription(String description) {

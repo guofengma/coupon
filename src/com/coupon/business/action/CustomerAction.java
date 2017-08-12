@@ -1,6 +1,7 @@
 package com.coupon.business.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,8 +21,10 @@ import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.business.entity.Bank;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.RechargeCode;
+import com.coupon.business.entity.Record;
 import com.coupon.business.service.BankService;
 import com.coupon.business.service.CustomerService;
+import com.coupon.business.service.RecordService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
 import com.coupon.system.entity.Role;
@@ -40,6 +43,8 @@ public class CustomerAction extends BaseAction{
 	@Autowired CityService cityService;
 	
 	@Autowired BankService bankService;
+	
+	@Autowired RecordService recordService;
 	
 	@RequestMapping(value = "/business/customer/list")
 	public String list(HttpServletRequest request, ModelMap model) {
@@ -117,9 +122,35 @@ public class CustomerAction extends BaseAction{
 	public String check(HttpServletRequest request, ModelMap model) {
 		User user = userService.findByUserName(MyRealm.hardName);
 		String id = request.getParameter("id");
+		boolean pass = request.getParameter("pass").equals("true");
 		Customer customer = customerService.findById(id);
-		customer.setStatu(true);
+		if(pass){
+			Record record = new Record();
+			record.setCustomer(customer);
+			record.setPoints(customer.getPoint());
+			record.setRaise(true);
+			record.setDeal(true);
+			record.setStatu(true);
+			record.setUser(customer.getUser());
+			record.setCheckUser(user);
+			recordService.save(record);
+		}
+		customer.setDeal(true);
+		customer.setStatu(pass);
 		customer.setCheckUser(user);
+		customerService.update(customer);
+		model.addAttribute("statu",false);
+		return "redirect:list";
+	}
+	
+	/*
+	 * 单个用户重新请求审核
+	 */
+	@RequestMapping(value = "/business/customer/requestCheck")
+	public String requestCheck(HttpServletRequest request, ModelMap model) {
+		String id = request.getParameter("id");
+		Customer customer = customerService.findById(id);
+		customer.setDeal(false);
 		customerService.update(customer);
 		model.addAttribute("statu",false);
 		return "redirect:list";
@@ -132,11 +163,26 @@ public class CustomerAction extends BaseAction{
 	public void multiCheck(HttpServletRequest request, ModelMap model ,HttpServletResponse response) throws IOException {
 		User user = userService.findByUserName(MyRealm.hardName);
 		String ids[] = request.getParameter("ids").split(";");
+		boolean pass = request.getParameter("pass").equals("true");
 		List<Customer> customers = customerService.findByIds(ids);
+		List<Record> records = new ArrayList<Record>();
 		for(Customer temp:customers){
-			temp.setStatu(true);
+			if(pass){
+				Record record = new Record();
+				record.setCustomer(temp);
+				record.setPoints(temp.getPoint());
+				record.setRaise(true);
+				record.setDeal(true);
+				record.setStatu(true);
+				record.setUser(temp.getUser());
+				record.setCheckUser(user);
+				records.add(record);
+			}
+			temp.setDeal(true);
+			temp.setStatu(pass);
 			temp.setCheckUser(user);
 		}
+		recordService.batchSave(records);
 		customerService.batchUpdate(customers);
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
@@ -159,6 +205,7 @@ public class CustomerAction extends BaseAction{
 		customer.setName(request.getParameter("name"));
 		customer.setPhone(request.getParameter("phone"));
 		customer.setPoint(Integer.parseInt(request.getParameter("points")));
+		customer.setTotalAddUp(Integer.parseInt(request.getParameter("points")));
 		customer.setRemark(request.getParameter("remark"));
 		customer.setDeleted(false);
 		String fCityId = request.getParameter("fCityId");
@@ -214,11 +261,13 @@ public class CustomerAction extends BaseAction{
 		if(city==null){//录入信息时没有录入所属城市的信息
 			result.append("\"fCityId\":\"null\",\"sCityId\":\"null\"}");
 		}
-		if(city.getParent()==null){//说明属于一级行政单位
-			result.append("\"fCityId\":\""+city.getId()+"\",\"sCityId\":\"null\"}");
-		}else{
-			City fCity = city.getParent();
-			result.append("\"fCityId\":\""+fCity.getId()+"\",\"sCityId\":\""+city.getId()+"\"}");
+		else{
+			if(city.getParent()==null){//说明属于一级行政单位
+				result.append("\"fCityId\":\""+city.getId()+"\",\"sCityId\":\"null\"}");
+			}else{
+				City fCity = city.getParent();
+				result.append("\"fCityId\":\""+fCity.getId()+"\",\"sCityId\":\""+city.getId()+"\"}");
+			}
 		}
 		System.out.println(result.toString());
 		response.setContentType("application/json");
@@ -226,5 +275,24 @@ public class CustomerAction extends BaseAction{
 		response.getWriter().write(result.toString());
 	}
 
-	
+	/*
+	 * 为客户充值积分，增加一条记录，并设置成为未审核状态
+	 */
+	@RequestMapping(value = "/business/customer/recharge")
+	public void recharge(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		int point = Integer.parseInt(request.getParameter("point"));
+		Customer customer = customerService.findById(id);
+		User user = userService.findByUserName(MyRealm.hardName);
+		Record record = new Record();
+		record.setCustomer(customer);
+		record.setPoints(point);
+		record.setRaise(true);
+		record.setStatu(false);
+		record.setUser(user);
+		recordService.save(record);
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{}");
+	}
 }
