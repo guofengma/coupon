@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 
 import com.coupon.base.entity.BaseEntity;
 import com.coupon.business.entity.Customer;
+import com.coupon.business.entity.Record;
 import com.coupon.business.entity.RedeemCode;
 import com.coupon.system.entity.City;
 import com.coupon.system.entity.Role;
@@ -46,8 +47,19 @@ public abstract class UserEntity extends BaseEntity {
 		this.customer = customer;
 	}
 
+	public List<Record> getRecord() {
+		return record;
+	}
+
+	public void setRecord(List<Record> record) {
+		this.record = record;
+	}
+
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
 	protected List<Customer> customer;
+	
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
+	protected List<Record> record;
 	
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "checkUser")
 	protected List<Customer> beCheckedCustomer;

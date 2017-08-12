@@ -85,7 +85,7 @@
 												<td>${item.bank.name}</td>
 												<td>
 													<p>
-														<a href="javascript:showDetail('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
+														<a href="<c:url value="/search/record/findByCustomerId?id=${item.id}"/>" class="btn-sm btn-app btn-primary no-radius">
 															<i class="icon-eye-open bigger-200"></i>
 															点击查看
 														</a>&nbsp;&nbsp;
