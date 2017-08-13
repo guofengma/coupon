@@ -33,9 +33,19 @@
             <div class="col-md-12">
             	<div class="portlet box light-grey">
 					<div class="portlet-title">
+						<div class="form-group">
+							<div class="col-sm-5" style="padding-bottom:5px">
+								<label class="col-sm-3 control-label no-padding-left" for="condition" style="padding-left:0px;text-align:left;">查询条件：</label>
+								<input style="height:35px" type="text" id="condition" class="col-xs-6 col-sm-6" name="condition" value="${condition}" placeholder="姓名、电话号码模糊查询">
+								<button class="btn-sm btn-success no-radius" type="button" onclick="search()">
+									<i class="icon-search bigger-200"></i>
+									查询
+								</button>
+							</div>
+							<div class="col-sm-7"></div>
+						 </div> 
 					</div>
 					<div class="portlet-body">
-						
 						<div class="table-toolbar" style="text-align: right;">
 							<div class="btn-group">
 									<a href="javascript:add()" class="btn-sm btn-app btn-success no-radius">
@@ -100,22 +110,22 @@
 																<i class="icon-edit bigger-200"></i>
 																编辑
 															</a>&nbsp;&nbsp;
-															<a href="javascript:del('<c:url value='/business/customer/delete?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+															<a href="javascript:del('<c:url value='/business/customer/delete?condition=${condition}&id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																<i class="icon-trash bigger-200"></i>
 																删除
 															</a>&nbsp;&nbsp;
 															<c:if test="${!item.deal}">
-																<a href="javascript:check('<c:url value='/business/customer/check?id=${item.id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
+																<a href="javascript:check('<c:url value='/business/customer/check?condition=${condition}&id=${item.id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-thumbs-up bigger-200"></i>
 																	审核通过
 																</a>&nbsp;&nbsp;
-																<a href="javascript:check('<c:url value='/business/customer/check?id=${item.id}&pass=false'/>');" class="btn-sm btn-app btn-success no-radius" >
+																<a href="javascript:check('<c:url value='/business/customer/check?condition=${condition}&id=${item.id}&pass=false'/>');" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-thumbs-down bigger-200"></i>
 																	审核不通过
 																</a>&nbsp;&nbsp;
 															</c:if>
 															<c:if test="${item.deal}">
-																<a href="<c:url value='/business/customer/requestCheck?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+																<a href="<c:url value='/business/customer/requestCheck?condition=${condition}&id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-share-alt bigger-200"></i>
 																	重新发送审核请求
 																</a>&nbsp;&nbsp;
@@ -321,7 +331,7 @@ function saveCustomerInfo(){
 				alert("新建客户信息成功，等待审核！");
 			else
 				alert("修改客户信息成功");
-			window.location.href="<%=path%>/business/customer/list?statu=uncheck";
+			window.location.href="<%=path%>/business/customer/list?statu=uncheck&condition="+$("#condition").val();
 	    },
 	    error:function(){
 			alert("保存客户信息失败！")
@@ -334,6 +344,7 @@ function cancle(){
 }
 
 function multiCheck(pass){//批量审核
+	var condition = $("#condition").val();
 	var ids = [];
 	 $("#customer-table").find("input[type=checkbox][name=customer]").each(function(){
 		if($(this).is(':checked'))
@@ -354,7 +365,7 @@ function multiCheck(pass){//批量审核
 		    type:"GET",   //请求方式
 		    success:function(result){
 				alert("批量审核用户成功");
-				window.location.href="<%=path%>/business/customer/list?statu=uncheck";
+				window.location.href="<%=path%>/business/customer/list?statu=uncheck&condition="+$("#condition").val();
 		    },
 		    error:function(){
 				alert("批量审核用户失败！")
@@ -439,6 +450,12 @@ function clearSCity(){//清空二级城市下拉框所有内容（第一个默�
 function clearBank(){
 	$("#bank").empty();
 	$("#bank").append("<option value='null'>选择服务兑换地址</option>"); 
+}
+
+function search(){
+	var condition = $("#condition").val();
+	var url ="<%=path%>/business/customer/list?statu=uncheck&condition="+condition;
+	window.location.href = url ;
 }
 </script>
 </html>

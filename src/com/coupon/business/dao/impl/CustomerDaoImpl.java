@@ -23,38 +23,47 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 	}
 
 	@Override
-	public IPageList<Customer> findByAdmin(int pageNo, int pageSize, boolean check) {
+	public IPageList<Customer> findByAdmin(int pageNo, int pageSize, boolean check,String condition) {
+		String addSql = "";
+		if(!condition.equals(""))
+			addSql = " and (name like '%"+condition+"%' or phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
 		List<Customer> items = this.queryByHql(
-				"from Customer where deleted=false and statu="+check+" order by createTime desc", null,
+				"from Customer where deleted=false and statu="+check+addSql+ " order by createTime desc", null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Customer where deleted=false and statu="+check, null)
+				"select count(*) from Customer where deleted=false and statu="+check+ addSql, null)
 				.toString());
 		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
 	@Override
-	public IPageList<Customer> findByManager(int pageNo, int pageSize, boolean check, String cityId) {
+	public IPageList<Customer> findByManager(int pageNo, int pageSize, boolean check, String cityId,String condition) {
+		String addSql = "";
+		if(!condition.equals(""))
+			addSql = " and (name like '%"+condition+"%' or phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
 		List<Customer> items = this.queryByHql(
-				"from Customer where deleted=false and statu="+check+" and city.id="+cityId+" order by createTime desc", null,
+				"from Customer where deleted=false and statu="+check+" and city.id="+cityId+addSql+" order by createTime desc", null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Customer where deleted=false and city.id="+cityId+" and statu="+check, null)
+				"select count(*) from Customer where deleted=false and city.id="+cityId+" and statu="+check+addSql, null)
 				.toString());
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
 	@Override
-	public IPageList<Customer> findByStaff(int pageNo, int pageSize, boolean check, String userId) {
+	public IPageList<Customer> findByStaff(int pageNo, int pageSize, boolean check, String userId,String condition) {
+		String addSql = "";
+		if(!condition.equals(""))
+			addSql = " and (name like '%"+condition+"%' or phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
 		List<Customer> items = this.queryByHql(
-				"from Customer where deleted=false and statu="+check+" and user.id="+userId+" order by createTime desc", null,
+				"from Customer where deleted=false and statu="+check+" and user.id="+userId+addSql+" order by createTime desc", null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Customer where deleted=false and user.id="+userId+" and statu="+check, null)
+				"select count(*) from Customer where deleted=false and user.id="+userId+" and statu="+check+addSql, null)
 				.toString());
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}

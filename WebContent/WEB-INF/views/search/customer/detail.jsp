@@ -63,6 +63,7 @@
 											<th>兑换商品</th>
 											<th>商品兑换码</th>
 											<th>发生时间</th>
+											<th>状态</th>
 											<th>积分数量</th>
 											<th>备注</th>
 										</tr>
@@ -94,6 +95,19 @@
 													</c:if>
 												</td>
 												<td>${fn:substringBefore(item.createTime,".")}</td>
+												<th>
+													<c:if test="${!item.deal}">
+														<font color="#0000FF">待审核</font>
+													</c:if>
+													<c:if test="${item.deal}">
+														<c:if test="${!item.statu}">
+															<font color="#FF0000">已审核，未通过</font>
+														</c:if>
+														<c:if test="${item.statu}">
+															<font color="#00FF00">成功</font>
+														</c:if>
+													</c:if>
+												</th>
 												<td>
 													<c:if test="${!item.raise}">
 													-

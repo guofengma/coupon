@@ -9,11 +9,11 @@ import com.coupon.business.entity.Customer;
 
 public interface CustomerDao extends BaseDao<Customer , String>{
 
-	IPageList<Customer> findByAdmin(int pageNo, int pageSize, boolean check);
+	IPageList<Customer> findByAdmin(int pageNo, int pageSize, boolean check,String condition);
 
-	IPageList<Customer> findByManager(int pageNo, int pageSize, boolean check, String cityId);
+	IPageList<Customer> findByManager(int pageNo, int pageSize, boolean check, String cityId,String condition);
 
-	IPageList<Customer> findByStaff(int pageNo, int pageSize, boolean check, String userId);
+	IPageList<Customer> findByStaff(int pageNo, int pageSize, boolean check, String userId,String condition);
 
 	List<Customer> findByIds(String[] ids);
 

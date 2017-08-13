@@ -2,6 +2,7 @@ package com.coupon.business.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -145,6 +146,8 @@ public class RecordAction extends BaseAction{
 				record.setStatu(true);
 				customer.setTotalAddUp(customer.getPoint()+record.getPoints());
 				customer.setPoint(customer.getPoint()+record.getPoints());
+				customer.setLatestChargeTime(new Date());
+				customer.setLatestChargeUser(record.getUser());
 			}
 			customers.add(customer);
 		}

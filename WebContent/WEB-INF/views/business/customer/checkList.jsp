@@ -30,9 +30,19 @@
             <div class="col-md-12">
             	<div class="portlet box light-grey">
 					<div class="portlet-title">
+							<div class="form-group">
+								<div class="col-sm-5" style="padding-bottom:5px">
+									<label class="col-sm-3 control-label no-padding-left" for="condition" style="padding-left:0px;text-align:left;">查询条件：</label>
+									<input style="height:35px;" type="text" id="condition" class="col-xs-6 col-sm-6" name="condition" value="${condition}"  placeholder="姓名、电话号码模糊查询">
+									<button class="btn-sm btn-success no-radius" type="button" onclick="search()">
+										<i class="icon-search bigger-200"></i>
+										查询
+									</button>
+								</div>
+								<div class="col-sm-7"></div>
+							 </div> 
 					</div>
 					<div class="portlet-body">
-						
 						<div class="table-toolbar" style="text-align: right;">
 							<%-- <div class="btn-group">
 									<a href="<c:url value=''/>" class="btn-sm btn-app btn-success no-radius">
@@ -159,9 +169,15 @@ function recharge(){
 			alert("充值成功，等待审核！")
 	    },
 	    error:function(){
-			alert("请求下级城市失败！")
+			alert("充值失败！")
 	    }
 	});
+}
+
+function search(){
+		var condition = $("#condition").val();
+		var url ="<%=path%>/business/customer/list?statu=check&condition="+condition;
+		window.location.href = url ;
 }
 </script>
 </html>

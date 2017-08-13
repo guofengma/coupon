@@ -56,6 +56,8 @@ public class CustomerAction extends BaseAction{
 		int pageSize = ServletRequestUtils.getIntParameter(request,
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		boolean check = request.getParameter("statu").equals("check")? true : false ;
+		String condition = request.getParameter("condition")==null?"":request.getParameter("condition");
+		model.addAttribute("condition",condition);
 		System.out.println(request.getParameter("statu")+check);
 		User user = userService.findByUserName(MyRealm.hardName);
 		StringBuilder roleString = new StringBuilder() ;
@@ -64,17 +66,17 @@ public class CustomerAction extends BaseAction{
 			roleString.append(temp.getName()+";");
 		}
 		if(roleString.toString().contains("管理员")){
-			IPageList<Customer> customers = customerService.findByAdmin(pageNo, pageSize,check);
+			IPageList<Customer> customers = customerService.findByAdmin(pageNo, pageSize,check,condition);
 			model.addAttribute("customers",customers);
 			return "business/customer/"+(check?"checkList":"uncheckList");	
 		}
 		if(roleString.toString().contains("大区经理")){
-			IPageList<Customer> customers = customerService.findByManager(pageNo, pageSize,check,user.getCity().getId());
+			IPageList<Customer> customers = customerService.findByManager(pageNo, pageSize,check,user.getCity().getId(),condition);
 			model.addAttribute("customers",customers);
 			return "business/customer/"+(check?"checkLsit":"uncheckList");	
 		}
 		if(roleString.toString().contains("员工")){
-			IPageList<Customer> customers = customerService.findByStaff(pageNo, pageSize,check,user.getId());
+			IPageList<Customer> customers = customerService.findByStaff(pageNo, pageSize,check,user.getId(),condition);
 			model.addAttribute("customers",customers);
 			return "business/customer/"+(check?"checkLsit":"uncheckList");	
 		}
@@ -140,6 +142,7 @@ public class CustomerAction extends BaseAction{
 		customer.setCheckUser(user);
 		customerService.update(customer);
 		model.addAttribute("statu",false);
+		model.addAttribute("condition",request.getParameter("condition"));
 		return "redirect:list";
 	}
 	
@@ -153,6 +156,7 @@ public class CustomerAction extends BaseAction{
 		customer.setDeal(false);
 		customerService.update(customer);
 		model.addAttribute("statu",false);
+		model.addAttribute("condition",request.getParameter("condition"));
 		return "redirect:list";
 	}
 	
@@ -240,6 +244,7 @@ public class CustomerAction extends BaseAction{
 		customer.setDeleted(true);
 		customerService.update(customer);
 		model.addAttribute("statu",false);
+		model.addAttribute("condition",request.getParameter("condition"));
 		return "redirect:list";
 	}
 	
