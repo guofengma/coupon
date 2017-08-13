@@ -178,11 +178,11 @@ function multiCheck(pass){//批量审核
 				"pass":pass},
 		    type:"GET",   //请求方式
 		    success:function(result){
-				alert("批量审核记录成功");
+				alert("批量审核充值记录成功");
 				window.location.href="<%=path%>/business/record/undeal";
 		    },
 		    error:function(){
-				alert("批量审核用户失败！")
+				alert("批量审核充值记录失败！")
 		    }
 		});
 	}

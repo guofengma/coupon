@@ -135,6 +135,7 @@ public class RecordAction extends BaseAction{
 		String ids[] = request.getParameter("ids").split(";");
 		boolean pass = request.getParameter("pass").equals("true");
 		List<Record> records = recordService.findByIds(ids);
+		List<Customer> customers = new ArrayList<Customer>();
 		for(Record record : records){
 			Customer customer = record.getCustomer();
 			record.setDeal(pass);
@@ -145,11 +146,12 @@ public class RecordAction extends BaseAction{
 				customer.setTotalAddUp(customer.getPoint()+record.getPoints());
 				customer.setPoint(customer.getPoint()+record.getPoints());
 			}
-			recordService.update(record);
-			customerService.update(customer);
+			customers.add(customer);
 		}
+		customerService.batchUpdate(customers);
+		recordService.batchUpdate(records);
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
-		response.getWriter().write("{\"msg\":\"批量审核用户成功\"}");
+		response.getWriter().write("{\"msg\":\"批量审核充值记录成功\"}");
 	}
 }
