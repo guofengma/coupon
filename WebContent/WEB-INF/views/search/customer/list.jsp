@@ -125,7 +125,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 class="modal-title">e兑卡兑换码-查询条件</h3>
+				<h3 class="modal-title">客户信息-查询条件</h3>
 			</div>
 			<div class="modal-body">
 				<div class="row">
