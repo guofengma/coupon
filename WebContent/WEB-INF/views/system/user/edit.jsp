@@ -171,8 +171,8 @@ function fCityChange(){
 		    type:"GET",   //请求方式
 		    success:function(result){
 			console.log(result)
-		        for(var i=0;i<result.length;i++){
-					$("#sCity").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+		        for(var i=0;i<result.sCity.length;i++){
+					$("#sCity").append("<option value='"+result.sCity[i].id+"'>"+result.sCity[i].name+"</option>");
 				}
 		    },
 		    error:function(){

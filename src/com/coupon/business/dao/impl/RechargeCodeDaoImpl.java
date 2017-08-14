@@ -33,13 +33,13 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 	}
 
 	/*
-	 * {madeStartTime,madeEndTime,startTime,endTime,batch,points,code,statu,city,phone}
-	 *      0              1         2          3      4     5    6      7    8    9
+	 * {madeStartTime,madeEndTime,startTime,endTime,batch,points,code,keyt,statu,city,phone}
+	 *      0              1         2          3      4     5    6     7     8   9     10
 	 */
 	@Override
 	public PageList<RechargeCode> findByCondition(int pageNo, int pageSize, String[] condition) {
 		StringBuilder sql = new StringBuilder("from RechargeCode r where r.deleted = false and r.parent is not null");
-		if(condition[7].equals("2")||!condition[8].equals("null")||!condition[9].equals(""))
+		if(condition[8].equals("2")||!condition[8].equals("null")||!condition[10].equals(""))
 			sql.append(" and r.record is not null");
 		if(!condition[0].equals(""))
 			sql.append(" and r.createTime >= '"+condition[0]+"'");
@@ -54,16 +54,18 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 		if(!condition[5].equals(""))
 			sql.append(" and r.points = "+condition[5]);
 		if(!condition[6].equals(""))
-			sql.append(" and r.code = "+condition[6]);
-		if(condition[7].equals("1")) //未过期中未兑换的  
+			sql.append(" and r.code = '"+condition[6]+"'");
+		if(!condition[7].equals(""))
+			sql.append(" and r.keyt = '"+condition[7]+"'");
+		if(condition[8].equals("1")) //未过期中未兑换的  
 			sql.append(" and r.used = false and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
-		if(condition[7].equals("2")) //未过期中已经兑换的 
+		if(condition[8].equals("2")) //未过期中已经兑换的 
 			sql.append(" and r.used = true and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
-		if(condition[7].equals("3")) //已经过期的 
+		if(condition[8].equals("3")) //已经过期的 
 			sql.append(" and r.parent.endTime < '" + FolderUtil.getFolder() + "'");
-		if(!condition[8].equals("null"))
+		if(!condition[9].equals("null"))
 			sql.append(" and r.record.customer.city.id = '"+condition[8]+"'");
-		if(!condition[9].equals(""))
+		if(!condition[10].equals(""))
 			sql.append(" and r.record.customer.phone = '"+condition[9]+"'");
 		String sql1 = sql + " order by r.parent.batch desc , r.points desc , r.parent.endTime desc , used asc";
 		System.out.println(sql1);

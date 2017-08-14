@@ -20,7 +20,9 @@ import com.coupon.system.entity.User;
 @MappedSuperclass
 public class RechargeCodeEntity extends BaseEntity{
 	
-	protected String code ;//兑换码
+	protected String code ;//兑换码卡号
+	
+	protected String keyt ;//兑换码密钥
 	
 	protected boolean used ;//用户是否已经使用它去充值了
 	
@@ -56,6 +58,14 @@ public class RechargeCodeEntity extends BaseEntity{
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getKeyt() {
+		return keyt;
+	}
+
+	public void setKeyt(String keyt) {
+		this.keyt = keyt;
 	}
 
 	public boolean isUsed() {

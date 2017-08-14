@@ -57,7 +57,7 @@
 											<th>序号</th>
 											<th>e兑卡批次</th>
 											<th>e兑卡卡号</th>
-											<!-- <th>e兑卡密钥</th> -->
+											<th>e兑卡密钥</th>
 											<th>面额</th>
 											<th>生成时间</th>
 											<th>到期时间</th>
@@ -73,7 +73,7 @@
 												<td>${status.count}</td>
 												<td>${item.parent.batch}</td>
 												<td>${item.code}</td>
-												<%-- <td>${item.code}</td> --%>
+												<td>${item.keyt}</td>
 												<td>${item.points}</td>
 												<td>${fn:substring(item.createTime,0,10)}</td>
 												<td>${fn:substring(item.parent.endTime,0,10)}</td>
@@ -159,6 +159,14 @@
 								<label class="col-sm-3 control-label no-padding-right" for="code">e兑卡卡号：</label>
 								<div class="col-sm-9">
 									<input type="text" value="${code}" id="code" class="col-xs-10 col-sm-11" name="code">
+								</div>
+							 </div>
+							 
+							  <div class="space-4"></div>
+							 <div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="code">e兑卡密钥：</label>
+								<div class="col-sm-9">
+									<input type="text" value="${keyt}" id="keyt" class="col-xs-10 col-sm-11" name="keyt">
 								</div>
 							 </div> 
 							 
@@ -288,6 +296,7 @@ function search(){
 	var batch = $("#batch").val();
 	var points = $("#points").val();
 	var code = $("#code").val();
+	var keyt = $("#keyt").val();
 	var statu = $("#statu").val();
 	var madeStartTime = $("#madeStartTime").val();
 	var madeEndTime = $("#madeEndTime").val();
@@ -296,7 +305,7 @@ function search(){
 	var fCity = $("#fCity").val();
 	var sCity = $("#sCity").val();
 	var phone = $("#phone").val();
-	var url ="<%=path%>/search/rechargeCode/findByCondition?batch="+batch+"&points="+points+"&code="+code+"&statu="+statu+"&madeStartTime="+madeStartTime+"&madeEndTime="+madeEndTime+"&startTime="+startTime+"&endTime="+endTime+"&fCity="+fCity+"&sCity="+sCity+"&phone="+phone;
+	var url ="<%=path%>/search/rechargeCode/findByCondition?batch="+batch+"&points="+points+"&code="+code+"&keyt="+keyt+"&statu="+statu+"&madeStartTime="+madeStartTime+"&madeEndTime="+madeEndTime+"&startTime="+startTime+"&endTime="+endTime+"&fCity="+fCity+"&sCity="+sCity+"&phone="+phone;
 	$("#searchFrom").attr("action",url)
 	$("#searchFrom").submit();
 }

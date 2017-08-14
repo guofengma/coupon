@@ -84,12 +84,13 @@ public class RechargeCodeAction extends BaseAction{
 		String batch = request.getParameter("batch")==null?"": request.getParameter("batch");
 		String points = request.getParameter("points")==null?"":request.getParameter("points");
 		String code = request.getParameter("code")==null?"":request.getParameter("code");
+		String keyt = request.getParameter("keyt")==null?"":request.getParameter("keyt");
 		String statu = request.getParameter("statu")==null?"null":request.getParameter("statu");
 		String fCity = request.getParameter("fCity")==null?"null":request.getParameter("fCity");
 		String sCity = request.getParameter("sCity")==null?"null":request.getParameter("sCity");
 		String city = sCity.equals("null")?fCity:sCity;
 		String phone = request.getParameter("phone")==null?"":request.getParameter("phone");
-		String condition[] = new String[]{madeStartTime,madeEndTime,startTime,endTime,batch,points,code,statu,city,phone};
+		String condition[] = new String[]{madeStartTime,madeEndTime,startTime,endTime,batch,points,code,keyt,statu,city,phone};
 		PageList<RechargeCode> rechargeCodes = rechargeCodeService.findByCondition(pageNo,pageSize,condition);
 		model.addAttribute("rechargeCodes",rechargeCodes);
 		model.addAttribute("madeStartTime",madeStartTime);
@@ -99,6 +100,7 @@ public class RechargeCodeAction extends BaseAction{
 		model.addAttribute("batch",batch);
 		model.addAttribute("points",points);
 		model.addAttribute("code",code);
+		model.addAttribute("keyt",keyt);
 		model.addAttribute("statu",statu);
 		model.addAttribute("fCity",fCity);
 		model.addAttribute("sCity",sCity);
@@ -187,7 +189,8 @@ public class RechargeCodeAction extends BaseAction{
 		List<RechargeCode> addList = new ArrayList<RechargeCode>();
 		for(int i=0;i<Integer.parseInt(count);i++){
 			RechargeCode temp = new RechargeCode();
-			temp.setCode(RandomCode.generate_16());
+			temp.setCode(RandomCode.generate_18("ka"));
+			temp.setKeyt(RandomCode.generate_18("mi"));
 			temp.setPoints(Integer.parseInt(points));
 	        temp.setParent(batch);
 	        temp.setUsed(false);
@@ -218,7 +221,7 @@ public class RechargeCodeAction extends BaseAction{
 		RechargeCode batch = rechargeCodeService.findById(id);
 		StringBuilder result = new StringBuilder("[");
 		for(RechargeCode temp : batch.getChildrenOrderByUsed()){
-			result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"used\":"+temp.isUsed()+",\"given\":"+temp.isGiven()+",\"id\":\""+temp.getId()+"\"},");
+			result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"keyt\":\""+temp.getKeyt()+"\",\"used\":"+temp.isUsed()+",\"given\":"+temp.isGiven()+",\"id\":\""+temp.getId()+"\"},");
 		}
 		if(batch.getChildren().size()!=0)
 			result.deleteCharAt(result.length()-1);
@@ -244,7 +247,7 @@ public class RechargeCodeAction extends BaseAction{
 			 }
 			 File excelFile = new File(fileDir);
 			     excelFile.createNewFile();
-			 createExcel(fileDir,"sheet1",new String[]{"分值","积分码","领取状态","使用状态"});
+			 createExcel(fileDir,"sheet1",new String[]{"分值","积分码","密钥","领取状态","使用状态"});
 			 if(sheetExist(fileDir,"sheet1"))
 				 writeToExcel(fileDir,"sheet1",batch.getChildrenOrderByUsed());
 			 //设置文件MIME类型  
@@ -385,13 +388,15 @@ public class RechargeCodeAction extends BaseAction{
             if(titleRow!=null){ 
                 for(int rowId=0;rowId<list.size();rowId++){
                     HSSFRow newRow=sheet.createRow(rowId+1);
-                    HSSFCell cell1 = newRow.createCell(0);
-                    HSSFCell cell2 = newRow.createCell(1); 
-                    HSSFCell cell3 = newRow.createCell(2); 
-                    HSSFCell cell4 = newRow.createCell(3);
-                    cell1.setCellValue(list.get(rowId).getPoints()+"");  
-                    cell2.setCellValue(list.get(rowId).getCode().toString()); 
-                    cell4.setCellValue(list.get(rowId).isGiven()?"已领取":"未领取");  
+                    HSSFCell cell0 = newRow.createCell(0);
+                    HSSFCell cell1 = newRow.createCell(1); 
+                    HSSFCell cell2 = newRow.createCell(2); 
+                    HSSFCell cell3 = newRow.createCell(3);
+                    HSSFCell cell4 = newRow.createCell(4);
+                    cell0.setCellValue(list.get(rowId).getPoints()+"");  
+                    cell1.setCellValue(list.get(rowId).getCode().toString());
+                    cell2.setCellValue(list.get(rowId).getKeyt().toString()); 
+                    cell3.setCellValue(list.get(rowId).isGiven()?"已领取":"未领取");  
                     cell4.setCellValue(list.get(rowId).isUsed()?"已使用":"未使用");  
                 }
             }  

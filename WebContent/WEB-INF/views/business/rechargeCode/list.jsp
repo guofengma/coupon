@@ -96,6 +96,11 @@ function initTable() {
             searchable:true
         },
         {
+            title: "密钥",
+            field: "keyt",
+            searchable:true
+        },
+        {
             title: "积分分值",
             field: "points",
             searchable:false
