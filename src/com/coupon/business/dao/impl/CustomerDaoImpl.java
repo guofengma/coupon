@@ -41,15 +41,18 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 	@Override
 	public IPageList<Customer> findByManager(int pageNo, int pageSize, boolean check, String cityId,String condition) {
 		String addSql = "";
+		System.out.println("woshi========");
 		if(!condition.equals(""))
-			addSql = " and (name like '%"+condition+"%' or phone like '%"+condition+"%')";
+			addSql = " and (r.name like '%"+condition+"%' or r.phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
 		List<Customer> items = this.queryByHql(
-				"from Customer where deleted=false and statu="+check+" and city.id="+cityId+addSql+" order by createTime desc", null,
+				"from Customer r where r.deleted = false and r.statu = "+check+" and r.city.id = '"+cityId+"'"+addSql+" order by r.createTime desc", null,
 				first, pageSize);
+		System.out.println(items.size());
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Customer where deleted=false and city.id="+cityId+" and statu="+check+addSql, null)
+				"select count(*) from Customer r where r.deleted = false and r.statu = "+check+" and r.city.id ='"+cityId+"'"+addSql, null)
 				.toString());
+		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
@@ -57,13 +60,13 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 	public IPageList<Customer> findByStaff(int pageNo, int pageSize, boolean check, String userId,String condition) {
 		String addSql = "";
 		if(!condition.equals(""))
-			addSql = " and (name like '%"+condition+"%' or phone like '%"+condition+"%')";
+			addSql = " and (r.name like '%"+condition+"%' or r.phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
 		List<Customer> items = this.queryByHql(
-				"from Customer where deleted=false and statu="+check+" and user.id="+userId+addSql+" order by createTime desc", null,
+				"from Customer r where r.deleted=false and r.statu = "+check+" and r.user.id='"+userId+"'"+addSql+" order by r.createTime desc", null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Customer where deleted=false and user.id="+userId+" and statu="+check+addSql, null)
+				"select count(*) from Customer r where r.deleted = false and r.user.id='"+userId+"' and r.statu="+check+addSql, null)
 				.toString());
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}

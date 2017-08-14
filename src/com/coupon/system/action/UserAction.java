@@ -83,12 +83,21 @@ public class UserAction extends BaseAction {
 	public String save(HttpServletRequest request, ModelMap model, User user,
 			String id, String[] roleIds, boolean isAdd,String fCity,String sCity) {
 		System.out.println(fCity+sCity);
-		String cityId = sCity.equals("null")? fCity : sCity;
-		City city = cityService.findById(cityId);
+		String cityId = "";
+	
+		City city = new City();
 		List<User> temp ;
 		temp = userService.findUserByName(user.getName());
 		User bean = null;
 		if (isAdd) {
+			if(fCity.equals("null")){
+				cityId= "null";
+			}else if(sCity.equals("null")){
+				cityId = fCity;
+			}else{
+				cityId = sCity;
+			}
+			city = cityService.findById(cityId);
 			bean = new User();
 			bean.setPassword(user.getPassword());
 			bean.setCity(city);

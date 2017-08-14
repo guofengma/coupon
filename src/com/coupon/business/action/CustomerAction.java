@@ -73,12 +73,12 @@ public class CustomerAction extends BaseAction{
 		if(roleString.toString().contains("大区经理")){
 			IPageList<Customer> customers = customerService.findByManager(pageNo, pageSize,check,user.getCity().getId(),condition);
 			model.addAttribute("customers",customers);
-			return "business/customer/"+(check?"checkLsit":"uncheckList");	
+			return "business/customer/"+(check?"checkList":"uncheckList");	
 		}
 		if(roleString.toString().contains("员工")){
 			IPageList<Customer> customers = customerService.findByStaff(pageNo, pageSize,check,user.getId(),condition);
 			model.addAttribute("customers",customers);
-			return "business/customer/"+(check?"checkLsit":"uncheckList");	
+			return "business/customer/"+(check?"checkList":"uncheckList");	
 		}
 		return "business/customer/"+(check?"checkLsit":"uncheckList");		
 	}

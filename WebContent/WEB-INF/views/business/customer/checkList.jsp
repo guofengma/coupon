@@ -70,9 +70,15 @@
 													<td>${item.point }</td>
 													<td>
 														<p>
-															<a href="javascript:showModal('${item.name}','${item.id}');" class="btn-sm btn-app btn-primary no-radius" >
-																<i class="icon-plus bigger-200"></i>
-																充值
+															<shiro:hasPermission name="recharge:management:recharge">
+																<a href="javascript:showModal('${item.name}','${item.id}');" class="btn-sm btn-app btn-primary no-radius" >
+																	<i class="icon-plus bigger-200"></i>
+																	充值
+																</a>&nbsp;&nbsp;
+															</shiro:hasPermission>
+															<a href="<c:url value="/search/record/findByCustomerId?id=${item.id}"/>" class="btn-sm btn-app btn-primary no-radius">
+																<i class="icon-eye-open bigger-200"></i>
+																点击查看
 															</a>
 														</p>
 													</td>

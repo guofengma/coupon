@@ -28,7 +28,6 @@ public class CityAction extends BaseAction{
 		return "system/city/list";
 	}
 	
-	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/getFCity")
 	public void getFCity(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		 StringBuilder result = new StringBuilder("[");
@@ -45,7 +44,6 @@ public class CityAction extends BaseAction{
 	 	 response.getWriter().write(result.toString());
 	}
 	
-	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/getSCity")
 	public void getSCity(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fid = request.getParameter("id");
@@ -64,7 +62,6 @@ public class CityAction extends BaseAction{
 	 	 response.getWriter().write(result.toString());
 	}
 	
-	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/getSCityUsedByFCityId")
 	public void getSCityUsedByFCityId(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String fid = request.getParameter("id");
@@ -126,7 +123,6 @@ public class CityAction extends BaseAction{
 	}
 	
 	
-	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/changeState")
 	public void changeState(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		StringBuilder result = new StringBuilder();
@@ -184,7 +180,6 @@ public class CityAction extends BaseAction{
 	
 	
 	
-	@RequiresPermissions(value={"city:management"})
 	@RequestMapping(value = "/system/city/getUsedCity")
 	public void getFUsedCity(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		 StringBuilder result = new StringBuilder("[");

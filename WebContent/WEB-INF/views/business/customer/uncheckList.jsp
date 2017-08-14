@@ -48,15 +48,19 @@
 					<div class="portlet-body">
 						<div class="table-toolbar" style="text-align: right;">
 							<div class="btn-group">
+								<shiro:hasPermission name="customer:management:add">
 									<a href="javascript:add()" class="btn-sm btn-app btn-success no-radius">
 										<i class="icon-plus bigger-200">添加客户</i>
 									</a>&nbsp;&nbsp;
+								</shiro:hasPermission>
+								<shiro:hasPermission name="customer:management:check">
 									<a href="javascript:multiCheck('true')" class="btn-sm btn-app btn-success no-radius">
 										<i class="icon-thumbs-up bigger-200">批量审核通过</i>
 									</a>&nbsp;&nbsp;
 									<a href="javascript:multiCheck('false')" class="btn-sm btn-app btn-success no-radius">
 										<i class="icon-thumbs-down bigger-200">批量审核不通过</i>
 									</a>
+								</shiro:hasPermission>
 							</div>
 						</div>
 						
@@ -105,15 +109,20 @@
 													</c:if>
 												</td>
 												<td>
-														<p>
+													<p>
+														<shiro:hasPermission name="customer:management:edit">
 															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
 																<i class="icon-edit bigger-200"></i>
 																编辑
 															</a>&nbsp;&nbsp;
+														</shiro:hasPermission>
+														<shiro:hasPermission name="customer:management:delete">
 															<a href="javascript:del('<c:url value='/business/customer/delete?condition=${condition}&id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																<i class="icon-trash bigger-200"></i>
 																删除
 															</a>&nbsp;&nbsp;
+														</shiro:hasPermission>
+														<shiro:hasPermission name="customer:management:check">
 															<c:if test="${!item.deal}">
 																<a href="javascript:check('<c:url value='/business/customer/check?condition=${condition}&id=${item.id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-thumbs-up bigger-200"></i>
@@ -124,13 +133,16 @@
 																	审核不通过
 																</a>&nbsp;&nbsp;
 															</c:if>
+														</shiro:hasPermission>
+														<shiro:hasPermission name="customer:management:add">
 															<c:if test="${item.deal}">
 																<a href="<c:url value='/business/customer/requestCheck?condition=${condition}&id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-share-alt bigger-200"></i>
 																	重新发送审核请求
 																</a>&nbsp;&nbsp;
 															</c:if>
-														</p>
+														</shiro:hasPermission>
+													</p>
 												</td>
 											</tr>
 										</c:forEach>
