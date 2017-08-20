@@ -1,5 +1,6 @@
 package com.coupon.system.entity.base;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,10 +33,18 @@ public abstract class UserEntity extends BaseEntity {
 	@JoinTable(name = "coupon_user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
 	protected Set<Role> roles = new HashSet<Role>();
 	
-	@ManyToOne
-	@JoinColumn(name = "city_id")
-	protected City city;
-	
+	@ManyToMany(targetEntity = City.class, fetch = FetchType.EAGER)
+	@JoinTable(name = "coupon_user_city", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CITY_ID"))
+	protected Set<City> city = new HashSet<City>();
+
+	public Set<City> getCity(){
+		return city;
+	}
+
+	public void setCity(Set<City> city) {
+		this.city = city;
+	}
+
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "user")
 	protected List<RedeemCode> redeemCodes ; //虚拟出来的兑换码批次
 	
@@ -116,14 +125,6 @@ public abstract class UserEntity extends BaseEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	
-	public City getCity() {
-		return city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
 	}
 
 	public List<RedeemCode> getRedeemCodes() {

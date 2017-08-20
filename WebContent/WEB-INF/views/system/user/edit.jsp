@@ -62,7 +62,6 @@
 						</div>
 					</div>				
 
-					<c:if test='<%=isAdd %>'>
 						<div class="space-4"></div>
 						
 						<div class="form-group">
@@ -96,7 +95,11 @@
 								<select class="selectpicker" id="fCity" name="fCity" onchange="fCityChange()">
 									 <option value="null">选择省份</option>
 									 <c:forEach items="${fCityUsedList}" var="item">
-									  	<option value="${item.id}">${item.name}</option>
+									  	<option value="${item.id}" 
+										  <c:if test="${item.id==fCity.id}">
+											  		selected
+											  	</c:if>>${item.name}
+										 </option>
 									 </c:forEach>
 								 </select>
 							</div>
@@ -106,12 +109,17 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label no-padding-right">  </label>
 							<div class="col-sm-9">
-								 <select class="selectpicker" id="sCity" name="sCity">
-									 <option value="null">选择市县</option>
+								 <select class="selectpicker" multiple id="sCity" name="sCity">
+								 	<c:forEach items="${sCityUsedList}" var="item">
+									  	<option value="${item.id}" 
+									  		<c:if test="${userCity.contains(item)}">
+										  		selected
+										  	</c:if>>${item.name}
+										</option>
+									 </c:forEach>
 								 </select>
 							</div>
 						</div>
-					</c:if>
 					<div class="form-group">
                     	<label class="col-sm-3 control-label no-padding-right" for="form-field-6">角色</label>
                     	
@@ -150,6 +158,12 @@
 </div>
 <script type="text/javascript">
 $(function(){
+	$("#fCity").selectpicker({
+		'noneSelectedText':'选择省份'
+	});
+	$("#sCity").selectpicker({
+		'noneSelectedText':'选择市县'
+	});
 	var same = '${same}';
 	if(same=='0')
 		alert("该员工名已经存在");	
@@ -184,11 +198,11 @@ function fCityChange(){
 }
 
 function test(){
+	
 }
 
 function clearSCity(){//清空二级城市下拉框所有内容（第一个默认的option不清除）
 	$("#sCity").empty();
-	$("#sCity").append("<option value='null'>选择市县</option>"); 
 }
 </script>
 </body>

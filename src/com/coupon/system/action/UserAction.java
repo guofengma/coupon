@@ -1,6 +1,8 @@
 package com.coupon.system.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +58,10 @@ public class UserAction extends BaseAction {
 	public String add(HttpServletRequest request,ModelMap model) {
 		String same = request.getParameter("same");
 		List<Role> roleList = roleService.getList();
-		List<City> fCityUsedList = cityService.getFCityUsed();
+		List<City> fCityUsedList = cityService.getFCityUsed();//获取一级城市
+		/*if(fCityUsedList.size()>0){	
+			model.addAttribute("sCityUsedList",fCityUsedList.get(0).getUsedChildren());
+		}*/
 		model.addAttribute("fCityUsedList",fCityUsedList);
 		model.addAttribute("roleList",roleList);
 		model.addAttribute("same", same);
@@ -68,11 +73,23 @@ public class UserAction extends BaseAction {
 	public String edit(HttpServletRequest request, ModelMap model, String id) {
 		String same = request.getParameter("same");
 		User user = this.userService.findById(id);
+		List<City> fCityUsedList = cityService.getFCityUsed();//获取一级城市
+		Set<City> userCity = user.getCity();//获取员工对应的城市，按一级城市放前面，优先级排序
+		City fCity = new City();
+		for(City temp:userCity){
+			if(temp.getParent()==null)
+				fCity = temp ;
+		}
+		if(userCity.size()!=0)
+			model.addAttribute("sCityUsedList",fCity.getUsedChildren());
 		List<Role> roleList = roleService.getList();
 		Set<Role> userRoleList = user.getRoles();
+		model.addAttribute("fCity",fCity);
 		model.addAttribute("user", user);
 		model.addAttribute("roleList", roleList);
 		model.addAttribute("userRoleList", userRoleList);
+		model.addAttribute("fCityUsedList",fCityUsedList);
+		model.addAttribute("userCity",userCity);
 		System.out.println(same);
 		model.addAttribute("same", same);
 		return "system/user/edit";
@@ -82,25 +99,18 @@ public class UserAction extends BaseAction {
 	@RequestMapping(value = "/system/user/save", method = RequestMethod.POST)
 	public String save(HttpServletRequest request, ModelMap model, User user,
 			String id, String[] roleIds, boolean isAdd,String fCity,String sCity) {
-		System.out.println(fCity+sCity);
-		String cityId = "";
-	
-		City city = new City();
-		List<User> temp ;
-		temp = userService.findUserByName(user.getName());
-		User bean = null;
+		Set<City> userCity = new HashSet<City>();
+		if(fCity.equals("null")){
+			userCity = null ;
+		}else if(sCity==null){
+			userCity = cityService.findByIds(fCity.split(","));
+		}else{
+			System.out.println(fCity+"+++++++++++"+sCity);
+			userCity = cityService.findByIds((fCity+","+sCity).split(","));
+		}
+		List<User> temp = userService.findUserByName(user.getName());
+		User bean = new User();
 		if (isAdd) {
-			if(fCity.equals("null")){
-				cityId= "null";
-			}else if(sCity.equals("null")){
-				cityId = fCity;
-			}else{
-				cityId = sCity;
-			}
-			city = cityService.findById(cityId);
-			bean = new User();
-			bean.setPassword(user.getPassword());
-			bean.setCity(city);
 			if(temp.size()>0)//该用户名存在
 			{
 				return "redirect:add?same=0";
@@ -114,6 +124,8 @@ public class UserAction extends BaseAction {
 		}
 		bean.setDisplayName(user.getDisplayName());
 		bean.setName(user.getName());
+		bean.setCity(userCity);
+		bean.setPassword(user.getPassword());
 		// 更新角色
 		bean.getRoles().clear();// 先清空角色
 		if (roleIds != null) {
@@ -122,7 +134,6 @@ public class UserAction extends BaseAction {
 				bean.addToRoles(roleService.findById(rid));
 			}
 		}
-
 		if (isAdd) {
 			userService.save(bean);
 		} else {

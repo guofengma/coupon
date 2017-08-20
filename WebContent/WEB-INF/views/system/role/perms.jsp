@@ -28,14 +28,14 @@ var setting = {
 		var zNodes = [
 						{ id: 1, pId: 0, name: "员工管理", perm:"user:management"},
 						{ id: 2, pId: 0, name: "客户管理", perm:"customer:management"},
-						{ id: 21, pId: 2, name: "增加客户", perm:"customer:management:add"},
-						{ id: 22, pId: 2, name: "修改客户", perm:"customer:management:edit"},
-						{ id: 23, pId: 2, name: "删除客户", perm:"customer:management:delete"},
-						{ id: 24, pId: 2, name: "审核客户", perm:"customer:management:check"},
+						{ id: 21, pId: 2, name: "增加客户", perm:"customer:add"},
+						{ id: 22, pId: 2, name: "修改客户", perm:"customer:edit"},
+						{ id: 23, pId: 2, name: "删除客户", perm:"customer:delete"},
+						{ id: 24, pId: 2, name: "审核客户", perm:"customer:check"},
 						{ id: 3, pId: 0, name: "商品管理", perm:"product:management"},
 						{ id: 4, pId: 0, name: "后台充值", perm:"recharge:management"},
-						{ id: 41, pId: 4, name: "充值", perm:"recharge:management:recharge"},
-						{ id: 42, pId: 4, name: "审核", perm:"recharge:management:check"},
+						{ id: 41, pId: 4, name: "充值", perm:"recharge:recharge"},
+						{ id: 42, pId: 4, name: "审核", perm:"recharge:check"},
 						{ id: 5, pId: 0, name: "系统管理", perm:"system:management"}
 		              ];
 		 

@@ -15,7 +15,7 @@ import com.coupon.system.service.CityService;
 public class CityServiceImpl extends BaseServiceImpl<City, String> implements CityService{
 
 	@Autowired
-	protected void setUserDao(CityDao cityDao) {
+	protected void setCityDao(CityDao cityDao) {
 		setBaseDao(cityDao);
 	}
 
@@ -30,7 +30,7 @@ public class CityServiceImpl extends BaseServiceImpl<City, String> implements Ci
 
 	@Override
 	public List<City> getFCityUsed() {
-		return getCityDao().getFCityUsed();
+		return (List<City>)getCityDao().getFCityUsed();
 	}
 
 	@Override

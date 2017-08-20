@@ -10,7 +10,7 @@ public interface CityService extends BaseService<City, String>{
 
 	List<City> getFCity();
 
-	List<City> getFCityUsed();
+	public List<City> getFCityUsed();
 
 	Set<City> findByIds(String[] ids);
 

@@ -1,5 +1,6 @@
 package com.coupon.system.entity.base;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,8 +43,9 @@ public abstract class CityEntity extends BaseEntity {
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "city")
 	protected List<Customer> customer;
 	
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "city")
-	protected List<User> user;
+	@ManyToMany(targetEntity = User.class,cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@JoinTable(name = "coupon_user_city", joinColumns = @JoinColumn(name = "CITY_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+	protected Set<User> user = new HashSet<User>();
 	
 	@ManyToMany(targetEntity = Product.class, fetch = FetchType.EAGER)
 	@JoinTable(name = "coupon_city_product", joinColumns = @JoinColumn(name = "CITY_ID"), inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
@@ -106,11 +108,11 @@ public abstract class CityEntity extends BaseEntity {
 		this.customer = customer;
 	}
 
-	public List<User> getUser() {
+	public Set<User> getUser() {
 		return user;
 	}
 
-	public void setUser(List<User> user) {
+	public void setUser(Set<User> user) {
 		this.user = user;
 	}
 
@@ -120,6 +122,15 @@ public abstract class CityEntity extends BaseEntity {
 
 	public void setProduct(Set<Product> product) {
 		this.product = product;
+	}
+	
+	public List<City> getUsedChildren() {
+		List<City> usedChildren = new ArrayList<City>();
+		for(City temp : getChildren()){
+			if(temp.isUsed())
+				usedChildren.add(temp);
+		}
+		return usedChildren;
 	}
 
 }

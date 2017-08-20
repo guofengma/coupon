@@ -49,6 +49,7 @@
 											<th>登录名</th>
 											<th>员工名</th>
 											<th>角色</th>
+											<th>所属城市</th>
 											<th>添加时间</th>
 											<th>操作</th>
 										</tr>
@@ -61,6 +62,12 @@
 													<td>
 														<c:forEach items="${item.roles}" var="role" varStatus="status">
 															${role.name}<c:if test="${!status.last}">;</c:if>
+														</c:forEach>
+													</td>
+													<td>
+														<c:forEach items="${item.userCityByPriority}" var="city" varStatus="status">
+															<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
+															<c:if test="${!status.last&&!status.first}">;</c:if>
 														</c:forEach>
 													</td>
 													<td>${item.createTime.toLocaleString()}</td> 

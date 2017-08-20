@@ -1,6 +1,9 @@
 package com.coupon.system.entity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -11,6 +14,15 @@ import com.coupon.system.entity.base.UserEntity;
 @Entity
 @Table(name = "coupon_user")
 public class User extends UserEntity {
+	
+	public List<City> getUserCityByPriority(){
+		List<City> cityList = new ArrayList<City>();
+		for(City temp : this.getCity()){
+			cityList.add(temp);
+		}
+		Collections.sort(cityList);
+		return cityList;
+	}
 
 	/**
 	 * 给用户添加角色
