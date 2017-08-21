@@ -279,7 +279,6 @@ function clear(){//清除模态框信息
 		$("#form-remark").val('');
 		$("#fCity").val('null').trigger("change");
 		$("#sCity").val('null').trigger("change");
-		$("#bank").val('null').trigger("change");
 }
 
 function checkAll(){//全选
@@ -314,8 +313,8 @@ function edit(param){
 			$("#form-phone").val(result.phone);
 			$("#form-remark").val(result.remark);
 			$("#fCity").val(result.fCityId).trigger("change");
-			$("#sCity").val(result.sCityId).trigger("change");
-			$("#bank").val(result.bankId).trigger("change");
+			$('#sCity').selectpicker('val', result.sCityId);
+			$("#form-bankAddress").val(result.bankAddress);
 	    },
 	    error:function(){
 			alert("读取客户信息失败！")
@@ -410,7 +409,6 @@ function del(url){
 function fCityChange(){
 	var id = $("#fCity").val();
 	clearSCity();
-	clearBank();
 	if(id!='null'){
 		$.ajax({
 			url:"<%=path%>/system/city/getSCityUsedByFCityId",    //请求的url地址
@@ -422,9 +420,6 @@ function fCityChange(){
 			console.log(result)
 		        for(var i=0;i<result.sCity.length;i++){
 					$("#sCity").append("<option value='"+result.sCity[i].id+"'>"+result.sCity[i].name+"</option>");
-				}
-				for(var i=0;i<result.bank.length;i++){
-					$("#bank").append("<option value='"+result.bank[i].id+"'>"+result.bank[i].name+"</option>");
 				}
 		    },
 		    error:function(){

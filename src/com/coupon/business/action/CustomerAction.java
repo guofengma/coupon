@@ -258,25 +258,27 @@ public class CustomerAction extends BaseAction{
 	public void getCustomerInfo(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
 		String id = request.getParameter("id");
 		StringBuilder result = new StringBuilder();
-		/*Customer customer = customerService.findById(id);
-		result.append("{\"name\":\""+customer.getName()+"\",\"points\":"+customer.getPoint()+",\"phone\":\""+customer.getPhone()+"\",\"remark\":\""+customer.getRemark()+"\",");
-		if(customer.getBank()==null){
-			result.append("\"bankId\":\"null\",");
+		Customer customer = customerService.findById(id);
+		result.append("{\"name\":\""+customer.getName()+"\",\"bankAddress\":\""+customer.getBankAddress()+"\",\"points\":"+customer.getPoint()+",\"phone\":\""+customer.getPhone()+"\",\"remark\":\""+customer.getRemark()+"\",");
+		Set<City> city = customer.getCity();
+		if(city.size()==0){//不属于任何城市
+			result.append("\"fCityId\":\"null\",\"sCityId\":[]}");
 		}else{
-			result.append("\"bankId\":\""+customer.getBank().getId()+"\",");
-		}
-		City city = customer.getCity();
-		if(city==null){//录入信息时没有录入所属城市的信息
-			result.append("\"fCityId\":\"null\",\"sCityId\":\"null\"}");
-		}
-		else{
-			if(city.getParent()==null){//说明属于一级行政单位
-				result.append("\"fCityId\":\""+city.getId()+"\",\"sCityId\":\"null\"}");
-			}else{
-				City fCity = city.getParent();
-				result.append("\"fCityId\":\""+fCity.getId()+"\",\"sCityId\":\""+city.getId()+"\"}");
+			StringBuilder sCity = new StringBuilder("[");
+			City fCity = new City();
+			for(City temp : city){
+				if(temp.getParent()==null)
+					fCity = temp ;
+				else{
+					sCity.append("\""+temp.getId()+"\",") ;
+				}
 			}
-		}*/
+			if(city.size()>1){
+				sCity.deleteCharAt(sCity.length()-1);
+			}
+			sCity.append("]");
+			result.append("\"fCityId\":\""+fCity.getId()+"\",\"sCityId\":"+sCity.toString()+"}");
+		}
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
