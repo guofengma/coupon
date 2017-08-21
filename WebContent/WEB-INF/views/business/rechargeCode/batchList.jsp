@@ -83,23 +83,23 @@
 															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
 																<i class="icon-edit bigger-200"></i>
 																编辑
-															</a>&nbsp;&nbsp;
+															</a>&nbsp;
 															<a href="javascript:del('<c:url value='/business/rechargeCode/deleteBatch?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																<i class="icon-trash bigger-200"></i>
 																删除
-															</a>&nbsp;&nbsp;
-															<a href="javascript:openMakeModal('${item.id}');" class="btn-sm btn-app btn-success no-radius" >
+															</a>&nbsp;
+															<%-- <a href="javascript:openMakeModal('${item.id}');" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-random bigger-200"></i>
 																生成积分码
-															</a>&nbsp;&nbsp;
+															</a>&nbsp; --%>
 															<a href="<c:url value='/business/rechargeCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-barcode bigger-200"></i>
 																管理积分码
-															</a>&nbsp;&nbsp;
+															</a>&nbsp;
 															<a href="<c:url value='/business/rechargeCode/exportExcel?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-share-alt bigger-200"></i>
 																导出为excel
-															</a>&nbsp;&nbsp;
+															</a>&nbsp;
 														</p>
 													</td>
 											</tr>
@@ -127,8 +127,7 @@
 		</div>
 	</div>	
 </div>
-
-<!-- 导入兑换码模态框 -->
+<%-- 
 <div class="modal fade" id="makemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -172,7 +171,7 @@
 			</div>
 		</div>
 	</div>			
-</div>
+</div> --%>
 
 <!-- 批次信息模态框 -->
 <div class="modal fade" id="batchInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
@@ -191,6 +190,22 @@
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">批次信息：</label>
 								<div class="col-sm-9">
 									<input type="text" id="batch" class="col-xs-10 col-sm-10" name="batch">
+								</div>
+							 </div> 
+							 
+							 <div class="space-4"></div> 	
+							 <div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="points">积分分值：</label>
+								<div class="col-sm-9">
+									<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
+								</div>
+							 </div> 
+							 
+							 <div class="space-4"></div> 							 
+							 <div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="count">制作数量：</label>
+								<div class="col-sm-9">
+									<input type="text" id="count" class="col-xs-10 col-sm-10" name="count">
 								</div>
 							 </div> 
 							 
@@ -261,10 +276,14 @@ $("#datetimepicker").datetimepicker({
     });
 
 function add(){
+	$("#oldId").val('null');
 	$("#batch").val('');
+	$("#points").val('');
+	$("#count").val('');
 	$("#remark").val('');
 	$("#endTime").val('');
-	//$("#batchInfo").modal("show");
+	document.getElementById("points").readOnly=false;
+	document.getElementById("count").readOnly=false;
 	openModal("#batchInfo");
 }
 
@@ -282,15 +301,18 @@ function edit(param){
 	    type:"GET",   //请求方式
 	    success:function(result){
 	       $("#batch").val(result.batch);
+		   $("#points").val(result.points);
+		   $("#count").val(result.count);
 		   $("#remark").val(result.remark);
 		   $("#endTime").val(result.endTime);
+		   document.getElementById("points").readOnly = true;
+		   document.getElementById("count").readOnly = true;
 		   console.log(result);		   
 	    },
 	    error:function(){
 			alert("读取批次信息失败！")
 	    }
 	});
-	//$("#batchInfo").modal("show");
 	openModal("#batchInfo");
 }
 

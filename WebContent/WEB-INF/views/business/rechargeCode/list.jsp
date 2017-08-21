@@ -130,7 +130,7 @@ function initTable() {
             		return '';
             	else
             		return "<a href=\"javascript:deleterechargeCode('"+row.id+"')\" class='btn-sm btn-app btn-danger no-radius'><i class='icon-trash bigger-200'></i>删除</a>&nbsp;&nbsp;"
-            				+"<a href=\"javascript:editrechargeCode("+row.id+"')\" class='btn-sm btn-app btn-primary no-radius'><i class='icon-edit bigger-200'></i>修改</a>";
+            				/* +"<a href=\"javascript:editrechargeCode("+row.id+"')\" class='btn-sm btn-app btn-primary no-radius'><i class='icon-edit bigger-200'></i>修改</a>" */;
             		
             }
         }

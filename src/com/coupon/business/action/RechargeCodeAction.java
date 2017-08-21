@@ -118,7 +118,7 @@ public class RechargeCodeAction extends BaseAction{
 		String id = request.getParameter("id");
 		StringBuilder result = new StringBuilder();
 		RechargeCode rechargeCode = rechargeCodeService.findById(id);
-		result.append("{\"batch\":\""+rechargeCode.getBatch()+"\",\"endTime\":\""+rechargeCode.getEndTime().toString().substring(0, 10)+"\",\"remark\":\""+rechargeCode.getRemark()+"\"}");
+		result.append("{\"batch\":\""+rechargeCode.getBatch()+"\",\"points\":\""+rechargeCode.getChildren().get(0).getPoints()+"\",\"count\":\""+rechargeCode.getChildren().size()+"\",\"endTime\":\""+rechargeCode.getEndTime().toString().substring(0, 10)+"\",\"remark\":\""+rechargeCode.getRemark()+"\"}");
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
@@ -126,7 +126,7 @@ public class RechargeCodeAction extends BaseAction{
 	}
 	
 	@RequestMapping(value = "/business/rechargeCode/batchSave")
-	public String batchSave(HttpServletRequest request, ModelMap model,String productId,String oldId,String batch,String endTime,String remark) throws ParseException {
+	public String batchSave(HttpServletRequest request, ModelMap model,String productId,String oldId,String batch,String points , String count,String endTime,String remark) throws ParseException {
 		super.addMenuParams(request, model);
 		RechargeCode rechargeCode = new RechargeCode();
 		if(oldId.equals("null")){
@@ -140,6 +140,17 @@ public class RechargeCodeAction extends BaseAction{
 		rechargeCode.setUser(userService.findByUserName(MyRealm.hardName));
 		if(oldId.equals("null")){
 			rechargeCodeService.save(rechargeCode);
+			List<RechargeCode> addList = new ArrayList<RechargeCode>();
+			for(int i=0;i<Integer.parseInt(count);i++){
+				RechargeCode temp = new RechargeCode();
+				temp.setCode(RandomCode.generate_18("ka"));
+				temp.setKeyt(RandomCode.generate_18("mi"));
+				temp.setPoints(Integer.parseInt(points));
+		        temp.setParent(rechargeCode);
+		        temp.setUsed(false);
+		        addList.add(temp) ;
+			}
+			rechargeCodeService.batchSave(addList);
 		}else{
 			rechargeCodeService.update(rechargeCode);
 		}
@@ -269,6 +280,8 @@ public class RechargeCodeAction extends BaseAction{
 	         }  		           
 	         in.close();  
 	         out.close();  
+	         batch.setMade(true);
+	         rechargeCodeService.update(batch);
 	}
 	
     /** 
