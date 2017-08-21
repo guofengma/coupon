@@ -78,9 +78,9 @@
 												<td>${fn:substring(item.createTime,0,10)}</td>
 												<td>${fn:substring(item.parent.endTime,0,10)}</td>
 												<td>
-													<c:if test="${item.record!=null}">
+													<%-- <c:if test="${item.record!=null}">
 														${item.record.customer.city.name}
-													</c:if>
+													</c:if> --%>
 												</td>
 												<td>
 													<c:if test="${item.parent.endTime>=date}">

@@ -70,7 +70,7 @@
 													<td>${item.point }</td>
 													<td>
 														<p>
-															<shiro:hasPermission name="recharge:management:recharge">
+															<shiro:hasPermission name="recharge:recharge">
 																<a href="javascript:showModal('${item.name}','${item.id}');" class="btn-sm btn-app btn-primary no-radius" >
 																	<i class="icon-plus bigger-200"></i>
 																	充值
@@ -184,6 +184,10 @@ function search(){
 		var condition = $("#condition").val();
 		var url ="<%=path%>/business/customer/list?statu=check&condition="+condition;
 		window.location.href = url ;
+}
+
+function cancle(){
+	$("#rechargeInfo").modal("hide");
 }
 </script>
 </html>

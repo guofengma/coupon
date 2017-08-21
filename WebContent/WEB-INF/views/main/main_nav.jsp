@@ -31,15 +31,19 @@
          <li>
             <a href="#search" data-toggle="collapse" class="nav-header collapsed" ><i class="glyphicon glyphicon-search" ></i> 信息查询 <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="search" class="nav nav-list collapse" style="height:0px;">
-                <li>
-            		<a href="<c:url value='/search/redeemCode/findByCondition'/>"><i class="icon-qrcode"></i> 商品兑换码<i></i></a>
-         		</li> 
+             	<shiro:hasPermission name="product:management">
+	                <li>
+	            		<a href="<c:url value='/search/redeemCode/findByCondition'/>"><i class="icon-qrcode"></i> 商品兑换码<i></i></a>
+	         		</li> 
+         		</shiro:hasPermission>
                 <li>
                     <a href="<c:url value='/search/customer/findByCondition'/>" ><i class="icon-group"></i> 客户信息 </a>
                 </li>
-                <li>
-                    <a href="<c:url value='/search/rechargeCode/findByCondition'/>" ><i class="icon-barcode"></i> e兑卡兑换码 </a>
-                </li>
+                 <shiro:hasPermission name="recharge:search">
+	                <li>
+	                    <a href="<c:url value='/search/rechargeCode/findByCondition'/>" ><i class="icon-barcode"></i> e兑卡兑换码 </a>
+	                </li>
+                </shiro:hasPermission>
            </ul>
          </li>  
           <shiro:hasPermission name="system:management">

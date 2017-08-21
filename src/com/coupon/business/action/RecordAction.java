@@ -113,6 +113,8 @@ public class RecordAction extends BaseAction{
 			record.setStatu(true);
 			customer.setTotalAddUp(customer.getPoint()+record.getPoints());
 			customer.setPoint(customer.getPoint()+record.getPoints());
+			customer.setLatestChargeTime(new Date());
+			customer.setLatestChargeUser(record.getUser());
 		}
 		recordService.update(record);
 		customerService.update(customer);

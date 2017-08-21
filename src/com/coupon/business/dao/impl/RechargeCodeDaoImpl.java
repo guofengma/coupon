@@ -1,5 +1,6 @@
 package com.coupon.business.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,8 @@ import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.base.dao.impl.BaseDaoImpl;
 import com.coupon.business.dao.RechargeCodeDao;
 import com.coupon.business.entity.RechargeCode;
+import com.coupon.business.entity.RedeemCode;
+import com.coupon.system.entity.City;
 import com.coupon.util.FolderUtil;
 @Repository
 public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> implements RechargeCodeDao{
@@ -39,8 +42,8 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 	@Override
 	public PageList<RechargeCode> findByCondition(int pageNo, int pageSize, String[] condition) {
 		StringBuilder sql = new StringBuilder("from RechargeCode r where r.deleted = false and r.parent is not null");
-		if(condition[8].equals("2")||!condition[8].equals("null")||!condition[10].equals(""))
-			sql.append(" and r.record is not null");
+		if(condition[8].equals("2")||!condition[10].equals("")||!condition[9].equals("null"))
+			sql.append(" and r.record.id !=''");
 		if(!condition[0].equals(""))
 			sql.append(" and r.createTime >= '"+condition[0]+"'");
 		if(!condition[1].equals(""))
@@ -63,20 +66,42 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 			sql.append(" and r.used = true and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
 		if(condition[8].equals("3")) //已经过期的 
 			sql.append(" and r.parent.endTime < '" + FolderUtil.getFolder() + "'");
-		if(!condition[9].equals("null"))
-			sql.append(" and r.record.customer.city.id = '"+condition[8]+"'");
+		/*if(!condition[9].equals("null"))
+			sql.append(" and r.record.customer.city.id = '"+condition[9]+"'");*/
 		if(!condition[10].equals(""))
-			sql.append(" and r.record.customer.phone = '"+condition[9]+"'");
+			sql.append(" and r.record.customer.phone = '"+condition[10]+"'");
 		String sql1 = sql + " order by r.parent.batch desc , r.points desc , r.parent.endTime desc , used asc";
 		System.out.println(sql1);
 		int first = (pageNo - 1) * pageSize;
-		List<RechargeCode> items = this.queryByHql(sql1, null,
-				first, pageSize);
-		int count = Integer.parseInt(this.findUnique(
-				"select count(*) "+sql, null)
-				.toString());
-		System.out.println(count);
-		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+		if(condition[9].equals("null")){
+			List<RechargeCode> items = this.queryByHql(sql1, null,first, pageSize);
+			int count = Integer.parseInt(this.findUnique("select count(*) "+sql, null).toString());
+			return PageListUtil.getPageList(count, pageNo, items, pageSize);
+		}else{
+			List<RechargeCode> tempList = this.queryByHql(sql1, null);
+			List<RechargeCode> tempList1 = new ArrayList<RechargeCode>();
+			for(RechargeCode temp : tempList){
+				boolean is = false ;
+				for(City tempCity : temp.getRecord().getCustomer().getCity()){
+					if(tempCity.getId().equals(condition[9]))
+						is = true ;
+				}
+				if(is)
+					tempList1.add(temp);
+			}
+			int count = tempList1.size();
+			List<RechargeCode> items = getPageRechargeCodeCode(tempList1,first,pageSize);
+			return PageListUtil.getPageList(count, pageNo, items, pageSize);
+		}	
+	}
+	
+	private List<RechargeCode> getPageRechargeCodeCode(List<RechargeCode> rechargeCodes ,int first ,int pageSize){
+		List<RechargeCode> items = new ArrayList<RechargeCode>();
+		for(int i=0;i<pageSize;i++){
+			if((first*pageSize+i)<rechargeCodes.size())
+				items.add(rechargeCodes.get(first*pageSize+i));
+		}
+		return items ;
 	}
 
 }

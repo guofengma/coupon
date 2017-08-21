@@ -94,9 +94,9 @@
 													</c:if>
 												</td>
 												<td>
-													<c:if test="${item.record!=null}">
+													<%-- <c:if test="${item.record!=null}">
 														${item.record.customer.city.name}
-													</c:if>
+													</c:if> --%>
 												</td>
 												<td>
 													${item.parent.remark}

@@ -36,6 +36,7 @@ var setting = {
 						{ id: 4, pId: 0, name: "后台充值", perm:"recharge:management"},
 						{ id: 41, pId: 4, name: "充值", perm:"recharge:recharge"},
 						{ id: 42, pId: 4, name: "审核", perm:"recharge:check"},
+						{ id: 43, pId: 4, name: "查询", perm:"recharge:search"},
 						{ id: 5, pId: 0, name: "系统管理", perm:"system:management"}
 		              ];
 		 

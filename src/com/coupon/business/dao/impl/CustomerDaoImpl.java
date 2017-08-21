@@ -110,20 +110,32 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 			sql.append(" and r.name like '%"+condition[2]+"%'");
 		if(!condition[3].equals(""))
 			sql.append(" and r.latestChargeUser.displayName like '%"+condition[3]+"%'");
-		if(!condition[4].equals("null"))
-			sql.append(" and r.city.id = '"+condition[4]+"'");
+		/*if(!condition[4].equals("null"))
+			sql.append(" and r.city.id = '"+condition[4]+"'");*/
 		if(!condition[5].equals(""))
 			sql.append(" and r.phone = '"+condition[5]+"'");
 		String sql1 = sql + " order by r.latestChargeTime desc , r.totalAddUp desc , r.point desc";
 		System.out.println(sql1);
 		int first = (pageNo - 1) * pageSize;
-		List<Customer> items = this.queryByHql(sql1, null,
-				first, pageSize);
-		int count = Integer.parseInt(this.findUnique(
-				"select count(*) "+sql, null)
-				.toString());
-		System.out.println(count);
-		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+		if(condition[4].equals("null")){
+			List<Customer> items = this.queryByHql(sql1, null,first, pageSize);
+			int count = items.size();
+			return PageListUtil.getPageList(count, pageNo, items, pageSize);
+		}else{
+			List<Customer> tempList = this.queryByHql(sql1, null,first, pageSize);
+			List<Customer> items = new ArrayList<Customer>();
+			for(Customer temp : tempList){
+				boolean is = false ;
+				for(City tempCity : temp.getCity()){
+					if(tempCity.getId().equals(condition[4]))
+						is = true ;
+				}
+				if(is)
+					items.add(temp);
+			}
+			int count = items.size();
+			return PageListUtil.getPageList(count, pageNo, items, pageSize);
+		}	
 	}
 
 }
