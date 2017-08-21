@@ -40,8 +40,9 @@ public abstract class CityEntity extends BaseEntity {
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "city")
 	protected List<Bank> bank;
 	
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "city")
-	protected List<Customer> customer;
+	@ManyToMany(targetEntity = Customer.class,cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@JoinTable(name = "coupon_customer_city", joinColumns = @JoinColumn(name = "CITY_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
+	protected Set<Customer> customer = new HashSet<Customer>();
 	
 	@ManyToMany(targetEntity = User.class,cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	@JoinTable(name = "coupon_user_city", joinColumns = @JoinColumn(name = "CITY_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
@@ -100,11 +101,11 @@ public abstract class CityEntity extends BaseEntity {
 		this.bank = bank;
 	}
 
-	public List<Customer> getCustomer() {
+	public Set<Customer> getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(List<Customer> customer) {
+	public void setCustomer(Set<Customer> customer) {
 		this.customer = customer;
 	}
 

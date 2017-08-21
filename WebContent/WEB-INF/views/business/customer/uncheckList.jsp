@@ -94,12 +94,12 @@
 												<td>${item.phone }</td>
 												<td>${item.point }</td>
 												<td>
-													<c:if test ="${item.city.parent!=null}">
-														${item.city.parent.name}
-													</c:if>
-													${item.city.name}
+													<c:forEach items="${item.customerCityByPriority}" var="city" varStatus="status">
+														<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
+														<c:if test="${!status.last&&!status.first}">;</c:if>
+													</c:forEach>
 												</td>
-												<td>${item.bank.name }</td>
+												<td>${item.bankAddress }</td>
 												<td>
 													<c:if test ="${item.deal}">
 														已处理，未通过
@@ -220,19 +220,16 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right">  </label>
 								<div class="col-sm-9" style="text-align:left">
-									 <select class="selectpicker" id="sCity" name="sCity" onchange="sCityChange()">
-										 <option value="null">选择市县</option>
+									 <select class="selectpicker" id="sCity" multiple name="sCity">
 									 </select>
 								</div>
 							</div>
 							
 							<div class="space-4"></div> 	
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right">兑换服务：</label>
-								<div class="col-sm-9" style="text-align:left">
-									 <select class="selectpicker" id="bank" name="bank">
-										 <option value="null">选择兑换服务地址</option>
-									 </select>
+								<label class="col-sm-3 control-label no-padding-right" for="form-bankAddress">兑换服务：</label>
+								<div class="col-sm-9">
+									<input type="text" id="form-bankAddress" class="col-xs-10 col-sm-10" name="bankAddress">
 								</div>
 							</div>
 							
@@ -263,6 +260,15 @@
 </div>
 </body>
 <script type="text/javascript">
+$(function(){
+	$("#fCity").selectpicker({
+		'noneSelectedText':'选择省份'
+	});
+	$("#sCity").selectpicker({
+		'noneSelectedText':'选择市县'
+	});
+});
+
 var isNew = false ;
 var id ;
 
@@ -316,7 +322,6 @@ function edit(param){
 	    }
 	});
 	openModal("#customerInfo");
-	//$("#customerInfo").modal("show");
 	id = param ;
 	isNew = false ;
 }
@@ -333,9 +338,9 @@ function saveCustomerInfo(){
 		"points":$("#form-points").val(),
 		"phone":$("#form-phone").val(),
 		"remark":$("#form-remark").val(),
-		"fCityId":$("#fCity").val(),
-		"sCityId":$("#sCity").val(),
-		"bankId":$("#bank").val()
+		"fCity":$("#fCity").val(),
+		"sCity":$("#sCity").val()==null?'null':$("#sCity").val().join(","),
+		"bankAddress":$("#form-bankAddress").val()
 		},
 	    type:"POST",   //请求方式
 	    success:function(result){
@@ -456,7 +461,6 @@ function sCityChange(){
 
 function clearSCity(){//清空二级城市下拉框所有内容（第一个默认的option不清除）
 	$("#sCity").empty();
-	$("#sCity").append("<option value='null'>选择市县</option>"); 
 }
 
 function clearBank(){

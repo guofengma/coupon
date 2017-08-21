@@ -2,6 +2,7 @@ package com.coupon.business.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -71,7 +72,7 @@ public class CustomerAction extends BaseAction{
 			return "business/customer/"+(check?"checkList":"uncheckList");	
 		}
 		if(roleString.toString().contains("大区经理")){
-			IPageList<Customer> customers = customerService.findByManager(pageNo, pageSize,check,user.getCity().getId(),condition);
+			IPageList<Customer> customers = customerService.findByManager(pageNo, pageSize,check,user.getId(),condition);
 			model.addAttribute("customers",customers);
 			return "business/customer/"+(check?"checkList":"uncheckList");	
 		}
@@ -200,6 +201,17 @@ public class CustomerAction extends BaseAction{
 	public void save(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
 		Customer customer = new Customer();
 		boolean isNew = request.getParameter("isNew").equals("true")?true:false;
+		String fCity = request.getParameter("fCity")==null?"null":request.getParameter("fCity");
+		String sCity = request.getParameter("sCity")==null?"null":request.getParameter("sCity");
+		String bankAddress = request.getParameter("bankAddress");
+		Set<City> customerCity = new HashSet<City>();
+		if(fCity.equals("null")){
+			customerCity = null ;
+		}else if(sCity.equals("null")){
+			customerCity = cityService.findByIds(fCity.split(","));
+		}else{
+			customerCity = cityService.findByIds((fCity+","+sCity).split(","));
+		}
 		if(isNew){
 			
 		}else{
@@ -212,19 +224,10 @@ public class CustomerAction extends BaseAction{
 		customer.setTotalAddUp(Integer.parseInt(request.getParameter("points")));
 		customer.setRemark(request.getParameter("remark"));
 		customer.setDeleted(false);
-		String fCityId = request.getParameter("fCityId");
-		String sCityId = request.getParameter("sCityId");
-		String bankId = request.getParameter("bankId");
-		City fCity = cityService.findById(fCityId);
-		City sCity = cityService.findById(sCityId);
-		Bank bank = bankService.findById(bankId);
-		customer.setBank(bank);
+		customer.setBankAddress(bankAddress);
 		User user = userService.findByUserName(MyRealm.hardName);
 		customer.setUser(user);
-		if(sCity==null)
-			customer.setCity(fCity);
-		else
-			customer.setCity(sCity);
+		customer.setCity(customerCity);
 		if(isNew)
 			customerService.save(customer);
 		else
@@ -255,7 +258,7 @@ public class CustomerAction extends BaseAction{
 	public void getCustomerInfo(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
 		String id = request.getParameter("id");
 		StringBuilder result = new StringBuilder();
-		Customer customer = customerService.findById(id);
+		/*Customer customer = customerService.findById(id);
 		result.append("{\"name\":\""+customer.getName()+"\",\"points\":"+customer.getPoint()+",\"phone\":\""+customer.getPhone()+"\",\"remark\":\""+customer.getRemark()+"\",");
 		if(customer.getBank()==null){
 			result.append("\"bankId\":\"null\",");
@@ -273,7 +276,7 @@ public class CustomerAction extends BaseAction{
 				City fCity = city.getParent();
 				result.append("\"fCityId\":\""+fCity.getId()+"\",\"sCityId\":\""+city.getId()+"\"}");
 			}
-		}
+		}*/
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");

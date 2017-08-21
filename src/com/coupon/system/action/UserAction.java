@@ -105,7 +105,6 @@ public class UserAction extends BaseAction {
 		}else if(sCity==null){
 			userCity = cityService.findByIds(fCity.split(","));
 		}else{
-			System.out.println(fCity+"+++++++++++"+sCity);
 			userCity = cityService.findByIds((fCity+","+sCity).split(","));
 		}
 		List<User> temp = userService.findUserByName(user.getName());

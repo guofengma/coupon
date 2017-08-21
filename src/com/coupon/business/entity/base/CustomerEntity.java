@@ -1,11 +1,15 @@
 package com.coupon.business.entity.base;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
@@ -31,13 +35,15 @@ public abstract class CustomerEntity extends BaseEntity{
 	
 	protected boolean deal;//是否被管理员处理（点击通过审核或不通过审核时置为true）
 	
+	protected String bankAddress;//银行兑换地址
+	
 	@ManyToOne
 	@JoinColumn(name = "bankId")
 	protected Bank bank;  //对应兑换服务地址
 	
-	@ManyToOne
-	@JoinColumn(name = "cityId")
-	protected City city;  //所属城市
+	@ManyToMany(targetEntity = City.class, fetch = FetchType.EAGER)
+	@JoinTable(name = "coupon_customer_city", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "CITY_ID"))
+	protected Set<City> city = new HashSet<City>();
 	
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer" ,fetch=FetchType.EAGER)
 	protected List<Record> record; //对应兑换记录
@@ -106,6 +112,14 @@ public abstract class CustomerEntity extends BaseEntity{
 		this.deal = deal;
 	}
 
+	public String getBankAddress() {
+		return bankAddress;
+	}
+
+	public void setBankAddress(String bankAddress) {
+		this.bankAddress = bankAddress;
+	}
+
 	public Bank getBank() {
 		return bank;
 	}
@@ -114,11 +128,11 @@ public abstract class CustomerEntity extends BaseEntity{
 		this.bank = bank;
 	}
 
-	public City getCity() {
+	public Set<City> getCity() {
 		return city;
 	}
 
-	public void setCity(City city) {
+	public void setCity(Set<City> city) {
 		this.city = city;
 	}
 

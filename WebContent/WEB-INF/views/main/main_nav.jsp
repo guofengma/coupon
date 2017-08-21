@@ -52,9 +52,9 @@
 	                <li>
 	                    <a href="<c:url value='/system/city/list'/>" ><i class="icon-building"></i> 城市管理 </a>
 	                </li>
-	                <li>
+	               <%--  <li>
 	                    <a href="<c:url value='/business/bank/list'/>" ><i class="icon-truck"></i> 地址管理 </a>
-	                </li>
+	                </li> --%>
 	                <li>
 	                    <a href="<c:url value='/business/rechargeCode/batchlist'/>" ><i class="icon-barcode"></i> 积分码管理 </a>
 	                </li>
