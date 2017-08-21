@@ -3982,10 +3982,10 @@ var domUtils = dom.domUtils = {
         var rect = element.getBoundingClientRect();
         var offsetLeft = offset.left - rect.left;
         var offsetTop = offset.top - rect.top;
-        if (offsetLeft) {
+       if (offsetLeft) {
             element.style.left = left + offsetLeft + 'px';
         }
-        if (offsetTop) {
+       if (offsetTop) {
             element.style.top = top + offsetTop + 'px';
         }
     },
@@ -29063,8 +29063,26 @@ UE.ui = baidu.editor.ui = {};
                     while (container.tagName != "BODY") {
                         var position = baidu.editor.dom.domUtils.getComputedStyle(container, "position");
                         nodeStack.push(position);
-                        container.style.position = "static";
-                        container = container.parentNode;
+                       // container.style.position = "static";
+                      
+                        
+                    	/*
+                    	 * 解决modal下全屏问题
+                    	 */
+                    	var isModal = false;
+                    	var classes = $(container).attr('class');
+                    	if (classes !== undefined) {
+                    	    classes = classes.split(' ');
+                    	    for (var i = 0; i < classes.length; i++) {
+                    	        if (classes[i] == "modal") {
+                    	            isModal = true;
+                    	        }
+                    	    }
+                    	}
+                    	if (!isModal) {
+                    	    container.style.position = "static";
+                    	}
+                    	  container = container.parentNode;
                     }
                     this._bakHtmlOverflow = document.documentElement.style.overflow;
                     this._bakBodyOverflow = document.body.style.overflow;
@@ -29087,9 +29105,9 @@ UE.ui = baidu.editor.ui = {};
                     editor.iframe.parentNode.style.width = '';
                     this._updateFullScreen();
                 } else {
-                    while (container.tagName != "BODY") {
+                    while (container.tagName != "BODY") {                    	
                         container.style.position = nodeStack.shift();
-                        container = container.parentNode;
+                        container = container.parentNode;                 	
                     }
                     this.getDom().style.cssText = this._bakCssText;
                     this.getDom('iframeholder').style.cssText = this._bakCssText1;

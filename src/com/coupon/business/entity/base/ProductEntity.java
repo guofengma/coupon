@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -33,6 +34,7 @@ public abstract class ProductEntity extends BaseEntity{
 	
 	protected Date endTime ;
 	
+	//@Column(columnDefinition = "CLOB")
 	protected String description ;
 	
 	protected boolean statu ;//是否可用，也就是上架下架

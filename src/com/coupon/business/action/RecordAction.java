@@ -82,7 +82,7 @@ public class RecordAction extends BaseAction{
 			model.addAttribute("records",records);
 		}
 		if(roleString.toString().contains("大区经理")){
-			IPageList<Record> records = recordService.findUndealByManager(pageNo, pageSize,user.getCity().getId());
+			IPageList<Record> records = recordService.findUndealByManager(pageNo, pageSize,user.getId());
 			model.addAttribute("records",records);
 		}
 		if(roleString.toString().contains("员工")){

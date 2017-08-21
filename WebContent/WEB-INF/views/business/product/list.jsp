@@ -54,8 +54,7 @@
 										<tr>
 											<th>商品名称</th>
 											<th>所需积分</th>
-											<!-- <th>可用城市</th> -->
-											<th>描述信息</th>
+											<!-- <th>描述信息</th> -->
 											<th>批次数量</th>
 											<th>预览图</th>
 											<th>操作</th>
@@ -66,12 +65,7 @@
 											<tr class="odd gradeX">
 													<td>${item.name}</td>
 													<td>${item.points}</td>
-													<%-- <td>
-													   <c:forEach items="${item.city}" var="itemCity">
-													   	${itemCity.name}；
-													   </c:forEach>  
-													</td>--%>
-													<td>${item.description}</td>
+													<%-- <td>${item.description}</td> --%>
 													<td>${item.redeemCode.size()}</td>
 													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
 													<td>
@@ -129,7 +123,7 @@
 </div>
 
 <div class="modal fade" id="productInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -168,8 +162,16 @@
 							<div class="space-4"></div> 
 							 	<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品说明：</label>
-								<div class="col-sm-9">
+								<!-- <div class="col-sm-9">
 									<input type="text" id="description" class="col-xs-10 col-sm-10" name="description">
+								</div> -->
+								<div class="col-sm-9">
+									<script id="container" name="description" type="text/plain" ></script>
+									<script type="text/javascript" src="<%=path%>/assets/UEditor/ueditor.config.js"></script>
+									<script type="text/javascript" src="<%=path%>/assets/UEditor/ueditor.all.js"></script>
+									<script type="text/javascript">
+										var ue=UE.getEditor('container',{elementPathEnable:false});
+									</script>
 								</div>
 							 </div> 
 							
@@ -314,13 +316,13 @@ function offline(url){
 function add(){
 	 $("#name").val('');
 	 $("#points").val('');
-	 $("#description").val('');
+	 var ue=UE.getEditor('container');
+	 ue.setContent('');
 	 $("#oldId").val('null');
 	 var treeObj=$.fn.zTree.getZTreeObj("cityTree");
 	 treeObj.checkAllNodes(false);
 	 treeObj.expandAll(false);
 	 document.getElementById("preview").src = "";
-	 //$("#productInfo").modal("show");
 	 openModal("#productInfo");
 }
 
@@ -338,7 +340,8 @@ function edit(param){
 	    success:function(result){
 	       $("#name").val(result.name);
 		   $("#points").val(result.points);
-		   $("#description").val(result.description);
+		   var ue=UE.getEditor('container');
+		   ue.setContent(result.description);
 		   document.getElementById("preview").src = "<%=path%>/img/"+result.picPath;
 		   var treeObj=$.fn.zTree.getZTreeObj("cityTree");
 		   var checkNodesId = result.cityIds.split(";");
@@ -357,7 +360,7 @@ function edit(param){
 		   }
 	    },
 	    error:function(){
-			alert("读取城市信息失败！")
+			alert("读取商品信息失败！")
 	    }
 	});
 	//$("#productInfo").modal("show");

@@ -197,7 +197,10 @@ public class ProductAction extends BaseAction{
 		}
 		if(citys.size()!=0)
 			cityIds.deleteCharAt(cityIds.length()-1);
-		result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription()+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
+		if(product.getDescription()==null)
+			result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
+		else
+			result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription().replace("\"", "'")+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
