@@ -1,5 +1,6 @@
 package com.coupon.business.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import com.coupon.base.dao.impl.BaseDaoImpl;
 import com.coupon.business.dao.CustomerDao;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.RechargeCode;
+import com.coupon.system.entity.City;
 import com.coupon.system.entity.User;
 import com.coupon.util.FolderUtil;
 
@@ -39,19 +41,28 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 	}
 
 	@Override
-	public IPageList<Customer> findByManager(int pageNo, int pageSize, boolean check, String cityId,String condition) {
+	public IPageList<Customer> findByManager(int pageNo, int pageSize, boolean check, String cityIds,String condition) {
 		String addSql = "";
-		System.out.println("woshi========");
 		if(!condition.equals(""))
 			addSql = " and (r.name like '%"+condition+"%' or r.phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
-		List<Customer> items = this.queryByHql(
-				"from Customer r where r.deleted = false and r.statu = "+check+" and r.city.id = '"+cityId+"'"+addSql+" order by r.createTime desc", null,
+		List<Customer> tempList = this.queryByHql(
+				"from Customer r where r.deleted = false and r.statu = "+check+ addSql+" order by r.createTime desc", null,
 				first, pageSize);
+		List<Customer> items = new ArrayList<Customer>();
+		for(Customer temp : tempList){
+			boolean is = false ;
+			for(City tempCity :temp.getCity()){
+				if(cityIds.contains(tempCity.getId())){
+					is = true ;
+				}
+			}
+			if(is){
+				items.add(temp);
+			}
+		}
 		System.out.println(items.size());
-		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Customer r where r.deleted = false and r.statu = "+check+" and r.city.id ='"+cityId+"'"+addSql, null)
-				.toString());
+		int count = items.size();
 		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
