@@ -13,7 +13,7 @@ public interface RecordDao extends BaseDao<Record , String>{
 
 	IPageList<Record> findUndealByAdmin(int pageNo, int pageSize);
 
-	IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityId);
+	IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityIds);
 
 	IPageList<Record> findUndealByStaff(int pageNo, int pageSize, String userId);
 

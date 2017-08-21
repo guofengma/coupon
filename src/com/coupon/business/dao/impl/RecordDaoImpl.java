@@ -1,5 +1,6 @@
 package com.coupon.business.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import com.coupon.base.dao.impl.BaseDaoImpl;
 import com.coupon.business.dao.RecordDao;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Record;
+import com.coupon.system.entity.City;
 
 @Repository
 public class RecordDaoImpl extends BaseDaoImpl<Record, String> implements RecordDao{
@@ -47,14 +49,24 @@ public class RecordDaoImpl extends BaseDaoImpl<Record, String> implements Record
 	}
 
 	@Override
-	public IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityId) {
+	public IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityIds) {
 		int first = (pageNo - 1) * pageSize;
-		List<Record> items = this.queryByHql(
-				"from Record r where r.deleted=false and r.statu = false and r.customer.city.id ='"+cityId+"' order by createTime desc", null,
+		List<Record> tempList = this.queryByHql(
+				"from Record r where r.deleted=false and r.statu = false order by createTime desc", null,
 				first, pageSize);
-		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Record r where r.deleted=false and r.statu = false and r.customer.city.id ='"+cityId+"' ", null)
-				.toString());
+		List<Record> items = new ArrayList<Record>();
+		for(Record temp : tempList){
+			boolean is = false ;
+			for(City tempCity :temp.getCustomer().getCity()){
+				if(cityIds.contains(tempCity.getId())){
+					is = true ;
+				}
+			}
+			if(is){
+				items.add(temp);
+			}
+		}
+		int count = items.size();
 		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}

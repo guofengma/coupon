@@ -36,8 +36,8 @@ public class RecordServiceImpl extends BaseServiceImpl<Record, String> implement
 	}
 
 	@Override
-	public IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityId) {
-		return getRecordDao().findUndealByManager(pageNo, pageSize,cityId);
+	public IPageList<Record> findUndealByManager(int pageNo, int pageSize, String cityIds) {
+		return getRecordDao().findUndealByManager(pageNo, pageSize,cityIds);
 	}
 
 	@Override
