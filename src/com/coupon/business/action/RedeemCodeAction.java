@@ -137,7 +137,7 @@ public class RedeemCodeAction extends BaseAction{
 		RedeemCode batch = redeemCodeService.findById(id);
 		StringBuilder result = new StringBuilder("[");
 		for(RedeemCode temp : batch.getChildrenOrderByUsed()){
-			result.append("{\"code\":\""+temp.getCode()+"\",\"used\":"+temp.isUsed()+",\"id\":\""+temp.getId()+"\"},");
+			result.append("{\"code\":\""+temp.getCode()+"\",\"used\":"+temp.isUsed()+",\"statu\":"+temp.isStatu()+",\"id\":\""+temp.getId()+"\"},");
 		}
 		if(batch.getChildren().size()!=0)
 			result.deleteCharAt(result.length()-1);
@@ -146,6 +146,18 @@ public class RedeemCodeAction extends BaseAction{
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write(result.toString());
+	}
+	
+	@RequestMapping(value = "/business/redeemCode/changeState")//启用停用单个兑换码
+	public void closeRedeemCode(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		RedeemCode redeemCode = redeemCodeService.findById(id);
+		boolean state = request.getParameter("state").equals("false")?false:true;
+		redeemCode.setStatu(state);
+		redeemCodeService.update(redeemCode);
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{\"result\":\"success\"}");
 	}
 	
 	

@@ -60,6 +60,13 @@ function generateSwitch(id,used){
 		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox'/>";
 }
 
+function generateSwitch1(id,statu){
+	if(statu)
+		return "<input value='"+id+"'name='switch1"+"' data-on-text='已停用' data-off-text='正常' type='checkbox' checked/>";
+	else
+		return "<input value='"+id+"'name='switch1"+"' data-on-text='已停用' data-off-text='正常' type='checkbox'/>";
+}
+
 $(function(){
 	tableHeight = $(document.body).height()-200;
 	initTable();
@@ -85,7 +92,6 @@ function initTable() {
         minimumCountColumns: 2,    //最少允许的列数
         clickToSelect: true,    //是否启用点击选中行
         searchOnEnterKey: false,
-        search:true,
         columns: [
          {
             title: "兑换码",
@@ -93,11 +99,22 @@ function initTable() {
             searchable:true
         },
         {
-            title: "状态",
+            title: "兑换状态",
             field: "used",
             searchable:false,
             formatter: function (value, row, index) {
             	return generateSwitch(row.id,value);
+            }
+        },
+        {
+            title: "停用/启用",
+            field: "statu",
+            searchable:false,
+            formatter: function (value, row, index) {
+            	if(!row.used)
+            		return generateSwitch1(row.id,value);
+            	else
+            		return '';
             }
         },{
         	title: "操作",
@@ -108,7 +125,7 @@ function initTable() {
             		return '';
             	else
             		return "<a href=\"javascript:deleteRedeemCode('"+row.id+"')\" class='btn-sm btn-app btn-danger no-radius'><i class='icon-trash bigger-200'></i>删除</a>&nbsp;&nbsp;"
-            				+"<a href=\"javascript:editRedeemCode("+row.id+"')\" class='btn-sm btn-app btn-primary no-radius'><i class='icon-edit bigger-200'></i>修改</a>";
+            				/* +"<a href=\"javascript:editRedeemCode("+row.id+"')\" class='btn-sm btn-app btn-primary no-radius'><i class='icon-edit bigger-200'></i>修改</a>" */;
             		
             }
         }
@@ -119,6 +136,32 @@ function initTable() {
 	      			disabled:true
 	      		});
 	         });
+	      	  $("input[name='switch1']").each(function(){
+		      		$(this).bootstrapSwitch();
+		         	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+             		   var change = true ;  
+               		   var id = $(this).val();
+             		   $.ajax({
+             			   url:"<%=path%>/business/redeemCode/changeState",
+             			   data:{
+             				   id:id,
+             				   state:state
+             			   },
+             			   async:false,
+             			   dataType:"json",
+             			   type:"GET",
+             			   success:function(result){
+             				  $('#tb_redeemCode').bootstrapTable('refresh'); 
+             			   },
+    	      			   error:function(){
+   	      					alert("状态切换失败！")
+   	      			    }
+             		   });
+             		   if(!change){
+             			   $(this).bootstrapSwitch('state',!state, true);
+             		   }
+               	}); 
+		      });
         },
         onSearch: function (text) {
         	 $("input[name='switch']").each(function(){
@@ -126,6 +169,32 @@ function initTable() {
  	      			disabled:true
  	      		});
  	         });
+        	 $("input[name='switch1']").each(function(){
+  	      		$(this).bootstrapSwitch();
+	  	      	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+	      		   var change = true ;  
+	        		   var id = $(this).val();
+	      		   $.ajax({
+	      			   url:"<%=path%>/business/redeemCode/changeState",
+	      			   data:{
+	      				   id:id,
+	      				   state:state
+	      			   },
+	      			   async:false,
+	      			   dataType:"json",
+	      			   type:"GET",
+	      			   success:function(result){
+	      				 $('#tb_redeemCode').bootstrapTable('refresh'); 
+	      			   },
+	      			   error:function(){
+	      					alert("状态切换失败！")
+	      			   }
+	      		   });
+	      		   if(!change){
+	      			   $(this).bootstrapSwitch('state',!state, true);
+	      		   }
+	        	});
+  	         });
         },
 
     });
@@ -144,7 +213,7 @@ function deleteRedeemCode(param){
 		       	 $('#tb_redeemCode').bootstrapTable('refresh');   
 		    },
 		    error:function(){
-				alert("读取批次信息失败！")
+				alert("删除信息失败！")
 		    }
 		});
 	}

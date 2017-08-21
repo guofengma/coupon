@@ -24,7 +24,9 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 	
 	protected String code ;//兑换码
 	
-	protected boolean used ;//是否已经使用
+	protected boolean used ;//兑换状态
+	
+	protected boolean statu;//停用、启用状态 0启用  1停用
 	
 	protected Date startTime;//有效期开始时间
 	
@@ -64,6 +66,14 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 
 	public void setUsed(boolean used) {
 		this.used = used;
+	}
+
+	public boolean isStatu() {
+		return statu;
+	}
+
+	public void setStatu(boolean statu) {
+		this.statu = statu;
 	}
 
 	public Date getStartTime() {
