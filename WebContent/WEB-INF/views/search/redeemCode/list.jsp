@@ -94,9 +94,10 @@
 													</c:if>
 												</td>
 												<td>
-													<%-- <c:if test="${item.record!=null}">
-														${item.record.customer.city.name}
-													</c:if> --%>
+													<c:forEach items="${item.record.customer.customerCityByPriority}" var="city" varStatus="status">
+														<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
+														<c:if test="${!status.last&&!status.first}">;</c:if>
+													</c:forEach>
 												</td>
 												<td>
 													${item.parent.remark}

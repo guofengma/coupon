@@ -61,7 +61,7 @@
 											<th>最近一次充值时间</th>
 											<th>累计兑换积分数量</th>
 											<th>剩余积分</th>
-											<!-- <th>城市</th> -->
+											<th>城市</th>
 											<th>备注</th>
 											<th>操作</th>
 										</tr>
@@ -76,12 +76,12 @@
 												<td>${fn:substring(item.latestChargeTime,0,10)}</td>
 												<td>${item.totalAddUp}</td>
 												<td>${item.point}</td>
-											<%-- 	<td>
-													<c:if test ="${item.city.parent!=null}">
-														${item.city.parent.name}
-													</c:if>
-													${item.city.name}
-												</td> --%>
+												<td>
+													<c:forEach items="${item.customerCityByPriority}" var="city" varStatus="status">
+														<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
+														<c:if test="${!status.last&&!status.first}">;</c:if>
+													</c:forEach>
+												</td>
 												<td>${item.bank.name}</td>
 												<td>
 													<p>
