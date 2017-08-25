@@ -72,7 +72,7 @@
 									<c:forEach items="${records.items}" var="item" varStatus="status">
 											<tr class="odd gradeX">
 												<td>${status.count}</td>
-												<td>${item.user.displayName}</td>
+												<td>${item.customer.user.displayName}</td>
 												<td>
 													<c:if test ="${item.product!=null}">
 														兑换

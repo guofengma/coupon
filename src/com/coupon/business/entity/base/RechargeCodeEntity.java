@@ -38,6 +38,16 @@ public class RechargeCodeEntity extends BaseEntity{
 	
 	protected boolean given;//该兑换码是否发放给用户了
 	
+	protected boolean statu;//状态  0为正常，1为停用
+	
+	public boolean isStatu() {
+		return statu;
+	}
+
+	public void setStatu(boolean statu) {
+		this.statu = statu;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	protected  User user;

@@ -127,7 +127,7 @@
                     		<c:forEach items="${roleList}" var="role">
                     			<c:if test="${!role.isSuper}">
 		                    		<label class="checkbox-inline">
-			                            <input type="checkbox" name="roleIds" value="${role.id}" 
+			                            <input type="radio" name="roleIds" value="${role.id}" 
 			                            <c:if test='${userRoleList.contains(role) }'>
 			                            	checked="checked" 
 			                            </c:if>

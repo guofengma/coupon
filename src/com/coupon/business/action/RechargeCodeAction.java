@@ -125,6 +125,30 @@ public class RechargeCodeAction extends BaseAction{
 		response.getWriter().write(result.toString());
 	}
 	
+	@RequestMapping(value = "/business/rechargeCode/changeStatu")//启用停用单个兑换码
+	public void changeStatu(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		RechargeCode rechargeCode = rechargeCodeService.findById(id);
+		boolean state = request.getParameter("state").equals("false")?false:true;
+		rechargeCode.setStatu(state);
+		rechargeCodeService.update(rechargeCode);
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{\"result\":\"success\"}");
+	}
+	
+	@RequestMapping(value = "/business/rechargeCode/changeGiven")//启用停用单个兑换码
+	public void changeGiven(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		RechargeCode rechargeCode =rechargeCodeService.findById(id);
+		boolean state = request.getParameter("state").equals("false")?false:true;
+		rechargeCode.setGiven(state);
+		rechargeCodeService.update(rechargeCode);
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{\"result\":\"success\"}");
+	}
+	
 	@RequestMapping(value = "/business/rechargeCode/batchSave")
 	public String batchSave(HttpServletRequest request, ModelMap model,String productId,String oldId,String batch,String points , String count,String endTime,String remark) throws ParseException {
 		super.addMenuParams(request, model);
@@ -145,6 +169,7 @@ public class RechargeCodeAction extends BaseAction{
 				RechargeCode temp = new RechargeCode();
 				temp.setCode(RandomCode.generate_18("ka"));
 				temp.setKeyt(RandomCode.generate_18("mi"));
+				temp.setStatu(true);
 				temp.setPoints(Integer.parseInt(points));
 		        temp.setParent(rechargeCode);
 		        temp.setUsed(false);
@@ -232,7 +257,7 @@ public class RechargeCodeAction extends BaseAction{
 		RechargeCode batch = rechargeCodeService.findById(id);
 		StringBuilder result = new StringBuilder("[");
 		for(RechargeCode temp : batch.getChildrenOrderByUsed()){
-			result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"keyt\":\""+temp.getKeyt()+"\",\"used\":"+temp.isUsed()+",\"given\":"+temp.isGiven()+",\"id\":\""+temp.getId()+"\"},");
+			result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"keyt\":\""+temp.getKeyt()+"\",\"used\":"+temp.isUsed()+",\"given\":"+temp.isGiven()+",\"statu\":"+temp.isStatu()+",\"id\":\""+temp.getId()+"\"},");
 		}
 		if(batch.getChildren().size()!=0)
 			result.deleteCharAt(result.length()-1);

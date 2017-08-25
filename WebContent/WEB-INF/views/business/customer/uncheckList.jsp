@@ -227,7 +227,7 @@
 							
 							<div class="space-4"></div> 	
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-bankAddress">兑换服务：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-bankAddress">兑换支行：</label>
 								<div class="col-sm-9">
 									<input type="text" id="form-bankAddress" class="col-xs-10 col-sm-10" name="bankAddress">
 								</div>

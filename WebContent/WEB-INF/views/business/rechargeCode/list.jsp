@@ -50,17 +50,24 @@
 </body>
 <script type="text/javascript">
 var tableHeight;
-function generateSwitch(id,used){
+/*function generateSwitch(id,used){
 	if(used)
 		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox' checked/>";
 	else
 		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox'/>";
-}
-function generateSwitch1(id,grant){
+}*/ 
+function generateSwitch1(id,grant,used){
 	if(grant)
-		return "<input value='"+id+"'name='switch"+"' data-on-text='已领取' data-off-text='未领取' type='checkbox' checked/>";
+		return "<input value='"+id+"'name='switch1"+"' data-on-text='已领取' data-off-text='未领取' type='checkbox' checked "+(used?'disabled':'')+"/>";
 	else
-		return "<input value='"+id+"'name='switch"+"' data-on-text='已领取' data-off-text='未领取' type='checkbox'/>";
+		return "<input value='"+id+"'name='switch1"+"' data-on-text='已领取' data-off-text='未领取' type='checkbox' "+ (used?'disabled':'')+"/>";
+} 
+
+function generateSwitch2(id,statu){
+	if(statu)
+		return "<input value='"+id+"'name='switch2"+"' data-on-text='启用' data-off-text='停用' type='checkbox' checked/>";
+	else
+		return "<input value='"+id+"'name='switch2"+"' data-on-text='启用' data-off-text='停用' type='checkbox'/>";
 }
 
 $(function(){
@@ -110,15 +117,16 @@ function initTable() {
             field: "given",
             searchable:false,
             formatter: function (value, row, index) {
-            	return generateSwitch1(row.id,value);
-            }
+            	return generateSwitch1(row.id,value,row.used);
+             }
         },
         {
             title: "使用状态",
             field: "used",
             searchable:false,
             formatter: function (value, row, index) {
-            	return generateSwitch(row.id,value);
+            	/* return generateSwitch(row.id,value); */
+            	return value?"<font color='#00FF00'>已兑换</font>":"<font color='#0000FF'>未兑换</font>"
             }
         },
         {
@@ -126,29 +134,118 @@ function initTable() {
             field: "used",
             searchable:false,
             formatter: function (value, row, index) {
-            	if(value)
-            		return '';
-            	else
-            		return "<a href=\"javascript:deleterechargeCode('"+row.id+"')\" class='btn-sm btn-app btn-danger no-radius'><i class='icon-trash bigger-200'></i>删除</a>&nbsp;&nbsp;"
-            				/* +"<a href=\"javascript:editrechargeCode("+row.id+"')\" class='btn-sm btn-app btn-primary no-radius'><i class='icon-edit bigger-200'></i>修改</a>" */;
-            		
+            	return value?'':generateSwitch2(row.id,row.statu);
             }
         }
         ],
         onLoadSuccess:function(){
-	      	  $("input[name='switch']").each(function(){
-	      		$(this).bootstrapSwitch({
-	      			disabled:true
-	      		});
-	         });
-        },
-        onSearch: function (text) {
-        	 $("input[name='switch']").each(function(){
- 	      		$(this).bootstrapSwitch({
- 	      			disabled:true
- 	      		});
+	      	$("input[name='switch1']").each(function(){
+	      		$(this).bootstrapSwitch({});
+	      		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+          		   var change = true ;  
+            	   var id = $(this).val();
+          		   $.ajax({
+          			   url:"<%=path%>/business/rechargeCode/changeGiven",
+          			   data:{
+          				   id:id,
+          				   state:state
+          			   },
+          			   async:false,
+          			   dataType:"json",
+          			   type:"GET",
+          			   success:function(result){
+          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+          			   },
+ 	      			   error:function(){
+	      					alert("状态切换失败！")
+	      			    }
+          		   });
+          		   if(!change){
+          			   $(this).bootstrapSwitch('state',!state, true);
+          		   }
+	          });
+	      	});
+        	 $("input[name='switch2']").each(function(){
+ 	      		$(this).bootstrapSwitch({});
+ 	    		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+	          		   var change = true ;  
+	            	   var id = $(this).val();
+	          		   $.ajax({
+	          			   url:"<%=path%>/business/rechargeCode/changeStatu",
+	          			   data:{
+	          				   id:id,
+	          				   state:state
+	          			   },
+	          			   async:false,
+	          			   dataType:"json",
+	          			   type:"GET",
+	          			   success:function(result){
+	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          			   },
+	 	      			   error:function(){
+		      					alert("状态切换失败！")
+		      			    }
+	          		   });
+	          		   if(!change){
+	          			   $(this).bootstrapSwitch('state',!state, true);
+	          		   }
+		         });
  	         });
         },
+        onSearch: function (text) {
+        	$("input[name='switch1']").each(function(){
+	      		$(this).bootstrapSwitch({});
+	      		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+	          		   var change = true ;  
+	            	   var id = $(this).val();
+	          		   $.ajax({
+	          			   url:"<%=path%>/business/rechargeCode/changeGiven",
+	          			   data:{
+	          				   id:id,
+	          				   state:state
+	          			   },
+	          			   async:false,
+	          			   dataType:"json",
+	          			   type:"GET",
+	          			   success:function(result){
+	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          			   },
+	 	      			   error:function(){
+		      					alert("状态切换失败！")
+		      			    }
+	          		   });
+	          		   if(!change){
+	          			   $(this).bootstrapSwitch('state',!state, true);
+	          		   }
+		         });
+	         });
+        	 $("input[name='switch2']").each(function(){
+ 	      		$(this).bootstrapSwitch({});
+ 	    		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+	          		   var change = true ;  
+	            	   var id = $(this).val();
+	          		   $.ajax({
+	          			   url:"<%=path%>/business/rechargeCode/changeStatu",
+	          			   data:{
+	          				   id:id,
+	          				   state:state
+	          			   },
+	          			   async:false,
+	          			   dataType:"json",
+	          			   type:"GET",
+	          			   success:function(result){
+	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          			   },
+	 	      			   error:function(){
+		      					alert("状态切换失败！")
+		      			    }
+	          		   });
+	          		   if(!change){
+	          			   $(this).bootstrapSwitch('state',!state, true);
+	          		   }
+		         });
+ 	         });
+        }
 
     });
 }

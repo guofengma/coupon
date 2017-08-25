@@ -111,7 +111,7 @@ public class RecordAction extends BaseAction{
 		record.setDeal(true);
 		if(pass){//通过审核
 			record.setStatu(true);
-			customer.setTotalAddUp(customer.getPoint()+record.getPoints());
+			customer.setTotalAddUp(customer.getTotalAddUp()+record.getPoints());
 			customer.setPoint(customer.getPoint()+record.getPoints());
 			customer.setLatestChargeTime(new Date());
 			customer.setLatestChargeUser(record.getUser());
@@ -150,7 +150,7 @@ public class RecordAction extends BaseAction{
 			record.setDeal(true);
 			if(pass){//通过审核
 				record.setStatu(true);
-				customer.setTotalAddUp(customer.getPoint()+record.getPoints());
+				customer.setTotalAddUp(customer.getTotalAddUp()+record.getPoints());
 				customer.setPoint(customer.getPoint()+record.getPoints());
 				customer.setLatestChargeTime(new Date());
 				customer.setLatestChargeUser(record.getUser());
