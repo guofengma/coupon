@@ -20,4 +20,6 @@ public interface CustomerService extends BaseService<Customer , String>{
 
 	PageList<Customer> findByCondition(int pageNo, int pageSize, User user ,String[] condition);
 
+	List<Customer> exportByCondition(User user, String[] condition);
+
 }

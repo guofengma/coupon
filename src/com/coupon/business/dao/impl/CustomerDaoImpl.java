@@ -160,4 +160,64 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
+	@Override
+	public List<Customer> exportByCondition(User user, String[] condition) {
+		StringBuilder sql = new StringBuilder("from Customer r where r.deleted = false and r.statu = true");
+		/*if(!condition[0].equals("")||!condition[1].equals("")||!condition[3].equals(""))
+			sql.append(" and r.record is not null");*/
+		if(!condition[0].equals(""))
+			sql.append(" and r.latestChargeTime >= '"+condition[0]+"'");
+		if(!condition[1].equals(""))
+			sql.append(" and r.latestChargeTime <= '"+condition[1]+"'");
+		if(!condition[2].equals(""))
+			sql.append(" and r.name like '%"+condition[2]+"%'");
+		if(!condition[3].equals(""))
+			sql.append(" and r.latestChargeUser.displayName like '%"+condition[3]+"%'");
+		/*if(!condition[4].equals("null"))
+			sql.append(" and r.city.id = '"+condition[4]+"'");*/
+		if(!condition[5].equals(""))
+			sql.append(" and r.phone = '"+condition[5]+"'");
+		if(condition[6].equals("3"))
+			sql.append(" and r.user.id = '"+user.getId()+"'");
+		String sql1 = sql + " order by r.latestChargeTime desc , r.totalAddUp desc , r.point desc";
+		System.out.println(sql1);
+		List<Customer> tempList = this.queryByHql(sql1, null);
+		List<Customer> items = new ArrayList<Customer>();	
+		List<Customer> items1 = new ArrayList<Customer>();	
+		if(condition[4].equals("null")){
+			items1 = this.queryByHql(sql1, null);
+		}else{
+			for(Customer temp : tempList){
+				boolean is = false ;
+				for(City tempCity : temp.getCity()){
+					if(tempCity.getId().equals(condition[4]))
+						is = true ;
+				}
+				if(is)
+					items1.add(temp);
+			}
+		}
+		if(condition[6].equals("2")){
+			StringBuilder cityIds = new StringBuilder();
+			for(City temp : user.getCity()){
+				cityIds.append(temp.getId()+";");
+			}
+			for(Customer temp : items1){
+				boolean is = false ;
+				for(City tempCity :temp.getCity()){
+					if(cityIds.toString().contains(tempCity.getId())){
+						is = true ;
+					}
+				}
+				if(is){
+					items.add(temp);
+				}
+			}
+		}
+		if(condition[6].equals("1")||condition[6].equals("3")){
+			items = items1; 
+		}
+		return items;
+	}
+
 }

@@ -45,6 +45,8 @@
 							<div class="btn-group">
 									<a href="javascript:showModal()" class="btn-sm btn-app btn-success no-radius">
 										<i class="icon-search bigger-200">选择查询条件</i>
+									</a>&nbsp;&nbsp;<a href="javascript:exportCustomer()" class="btn-sm btn-app btn-success no-radius">
+										<i class="icon-share-alt bigger-200">导出查询结果</i>
 									</a>
 							</div>
 						</div>
@@ -246,8 +248,20 @@ function search(){
 	var sCity = $("#sCity").val();
 	var phone = $("#phone").val();
 	var url ="<%=path%>/search/customer/findByCondition?name="+name+"&latestName="+latestName+"&startTime="+startTime+"&endTime="+endTime+"&fCity="+fCity+"&sCity="+sCity+"&phone="+phone;
-	$("#searchFrom").attr("action",url)
+	$("#searchFrom").attr("action",url);
 	$("#searchFrom").submit();
+}
+
+function exportCustomer(){
+	var name = $("#name").val();
+	var latestName = $("#latestName").val();
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	var fCity = $("#fCity").val();
+	var sCity = $("#sCity").val();
+	var phone = $("#phone").val();
+	var url ="<%=path%>/search/customer/exportCustomer?name="+name+"&latestName="+latestName+"&startTime="+startTime+"&endTime="+endTime+"&fCity="+fCity+"&sCity="+sCity+"&phone="+phone;
+	window.location.href = url ;
 }
 
 function fCityChange(){

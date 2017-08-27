@@ -49,4 +49,9 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> imple
 	public PageList<Customer> findByCondition(int pageNo, int pageSize, User user,String[] condition) {
 		return getCustomerDao().findByCondition(pageNo,pageSize,user,condition);
 	}
+
+	@Override
+	public List<Customer> exportByCondition(User user, String[] condition) {
+		return getCustomerDao().exportByCondition(user,condition);
+	}
 }
