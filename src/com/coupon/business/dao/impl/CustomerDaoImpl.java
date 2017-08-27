@@ -94,11 +94,11 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 	}
 
 	/*
-	 * {startTime,endTime,name,latestName,city,phone}
-	 *      0        1      2     3          4   5
+	 * {startTime,endTime,name,latestName,city,phone,roleType}
+	 *      0        1      2     3          4   5       6(1是管理员和超级管理员，2是大区经理，3是员工）
 	 */
 	@Override
-	public PageList<Customer> findByCondition(int pageNo, int pageSize, String[] condition) {
+	public PageList<Customer> findByCondition(int pageNo, int pageSize, User user ,String[] condition) {
 		StringBuilder sql = new StringBuilder("from Customer r where r.deleted = false and r.statu = true");
 		/*if(!condition[0].equals("")||!condition[1].equals("")||!condition[3].equals(""))
 			sql.append(" and r.record is not null");*/
@@ -114,16 +114,18 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 			sql.append(" and r.city.id = '"+condition[4]+"'");*/
 		if(!condition[5].equals(""))
 			sql.append(" and r.phone = '"+condition[5]+"'");
+		if(condition[6].equals("3"))
+			sql.append(" and r.user.id = '"+user.getId()+"'");
 		String sql1 = sql + " order by r.latestChargeTime desc , r.totalAddUp desc , r.point desc";
 		System.out.println(sql1);
 		int first = (pageNo - 1) * pageSize;
+		int count = 0;
+		List<Customer> tempList = this.queryByHql(sql1, null,first, pageSize);
+		List<Customer> items = new ArrayList<Customer>();	
+		List<Customer> items1 = new ArrayList<Customer>();	
 		if(condition[4].equals("null")){
-			List<Customer> items = this.queryByHql(sql1, null,first, pageSize);
-			int count = items.size();
-			return PageListUtil.getPageList(count, pageNo, items, pageSize);
+			items1 = this.queryByHql(sql1, null,first, pageSize);
 		}else{
-			List<Customer> tempList = this.queryByHql(sql1, null,first, pageSize);
-			List<Customer> items = new ArrayList<Customer>();
 			for(Customer temp : tempList){
 				boolean is = false ;
 				for(City tempCity : temp.getCity()){
@@ -131,11 +133,31 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 						is = true ;
 				}
 				if(is)
-					items.add(temp);
+					items1.add(temp);
 			}
-			int count = items.size();
-			return PageListUtil.getPageList(count, pageNo, items, pageSize);
-		}	
+		}
+		if(condition[6].equals("2")){
+			StringBuilder cityIds = new StringBuilder();
+			for(City temp : user.getCity()){
+				cityIds.append(temp.getId()+";");
+			}
+			for(Customer temp : items1){
+				boolean is = false ;
+				for(City tempCity :temp.getCity()){
+					if(cityIds.toString().contains(tempCity.getId())){
+						is = true ;
+					}
+				}
+				if(is){
+					items.add(temp);
+				}
+			}
+		}
+		if(condition[6].equals("1")||condition[6].equals("3")){
+			items = items1; 
+		}
+		count = items.size();
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
 }

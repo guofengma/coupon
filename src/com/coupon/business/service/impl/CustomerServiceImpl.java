@@ -11,6 +11,7 @@ import com.coupon.base.service.impl.BaseServiceImpl;
 import com.coupon.business.dao.CustomerDao;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.service.CustomerService;
+import com.coupon.system.entity.User;
 
 @Service
 public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> implements CustomerService{
@@ -45,7 +46,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> imple
 	}
 
 	@Override
-	public PageList<Customer> findByCondition(int pageNo, int pageSize, String[] condition) {
-		return getCustomerDao().findByCondition(pageNo,pageSize,condition);
+	public PageList<Customer> findByCondition(int pageNo, int pageSize, User user,String[] condition) {
+		return getCustomerDao().findByCondition(pageNo,pageSize,user,condition);
 	}
 }

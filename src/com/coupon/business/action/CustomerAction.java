@@ -100,6 +100,22 @@ public class CustomerAction extends BaseAction{
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		List<City> fCityUsedList = cityService.getFCityUsed();
 		model.addAttribute("fCityUsedList",fCityUsedList);
+		User user = userService.findByUserName(MyRealm.hardName);
+		StringBuilder roleString = new StringBuilder() ;
+		String roleType = "";
+		Set<Role> roles = user.getRoles();
+		for(Role temp : roles){
+			roleString.append(temp.getName()+";");
+		}
+		if(roleString.toString().contains("管理员")){
+			roleType = "1";
+		}
+		if(roleString.toString().contains("大区经理")){
+			roleType = "2";
+		}
+		if(roleString.toString().contains("员工")){
+			roleType = "3";
+		}
 		String startTime = request.getParameter("startTime")==null?"":request.getParameter("startTime");
 		String endTime = request.getParameter("endTime")==null?"":request.getParameter("endTime");
 		String name = request.getParameter("name")==null?"": request.getParameter("name");
@@ -108,8 +124,8 @@ public class CustomerAction extends BaseAction{
 		String sCity = request.getParameter("sCity")==null?"null":request.getParameter("sCity");
 		String city = sCity.equals("null")?fCity:sCity;
 		String phone = request.getParameter("phone")==null?"":request.getParameter("phone");
-		String condition[] = new String[]{startTime,endTime,name,latestName,city,phone};
-		PageList<Customer> customers = customerService.findByCondition(pageNo,pageSize,condition);
+		String condition[] = new String[]{startTime,endTime,name,latestName,city,phone,roleType};
+		PageList<Customer> customers = customerService.findByCondition(pageNo,pageSize,user,condition);
 		model.addAttribute("customers",customers);
 		model.addAttribute("startTime",startTime);
 		model.addAttribute("endTime",endTime);

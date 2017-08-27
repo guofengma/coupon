@@ -6,6 +6,7 @@ import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.service.BaseService;
 import com.coupon.business.entity.Customer;
+import com.coupon.system.entity.User;
 
 public interface CustomerService extends BaseService<Customer , String>{
 
@@ -17,6 +18,6 @@ public interface CustomerService extends BaseService<Customer , String>{
 
 	List<Customer> findByIds(String[] ids);
 
-	PageList<Customer> findByCondition(int pageNo, int pageSize, String[] condition);
+	PageList<Customer> findByCondition(int pageNo, int pageSize, User user ,String[] condition);
 
 }
