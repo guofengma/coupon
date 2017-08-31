@@ -38,18 +38,27 @@
             <div class="col-md-12">
             	<div class="portlet box light-grey">
 					<div class="portlet-title">
-						发放批次： <select class="selectpicker" id="batch" onchange="batchChange()">
-							 <c:forEach items="${batch}" var="item">
-							  	<option value="${item.id}">${item.batch}</option>
-							 </c:forEach>
-						 </select>
-						
-						 <div class="timeSelect input-append date form_datetime datetimepicker" style="float:left">
-							 实际发放时间：
-							 <input size="16" value="" type="text" id="fafangTime" readonly>
-							<span class="add-on"><i class="icon-remove"></i></span>
-							<span class="add-on"><i class="icon-calendar"></i></span>
-						</div>
+					<table>
+						<tr>
+							<td>
+							发放批次： 
+							<select class="selectpicker" id="batch" onchange="batchChange()">
+								 <c:forEach items="${batch}" var="item">
+								  	<option value="${item.id}">${item.batch}</option>
+								 </c:forEach>
+							 </select>
+							</td>
+							<td>&nbsp;&nbsp;</td>
+							<td>
+								<div class="timeSelect input-append date form_datetime datetimepicker" style="float:left">
+									 实际发放时间：
+									 <input size="16" value="" type="text" id="fafangTime" readonly>
+									<span class="add-on"><i class="icon-remove"></i></span>
+									<span class="add-on"><i class="icon-calendar"></i></span>
+								</div>
+							</td>
+						</tr>
+					</table>
 					</div>
 					<div class="portlet-body">
 						<table id="tb_rechargeCode"></table>
