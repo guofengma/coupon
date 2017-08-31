@@ -60,7 +60,7 @@
 												<input type="checkbox" id="contraryCheck" onclick="contraryCheck()">反选
 											</th>
 											<th>送审员工</th>
-											<th>审核员工</th>
+											<!-- <th>审核员工</th> -->
 											<th>客户姓名</th>
 											<th>充值时间</th>
 											<th>充值积分数</th>
@@ -77,7 +77,7 @@
 														</c:if>
 													</td>
 													<td>${item.user.displayName}</td>
-													<td>${item.checkUser.displayName}</td>
+													<%-- <td>${item.checkUser.displayName}</td> --%>
 													<td>${item.customer.name}</td>
 													<td>${fn:substringBefore(item.createTime,".")}</td>
 													<td>${item.points}</td>

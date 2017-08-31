@@ -75,9 +75,10 @@
 											</th>
 											<th>姓名</th>
 											<th>电话号码</th>
-											<th>剩余积分数量</th>
+											<th>积分数量</th>
 											<th>所属城市</th>
-											<th>兑换服务地址</th>
+											<th>兑换支行</th>
+											<th>送审员工</th>
 											<th>处理状态</th>
 											<th>操作</th>
 										</tr>
@@ -101,8 +102,14 @@
 												</td>
 												<td>${item.bankAddress }</td>
 												<td>
+													<c:if test="${item.register}">
+														前台注册
+													</c:if>
+													${item.user.displayName}
+												</td>
+												<td>
 													<c:if test ="${item.deal}">
-														已处理，未通过
+														<font color="#FF0000">已处理，未通过</font>
 													</c:if>
 													<c:if test ="${!item.deal}">
 														未处理

@@ -59,6 +59,7 @@
 											<th>姓名</th>
 											<th>电话号码</th>
 											<th>剩余积分数量</th>
+											<th>审核员工</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -68,6 +69,7 @@
 													<td>${item.name }</td>
 													<td>${item.phone }</td>
 													<td>${item.point }</td>
+													<td>${item.checkUser.displayName}</td>
 													<td>
 														<p>
 															<shiro:hasPermission name="recharge:recharge">

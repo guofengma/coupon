@@ -13,6 +13,9 @@
 	<link rel="stylesheet" href="<%=path%>/assets/bootstrapTable/dist/bootstrap-table.css">
 	<script src="<%=path%>/assets/bootstrapTable/dist/bootstrap-table.js"></script>
 	<script src="<%=path%>/assets/bootstrapTable/dist/locale/bootstrap-table-zh-CN.js"></script>
+	 <link rel="stylesheet" href="<%=path %>/assets/timepicker/css/bootstrap-datetimepicker.min.css">
+	<script src="<%=path%>/assets/timepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="<%=path%>/assets/timepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <html>
 <body style="margin-top:0px">
@@ -26,11 +29,8 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li>
-					<a href='<c:url value="/business/rechargeCode/batchlist"/>'><i class="icon-barcode"></i> 积分码批次管理</a>
-				</li>
 				<li class="active">
-					${batch.batch}--积分码管理
+					 兑换码发放
 				</li>
 			</ul>
 		</div>
@@ -38,6 +38,18 @@
             <div class="col-md-12">
             	<div class="portlet box light-grey">
 					<div class="portlet-title">
+						发放批次： <select class="selectpicker" id="batch" onchange="batchChange()">
+							 <c:forEach items="${batch}" var="item">
+							  	<option value="${item.id}">${item.batch}</option>
+							 </c:forEach>
+						 </select>
+						
+						 <div class="timeSelect input-append date form_datetime datetimepicker" style="float:left">
+							 实际发放时间：
+							 <input size="16" value="" type="text" id="fafangTime" readonly>
+							<span class="add-on"><i class="icon-remove"></i></span>
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
 					</div>
 					<div class="portlet-body">
 						<table id="tb_rechargeCode"></table>
@@ -49,6 +61,19 @@
 </div>
 </body>
 <script type="text/javascript">
+$(function(){
+	$("#batch").selectpicker({
+		'noneSelectedText':'选择批次'
+	});
+	$(".datetimepicker").datetimepicker({
+		format: "yyyy-mm-dd",
+	    autoclose: true,
+	    todayBtn: true,
+	    pickerPosition: "bottom-left",
+	    language:"zh-CN",
+	    minView:"month"
+	    });
+})
 var tableHeight;
 /*function generateSwitch(id,used){
 	if(used)
@@ -76,7 +101,8 @@ $(function(){
 });
 
 function initTable() {
-	var batchId = '${batch.id}';
+	var batchId = $("#batch").val();
+	$('#tb_rechargeCode').bootstrapTable('destroy'); 
     $('#tb_rechargeCode').bootstrapTable({
         method: 'get',
         queryParams: { id: batchId },
@@ -90,21 +116,15 @@ function initTable() {
         sortable: true,      //是否启用排序
         sortOrder: "used asc",     //排序方式
         url: "<%=path%>/business/rechargeCode/getRechargeCodeByBatch",//这个接口需要处理bootstrap table传递的固定参数
-        search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+       // search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
         strictSearch: false,
         minimumCountColumns: 2,    //最少允许的列数
         clickToSelect: true,    //是否启用点击选中行
         searchOnEnterKey: false,
-        search:true,
         columns: [
          {
             title: "兑换码",
             field: "code",
-            searchable:true
-        },
-        {
-            title: "密钥",
-            field: "keyt",
             searchable:true
         },
         {
@@ -128,14 +148,6 @@ function initTable() {
             	/* return generateSwitch(row.id,value); */
             	return value?"<font color='#00FF00'>已兑换</font>":"<font color='#0000FF'>未兑换</font>"
             }
-        },
-        {
-        	title: "操作",
-            field: "used",
-            searchable:false,
-            formatter: function (value, row, index) {
-            	return value?'':generateSwitch2(row.id,row.statu);
-            }
         }
         ],
         onLoadSuccess:function(){
@@ -144,11 +156,13 @@ function initTable() {
 	      		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
           		   var change = true ;  
             	   var id = $(this).val();
+          		   var fafangTime = $("#fafangTime").val();
           		   $.ajax({
           			   url:"<%=path%>/business/rechargeCode/changeGiven",
           			   data:{
           				   id:id,
-          				   state:state
+          				   state:state,
+          				   fafangTime:fafangTime
           			   },
           			   async:false,
           			   dataType:"json",
@@ -165,108 +179,14 @@ function initTable() {
           		   }
 	          });
 	      	});
-        	 $("input[name='switch2']").each(function(){
- 	      		$(this).bootstrapSwitch({});
- 	    		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-	          		   var change = true ;  
-	            	   var id = $(this).val();
-	          		   $.ajax({
-	          			   url:"<%=path%>/business/rechargeCode/changeStatu",
-	          			   data:{
-	          				   id:id,
-	          				   state:state
-	          			   },
-	          			   async:false,
-	          			   dataType:"json",
-	          			   type:"GET",
-	          			   success:function(result){
-	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
-	          			   },
-	 	      			   error:function(){
-		      					alert("状态切换失败！")
-		      			    }
-	          		   });
-	          		   if(!change){
-	          			   $(this).bootstrapSwitch('state',!state, true);
-	          		   }
-		         });
- 	         });
-        },
-        onSearch: function (text) {
-        	$("input[name='switch1']").each(function(){
-	      		$(this).bootstrapSwitch({});
-	      		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-	          		   var change = true ;  
-	            	   var id = $(this).val();
-	          		   $.ajax({
-	          			   url:"<%=path%>/business/rechargeCode/changeGiven",
-	          			   data:{
-	          				   id:id,
-	          				   state:state
-	          			   },
-	          			   async:false,
-	          			   dataType:"json",
-	          			   type:"GET",
-	          			   success:function(result){
-	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
-	          			   },
-	 	      			   error:function(){
-		      					alert("状态切换失败！")
-		      			    }
-	          		   });
-	          		   if(!change){
-	          			   $(this).bootstrapSwitch('state',!state, true);
-	          		   }
-		         });
-	         });
-        	 $("input[name='switch2']").each(function(){
- 	      		$(this).bootstrapSwitch({});
- 	    		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-	          		   var change = true ;  
-	            	   var id = $(this).val();
-	          		   $.ajax({
-	          			   url:"<%=path%>/business/rechargeCode/changeStatu",
-	          			   data:{
-	          				   id:id,
-	          				   state:state
-	          			   },
-	          			   async:false,
-	          			   dataType:"json",
-	          			   type:"GET",
-	          			   success:function(result){
-	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
-	          			   },
-	 	      			   error:function(){
-		      					alert("状态切换失败！")
-		      			    }
-	          		   });
-	          		   if(!change){
-	          			   $(this).bootstrapSwitch('state',!state, true);
-	          		   }
-		         });
- 	         });
         }
-
     });
 }
 
-function deleterechargeCode(param){
-	var isDel =  confirm('确定删除该兑换码吗？', '确认对话框');
-	if(isDel){
-		$.ajax({
-			url:"<%=path%>/business/rechargeCode/deleterechargeCode",
-		    dataType:"json",   
-		    async:false,
-			data:{"id":param},
-		    type:"GET",   //请求方式
-		    success:function(result){
-		       	 $('#tb_rechargeCode').bootstrapTable('refresh');   
-		    },
-		    error:function(){
-				alert("读取批次信息失败！")
-		    }
-		});
-	}
+
+
+function batchChange(){
+	initTable();
 }
 </script>
 </html>

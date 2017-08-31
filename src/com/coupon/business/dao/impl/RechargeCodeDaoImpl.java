@@ -104,4 +104,13 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 		return items ;
 	}
 
+	@Override
+	public List<RechargeCode> findCanBeGivenBatch() {
+		String sql = "From RechargeCode r where r.deleted = false and r.parent is null";
+		System.out.println(sql);
+		List<RechargeCode> items = this.queryByHql(sql, null);
+		System.out.println(items.size());
+		return items;
+	}
+
 }

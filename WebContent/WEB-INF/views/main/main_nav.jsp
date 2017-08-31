@@ -16,6 +16,9 @@
 	        	<li>
 	           	 	<a href="<c:url value='/business/customer/list?statu=uncheck'/>"><i class="icon-lock"></i> 待审核<i></i></a>
 	        	</li>
+	        	<li>
+	           	 	<a href="<c:url value='/business/customer/recharegeCodeGive'/>"><i class="icon-barcode"></i> 发放积分码<i></i></a>
+	        	</li>
            </ul>
          </li>
          <shiro:hasPermission name="product:management">
@@ -41,7 +44,7 @@
                 </li>
                  <shiro:hasPermission name="recharge:search">
 	                <li>
-	                    <a href="<c:url value='/search/rechargeCode/findByCondition'/>" ><i class="icon-barcode"></i> e兑卡兑换码 </a>
+	                    <a href="<c:url value='/search/rechargeCode/findByCondition'/>" ><i class="icon-barcode"></i> 积分兑换码 </a>
 	                </li>
                 </shiro:hasPermission>
            </ul>
@@ -61,6 +64,9 @@
 	                </li> --%>
 	                <li>
 	                    <a href="<c:url value='/business/rechargeCode/batchlist'/>" ><i class="icon-barcode"></i> 积分码管理 </a>
+	                </li>
+	                <li>
+	                    <a href="<c:url value='/business/record/achievement'/>" ><i class="icon-bar-chart"></i> 业绩计算 </a>
 	                </li>
 	          	 </ul>
 	         	</li>

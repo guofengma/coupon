@@ -49,4 +49,9 @@ public class RecordServiceImpl extends BaseServiceImpl<Record, String> implement
 	public List<Record> findByIds(String[] ids) {
 		return getRecordDao().findByIds(ids);
 	}
+
+	@Override
+	public List<Record> findAchievementByStaff(String userId, String startTime, String endTime) {
+		return getRecordDao().findAchievementByStaff(userId, startTime, endTime);
+	}
 }

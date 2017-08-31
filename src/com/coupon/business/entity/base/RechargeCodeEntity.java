@@ -40,6 +40,8 @@ public class RechargeCodeEntity extends BaseEntity{
 	
 	protected boolean statu;//状态  0为正常，1为停用
 	
+	protected User fafangUser;//发放该兑换码的员工
+	
 	public boolean isStatu() {
 		return statu;
 	}

@@ -37,6 +37,8 @@ public abstract class CustomerEntity extends BaseEntity{
 	
 	protected String bankAddress;//银行兑换地址
 	
+	protected boolean register ; //是注册的还是后台添加的
+
 	@ManyToOne
 	@JoinColumn(name = "bankId")
 	protected Bank bank;  //对应兑换服务地址
@@ -182,6 +184,14 @@ public abstract class CustomerEntity extends BaseEntity{
 
 	public void setTotalAddUp(int totalAddUp) {
 		this.totalAddUp = totalAddUp;
+	}
+	
+	public boolean isRegister() {
+		return register;
+	}
+
+	public void setRegister(boolean register) {
+		this.register = register;
 	}
 	
 }

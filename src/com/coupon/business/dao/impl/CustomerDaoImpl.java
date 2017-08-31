@@ -47,7 +47,7 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 			addSql = " and (r.name like '%"+condition+"%' or r.phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
 		List<Customer> tempList = this.queryByHql(
-				"from Customer r where r.deleted = false and r.statu = "+check+ addSql+" order by r.createTime desc", null,
+				"from Customer r where r.deleted = false and r.register = false and r.statu = "+check+ addSql+" order by r.createTime desc", null,
 				first, pageSize);
 		List<Customer> items = new ArrayList<Customer>();
 		for(Customer temp : tempList){
@@ -74,10 +74,10 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 			addSql = " and (r.name like '%"+condition+"%' or r.phone like '%"+condition+"%')";
 		int first = (pageNo - 1) * pageSize;
 		List<Customer> items = this.queryByHql(
-				"from Customer r where r.deleted=false and r.statu = "+check+" and r.user.id='"+userId+"'"+addSql+" order by r.createTime desc", null,
+				"from Customer r where r.deleted=false and  r.register = false and r.statu = "+check+" and r.user.id='"+userId+"'"+addSql+" order by r.createTime desc", null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from Customer r where r.deleted = false and r.user.id='"+userId+"' and r.statu="+check+addSql, null)
+				"select count(*) from Customer r where r.deleted = false  and r.register = false and r.user.id='"+userId+"' and r.statu="+check+addSql, null)
 				.toString());
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
@@ -114,8 +114,10 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 			sql.append(" and r.city.id = '"+condition[4]+"'");*/
 		if(!condition[5].equals(""))
 			sql.append(" and r.phone = '"+condition[5]+"'");
+		if(condition[6].equals("2"))
+			sql.append(" and r.register = false");
 		if(condition[6].equals("3"))
-			sql.append(" and r.user.id = '"+user.getId()+"'");
+			sql.append(" and r.register = false and r.user.id = '"+user.getId()+"'");
 		String sql1 = sql + " order by r.latestChargeTime desc , r.totalAddUp desc , r.point desc";
 		System.out.println(sql1);
 		int first = (pageNo - 1) * pageSize;

@@ -19,4 +19,6 @@ public interface RecordDao extends BaseDao<Record , String>{
 
 	List<Record> findByIds(String[] ids);
 
+	List<Record> findAchievementByStaff(String userId, String startTime, String endTime);
+
 }

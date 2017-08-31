@@ -67,7 +67,7 @@
 											<tr class="odd gradeX">
 													<td>${item.batch}</td>
 													<td>
-														<input name='switch' value='${item.id}' data-on-text='启用' data-off-text='禁用' type='checkbox' <c:if test="${!item.used}">checked</c:if>/>
+														<input name='switch' value='${item.id}' data-on-text='启用' data-off-text='禁用' type='checkbox' <c:if test="${item.statu}">checked</c:if>/>
 													</td>
 													<td>${fn:substring(item.endTime,0,10)}</td>
 													<td>${item.children.size()}</td>

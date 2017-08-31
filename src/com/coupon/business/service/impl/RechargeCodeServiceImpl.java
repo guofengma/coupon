@@ -1,5 +1,7 @@
 package com.coupon.business.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,11 @@ public class RechargeCodeServiceImpl extends BaseServiceImpl<RechargeCode, Strin
 	@Override
 	public PageList<RechargeCode> findByCondition(int pageNo, int pageSize, String[] condition) {
 		return getRechargeCodeDao().findByCondition(pageNo,pageSize,condition);
+	}
+
+	@Override
+	public List<RechargeCode> findCanBeGivenBatch() {
+		return getRechargeCodeDao().findCanBeGivenBatch();
+		
 	}
 }

@@ -95,4 +95,11 @@ public class RecordDaoImpl extends BaseDaoImpl<Record, String> implements Record
 				null);
 	}
 
+	@Override
+	public List<Record> findAchievementByStaff(String userId, String startTime, String endTime) {
+		List<Record> items = this.queryByHql(
+				"from Record r where r.deleted=false and r.raise = true and r.user.id = '"+userId +"' and r.modifiedTime > '"+startTime+"' and r.modifiedTime <= '"+endTime+"' order by modifiedTime desc", null);
+		return items ;
+	}
+
 }

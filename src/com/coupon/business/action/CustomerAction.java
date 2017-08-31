@@ -29,9 +29,11 @@ import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.business.entity.Customer;
+import com.coupon.business.entity.RechargeCode;
 import com.coupon.business.entity.Record;
 import com.coupon.business.service.BankService;
 import com.coupon.business.service.CustomerService;
+import com.coupon.business.service.RechargeCodeService;
 import com.coupon.business.service.RecordService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
@@ -47,6 +49,8 @@ public class CustomerAction extends BaseAction{
 	@Autowired UserService userService;
 	
 	@Autowired CustomerService customerService;
+	
+	@Autowired RechargeCodeService rechargeCodeService;
 	
 	@Autowired CityService cityService;
 	
@@ -147,6 +151,17 @@ public class CustomerAction extends BaseAction{
 		return "search/customer/list";
 	}
 	
+
+	/*
+	 * 获取可用的积分码批次
+	 */
+	@RequestMapping(value = "/business/customer/recharegeCodeGive")
+	public String recharegeCodeGive(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		List<RechargeCode> batch = rechargeCodeService.findCanBeGivenBatch();
+		model.addAttribute("batch",batch);
+		return "business/customer/list";
+	}
 	
 	/*
 	 * 导出查询结果

@@ -7,9 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,10 +32,13 @@ import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.business.entity.RechargeCode;
+import com.coupon.business.entity.Record;
 import com.coupon.business.entity.RedeemCode;
 import com.coupon.business.service.RechargeCodeService;
+import com.coupon.business.service.RecordService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
+import com.coupon.system.entity.User;
 import com.coupon.system.service.CityService;
 import com.coupon.system.service.UserService;
 import com.coupon.util.FolderUtil;
@@ -48,6 +53,8 @@ public class RechargeCodeAction extends BaseAction{
 	private UserService userService;
 	@Autowired 
 	private CityService cityService;
+	@Autowired 
+	private RecordService recordService;
 	
 	private static HSSFWorkbook workbook = null;  
 	/*
@@ -137,11 +144,30 @@ public class RechargeCodeAction extends BaseAction{
 		response.getWriter().write("{\"result\":\"success\"}");
 	}
 	
-	@RequestMapping(value = "/business/rechargeCode/changeGiven")//启用停用单个兑换码
-	public void changeGiven(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+	@RequestMapping(value = "/business/rechargeCode/changeGiven")
+	public void changeGiven(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException, ParseException {
+		User user = userService.findByUserName(MyRealm.hardName);
 		String id = request.getParameter("id");
+		String fafangTime =  request.getParameter("fafangTime").equals("")?FolderUtil.getFolder():request.getParameter("fafangTime");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		RechargeCode rechargeCode =rechargeCodeService.findById(id);
 		boolean state = request.getParameter("state").equals("false")?false:true;
+		if(state){//如果是发放，则记录到record中
+			Record record = new Record();
+			record.setModifiedTime(new Timestamp(formatter.parse(fafangTime).getTime()));
+			record.setUser(user);
+			record.setDeal(true);
+			record.setStatu(true);
+			record.setPoints(rechargeCode.getPoints());
+			record.setRaise(true);
+			record.setRechargeCode(rechargeCode);
+			record.setDescription("e兑码");
+			recordService.save(record);
+		}else{//如果是取消发放，则删除记录
+			String recordId = rechargeCode.getRecord().getId();
+			rechargeCode.setRecord(null);
+			recordService.delete(recordId);
+		}
 		rechargeCode.setGiven(state);
 		rechargeCodeService.update(rechargeCode);
 		response.setContentType("application/json");
@@ -154,7 +180,7 @@ public class RechargeCodeAction extends BaseAction{
 		super.addMenuParams(request, model);
 		RechargeCode rechargeCode = new RechargeCode();
 		if(oldId.equals("null")){
-			rechargeCode.setUsed(true);
+			rechargeCode.setStatu(true);
 		}else{
 			rechargeCode = rechargeCodeService.findById(oldId);
 		}
@@ -208,7 +234,7 @@ public class RechargeCodeAction extends BaseAction{
 		String id = request.getParameter("id");
 		boolean state = request.getParameter("state").equals("false");
 		RechargeCode rechargeCode = rechargeCodeService.findById(id);
-		rechargeCode.setUsed(state);
+		rechargeCode.setStatu(state);
 		rechargeCodeService.update(rechargeCode);
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
