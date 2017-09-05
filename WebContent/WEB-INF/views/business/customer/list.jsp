@@ -52,8 +52,8 @@
 							<td>
 								<div class="timeSelect input-append date form_datetime datetimepicker" style="float:left">
 									 实际发放时间：
-									 <input size="16" value="" type="text" id="fafangTime" readonly>
-									<span class="add-on"><i class="icon-remove"></i></span>
+									<input size="16" value="" type="text" id="fafangTime" readonly>
+									<!-- <span class="add-on"><i class="icon-remove"></i></span> -->
 									<span class="add-on"><i class="icon-calendar"></i></span>
 								</div>
 							</td>
@@ -74,6 +74,8 @@ $(function(){
 	$("#batch").selectpicker({
 		'noneSelectedText':'选择批次'
 	});
+	var fafangTime = getCurrentDate();
+	$("#fafangTime").val(fafangTime);
 	$(".datetimepicker").datetimepicker({
 		format: "yyyy-mm-dd",
 	    autoclose: true,
@@ -215,10 +217,25 @@ function initTable() {
     });
 }
 
-
-
 function batchChange(){
 	initTable();
+}
+
+function getCurrentDate(){
+	var date = new Date();
+    var strYear = date.getFullYear();    
+    var strDay = date.getDate();    
+    var strMonth = date.getMonth()+1;  
+    if(strMonth<10)    
+    {    
+       strMonth="0"+strMonth;    
+    }  
+    if(strDay<10)    
+    {    
+       strDay="0"+strDay;    
+    }  
+    datastr = strYear+"-"+strMonth+"-"+strDay;  
+    return datastr; 
 }
 </script>
 </html>
