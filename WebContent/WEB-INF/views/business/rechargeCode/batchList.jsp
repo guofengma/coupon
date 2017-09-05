@@ -84,10 +84,10 @@
 																<i class="icon-edit bigger-200"></i>
 																编辑
 															</a>&nbsp;
-															<a href="javascript:del('<c:url value='/business/rechargeCode/deleteBatch?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+															<%-- <a href="javascript:del('<c:url value='/business/rechargeCode/deleteBatch?id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																<i class="icon-trash bigger-200"></i>
 																删除
-															</a>&nbsp;
+															</a>&nbsp; --%>
 															<%-- <a href="javascript:openMakeModal('${item.id}');" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-random bigger-200"></i>
 																生成积分码

@@ -95,13 +95,6 @@ function generateSwitch1(id,grant,used){
 		return "<input value='"+id+"'name='switch1"+"' data-on-text='已发放' data-off-text='未发放' type='checkbox' checked "+(used?'disabled':'')+"/>";
 	else
 		return "<input value='"+id+"'name='switch1"+"' data-on-text='已发放' data-off-text='未发放' type='checkbox' "+ (used?'disabled':'')+"/>";
-} 
-
-function generateSwitch2(id,statu){
-	if(statu)
-		return "<input value='"+id+"'name='switch2"+"' data-on-text='启用' data-off-text='停用' type='checkbox' checked/>";
-	else
-		return "<input value='"+id+"'name='switch2"+"' data-on-text='启用' data-off-text='停用' type='checkbox'/>";
 }
 
 $(function(){
@@ -125,7 +118,7 @@ function initTable() {
         sortable: true,      //是否启用排序
         sortOrder: "used asc",     //排序方式
         url: "<%=path%>/business/rechargeCode/getRechargeCodeByBatch",//这个接口需要处理bootstrap table传递的固定参数
-       // search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
         strictSearch: false,
         minimumCountColumns: 2,    //最少允许的列数
         clickToSelect: true,    //是否启用点击选中行
@@ -188,6 +181,36 @@ function initTable() {
           		   }
 	          });
 	      	});
+        },
+        onSearch: function (text) {
+        	$("input[name='switch1']").each(function(){
+	      		$(this).bootstrapSwitch({});
+	      		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
+	          		   var change = true ;  
+	            	   var id = $(this).val();
+	          		   var fafangTime = $("#fafangTime").val();
+	          		   $.ajax({
+	          			   url:"<%=path%>/business/rechargeCode/changeGiven",
+	          			   data:{
+	          				   id:id,
+	          				   state:state,
+	          				 fafangTime:fafangTime
+	          			   },
+	          			   async:false,
+	          			   dataType:"json",
+	          			   type:"GET",
+	          			   success:function(result){
+	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          			   },
+	 	      			   error:function(){
+		      					alert("状态切换失败！")
+		      			    }
+	          		   });
+	          		   if(!change){
+	          			   $(this).bootstrapSwitch('state',!state, true);
+	          		   }
+		         });
+	         });
         }
     });
 }
