@@ -14,4 +14,6 @@ public interface CityService extends BaseService<City, String>{
 
 	Set<City> findByIds(String[] ids);
 
+	List<City> getCityUsed();
+
 }

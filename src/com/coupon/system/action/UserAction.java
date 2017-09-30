@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageListUtil;
+import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
 import com.coupon.system.entity.Role;
@@ -48,7 +49,7 @@ public class UserAction extends BaseAction {
 		int pageSize = ServletRequestUtils.getIntParameter(request,
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		IPageList<User> users = userService.getAllUsers(pageNo, pageSize);
-		model.addAttribute("currentUser",MyRealm.hardName);
+		model.addAttribute("currentUser",userService.findByUserName(CookieUtil.getCookie(request, "name_EN")));
 		model.addAttribute("users", users);
 		return "system/user/list";
 	}
@@ -154,7 +155,7 @@ public class UserAction extends BaseAction {
 	public void changePassword(HttpServletRequest request, HttpServletResponse response , ModelMap model) throws IOException {
 		 String displayName = request.getParameter("displayName");
 		 String password = request.getParameter("password");
-		 String currentUserName = MyRealm.hardName;
+		 String currentUserName = CookieUtil.getCookie(request, "name_EN");
 		 User user = userService.findByUserName(currentUserName);
 		 user.setPassword(password);
 		 user.setDisplayName(displayName);

@@ -28,6 +28,7 @@ import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
+import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Record;
 import com.coupon.business.service.BankService;
@@ -113,7 +114,7 @@ public class RecordAction extends BaseAction{
 				PageListUtil.PAGE_NO_NAME, PageListUtil.DEFAULT_PAGE_NO);
 		int pageSize = ServletRequestUtils.getIntParameter(request,
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		StringBuilder roleString = new StringBuilder() ;
 		Set<Role> roles = user.getRoles();
 		for(Role temp : roles){
@@ -143,7 +144,7 @@ public class RecordAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/business/record/check")
 	public String check(HttpServletRequest request, ModelMap model) {
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		String id = request.getParameter("id");
 		boolean pass = request.getParameter("pass").equals("true");
 		Record record = recordService.findById(id);
@@ -207,7 +208,7 @@ public class RecordAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/business/record/multiCheck")
 	public void multiCheck(HttpServletRequest request, ModelMap model ,HttpServletResponse response) throws IOException {
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		String ids[] = request.getParameter("ids").split(";");
 		boolean pass = request.getParameter("pass").equals("true");
 		List<Record> records = recordService.findByIds(ids);

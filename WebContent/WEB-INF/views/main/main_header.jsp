@@ -11,7 +11,7 @@
 <!-- Top Menu Items -->
 <ul class="nav navbar-right top-nav">
 	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user">
-		</i> 欢迎 , <shiro:principal/><i class="caret"></i></a>
+		</i><span id="name_ZN"></span><i class="caret"></i></a>
 		<ul class="dropdown-menu">
 			<li><a href="<c:url value='/logout'/>"><i class="icon-off"></i> 注销</a></li>
 			<li class="divider"></li>
@@ -71,6 +71,10 @@
 	</div>			
 </div>		
 <script type="text/javascript">
+
+var name_ZN = '${cookie['name_ZN'].value}';
+$("#name_ZN")[0].innerHTML = '欢迎，' + decodeURI(name_ZN);
+
 /* url后传递的参数：timeStamp，是时间戳，这个保证加载的不是缓存中的数据 */
 function showUserInfo()
 {

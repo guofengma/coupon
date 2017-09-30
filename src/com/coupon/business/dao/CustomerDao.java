@@ -22,5 +22,7 @@ public interface CustomerDao extends BaseDao<Customer , String>{
 
 	List<Customer> exportByCondition(User user, String[] condition);
 
+	Customer findByPhone(String phone);
+
 
 }

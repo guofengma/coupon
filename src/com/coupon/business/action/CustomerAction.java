@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +30,7 @@ import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
+import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.RechargeCode;
 import com.coupon.business.entity.Record;
@@ -61,7 +64,7 @@ public class CustomerAction extends BaseAction{
 	private static HSSFWorkbook workbook = null;  
 	
 	@RequestMapping(value = "/business/customer/list")
-	public String list(HttpServletRequest request, ModelMap model) {
+	public String list(HttpServletRequest request, ModelMap model) throws UnsupportedEncodingException {
 		super.addMenuParams(request, model);
 		List<City> fCityUsedList = cityService.getFCityUsed();
 		model.addAttribute("fCityUsedList",fCityUsedList);
@@ -72,8 +75,9 @@ public class CustomerAction extends BaseAction{
 		boolean check = request.getParameter("statu").equals("check")? true : false ;
 		String condition = request.getParameter("condition")==null?"":request.getParameter("condition");
 		model.addAttribute("condition",condition);
+		CookieUtil.showCookies(request, null);
 		System.out.println(request.getParameter("statu")+check);
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		StringBuilder roleString = new StringBuilder() ;
 		Set<Role> roles = user.getRoles();
 		for(Role temp : roles){
@@ -113,7 +117,7 @@ public class CustomerAction extends BaseAction{
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		List<City> fCityUsedList = cityService.getFCityUsed();
 		model.addAttribute("fCityUsedList",fCityUsedList);
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		StringBuilder roleString = new StringBuilder() ;
 		String roleType = "";
 		Set<Role> roles = user.getRoles();
@@ -168,7 +172,7 @@ public class CustomerAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/search/customer/exportCustomer")
 	public void exportCustomer(HttpServletResponse response,HttpServletRequest request, ModelMap model) throws Exception {
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		StringBuilder roleString = new StringBuilder() ;
 		String roleType = "";
 		Set<Role> roles = user.getRoles();
@@ -391,7 +395,7 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 	 */
 	@RequestMapping(value = "/business/customer/check")
 	public String check(HttpServletRequest request, ModelMap model) {
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		String id = request.getParameter("id");
 		boolean pass = request.getParameter("pass").equals("true");
 		Customer customer = customerService.findById(id);
@@ -434,7 +438,7 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 	 */
 	@RequestMapping(value = "/business/customer/multiCheck")
 	public void multiCheck(HttpServletRequest request, ModelMap model ,HttpServletResponse response) throws IOException {
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		String ids[] = request.getParameter("ids").split(";");
 		boolean pass = request.getParameter("pass").equals("true");
 		List<Customer> customers = customerService.findByIds(ids);
@@ -493,7 +497,7 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		customer.setRemark(request.getParameter("remark"));
 		customer.setDeleted(false);
 		customer.setBankAddress(bankAddress);
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		customer.setUser(user);
 		customer.setCity(customerCity);
 		if(isNew)
@@ -561,7 +565,7 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		String id = request.getParameter("id");
 		int point = Integer.parseInt(request.getParameter("point"));
 		Customer customer = customerService.findById(id);
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		Record record = new Record();
 		record.setCustomer(customer);
 		record.setPoints(point);

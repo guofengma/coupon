@@ -37,4 +37,9 @@ public class CityServiceImpl extends BaseServiceImpl<City, String> implements Ci
 	public Set<City> findByIds(String[] ids) {
 		return getCityDao().findByIds(ids);
 	}
+
+	@Override
+	public List<City> getCityUsed() {
+		return getCityDao().getCityUsed();
+	}
 }

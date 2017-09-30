@@ -27,6 +27,25 @@ public class CookieUtil {
 		}
 
 	}
+	
+	public static String getCookie(HttpServletRequest request,
+			String name) {
+
+		Cookie[] cookies = request.getCookies();// 这样便可以获取一个cookie数组
+		if (null == cookies) {
+			System.out.println("没有cookie=========");
+			return null;
+		} else {
+			for (Cookie cookie : cookies) {
+				if(cookie.getName().equals(name))
+					return cookie.getValue();
+			}
+		}
+		return null;
+
+	}
+	
+	
 
 	/**
 	 * 添加cookie

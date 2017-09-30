@@ -31,6 +31,7 @@ import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
+import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.business.entity.RechargeCode;
 import com.coupon.business.entity.Record;
 import com.coupon.business.entity.RedeemCode;
@@ -146,7 +147,7 @@ public class RechargeCodeAction extends BaseAction{
 	
 	@RequestMapping(value = "/business/rechargeCode/changeGiven")
 	public void changeGiven(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException, ParseException {
-		User user = userService.findByUserName(MyRealm.hardName);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		String id = request.getParameter("id");
 		String fafangTime =  request.getParameter("fafangTime").equals("")?FolderUtil.getFolder():request.getParameter("fafangTime");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -187,7 +188,7 @@ public class RechargeCodeAction extends BaseAction{
 		rechargeCode.setBatch(batch);
 		rechargeCode.setEndTime(new SimpleDateFormat("yyyy-MM-dd").parse(endTime));
 		rechargeCode.setRemark(remark);
-		rechargeCode.setUser(userService.findByUserName(MyRealm.hardName));
+		rechargeCode.setUser(userService.findByUserName(CookieUtil.getCookie(request, "name_EN")));
 		if(oldId.equals("null")){
 			rechargeCodeService.save(rechargeCode);
 			List<RechargeCode> addList = new ArrayList<RechargeCode>();

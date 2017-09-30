@@ -35,6 +35,14 @@ public class CityDaoImpl extends BaseDaoImpl<City, String> implements CityDao{
 				"from City where deleted=false and parent is null and used=true order by priority asc", null
 				);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<City> getCityUsed() {//获取已经有业务的城市
+		return (List<City>)this.queryByHql(
+				"from City where deleted=false and used=true order by priority asc", null
+				);
+	}
 
 	@Override
 	public Set<City> findByIds(String[] ids) {

@@ -35,12 +35,14 @@ import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
+import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.business.entity.Product;
 import com.coupon.business.entity.RedeemCode;
 import com.coupon.business.service.ProductService;
 import com.coupon.business.service.RedeemCodeService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
+import com.coupon.system.entity.User;
 import com.coupon.system.service.CityService;
 import com.coupon.system.service.UserService;
 import com.coupon.util.FolderUtil;
@@ -175,7 +177,7 @@ public class RedeemCodeAction extends BaseAction{
 		redeemCode.setBatch(batch);
 		redeemCode.setEndTime(new SimpleDateFormat("yyyy-MM-dd").parse(endTime));
 		redeemCode.setRemark(remark);
-		redeemCode.setUser(userService.findByUserName(MyRealm.hardName));
+		redeemCode.setUser(userService.findByUserName(CookieUtil.getCookie(request, "name_EN")));
 		if(oldId.equals("null")){
 			redeemCodeService.save(redeemCode);
 		}else{

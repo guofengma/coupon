@@ -54,4 +54,9 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> imple
 	public List<Customer> exportByCondition(User user, String[] condition) {
 		return getCustomerDao().exportByCondition(user,condition);
 	}
+
+	@Override
+	public Customer findByPhone(String phone) {
+		return getCustomerDao().findByPhone(phone);
+	}
 }

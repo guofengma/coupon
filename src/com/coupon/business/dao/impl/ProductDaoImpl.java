@@ -32,4 +32,11 @@ public class ProductDaoImpl extends BaseDaoImpl<Product, String> implements Prod
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
 
+	@Override
+	public List<Product> findAllOnline() {
+		List<Product> items = this.queryByHql(
+				"from Product where deleted=false and statu=true order by modifiedTime", null);
+		return items;
+	}
+
 }

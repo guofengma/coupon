@@ -1,6 +1,8 @@
 package com.coupon.security;
 
 import java.util.Set;
+
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -14,14 +16,17 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coupon.base.common.utils.UserUtil;
+import com.coupon.business.entity.Customer;
+import com.coupon.business.service.CustomerService;
 import com.coupon.system.entity.User;
 import com.coupon.system.service.UserService;
 
 public class MyRealm extends AuthorizingRealm {
 
-	public static String hardName ;
 	@Autowired
 	protected UserService userService;
+	@Autowired
+	protected CustomerService customerService;
 
 	/**
 	 * 登录认证
@@ -29,20 +34,23 @@ public class MyRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken authcToken) throws AuthenticationException {
-		// TODO Auto-generated method stub
-		System.out.println("--doGetAuthenticationInfo");
-		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		String username = token.getUsername();
-		hardName = username ;
-		if (username != null && !"".equals(username)) {
-			// 用户的验证逻辑
-			User user = userService.findByUserName(username);
-			if (user != null) {
-				return new SimpleAuthenticationInfo(user.getDisplayName(),
-						user.getPassword(), getName());
+			UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+			String username = token.getUsername();
+			System.out.println("-------------------认证------------------"+username);
+			if (username != null && !"".equals(username)) {
+				User user = userService.findByUserName(username);
+				if (user != null) {
+					return new SimpleAuthenticationInfo(user.getName(),
+							user.getPassword(), "true");
+				}
+				Customer customer = customerService.findByPhone(username);
+				if(customer!= null){
+					return new SimpleAuthenticationInfo(customer.getPhone(),
+							customer.getPassword(), "false");
+				}
 			}
-		}
 		return null;
+
 	}
 
 	/**
@@ -52,11 +60,16 @@ public class MyRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
 		// 给用户授权
-		System.out.println("--doGetAuthorizationInfo");
-		User user =new User();
+		String username = (String) principals.getPrimaryPrincipal();
+		if("false".equals(principals.getRealmNames().toString()))//是客户则没有权限
+			return null ;
+		System.out.println("-------------------授权------------------"+username+principals.getRealmNames().toString());
+		User user = new User();
 		for(User temp : UserUtil.userList){
-			if(temp.getName().equals(MyRealm.hardName))
+			if(username.equals(temp.getName())){
 				user = temp ;
+				break ;
+			}
 		}
 		SimpleAuthorizationInfo auth = new SimpleAuthorizationInfo();
 		if (user != null) {
@@ -67,5 +80,5 @@ public class MyRealm extends AuthorizingRealm {
 			}
 		}
 		return auth;
-	}
+		}
 }

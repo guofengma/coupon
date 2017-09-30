@@ -22,4 +22,6 @@ public interface CustomerService extends BaseService<Customer , String>{
 
 	List<Customer> exportByCondition(User user, String[] condition);
 
+	Customer findByPhone(String phone);
+
 }

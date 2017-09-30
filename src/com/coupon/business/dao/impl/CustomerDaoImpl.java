@@ -222,4 +222,10 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 		return items;
 	}
 
+	@Override
+	public Customer findByPhone(String phone) {
+		return (Customer)this.findUnique("from Customer where phone = '"+phone+"'",
+				null);
+	}
+
 }
