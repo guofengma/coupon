@@ -72,7 +72,7 @@ public class MyRealm extends AuthorizingRealm {
 			}
 		}
 		SimpleAuthorizationInfo auth = new SimpleAuthorizationInfo();
-		if (user != null) { 
+		if (user != null) {
 			Set<String> perms = user.getPerms();
 			if (!CollectionUtils.isEmpty(perms)) {
 				// 权限加入AuthorizationInfo认证对象
