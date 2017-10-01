@@ -13,7 +13,7 @@
 <html>
 <body style="margin-top: 0px;">
 
-<%-- <div>
+<div>
 	<c:forEach items="${products}" var="item" varStatus="status">
 		<div id="lunbo${status.index}" class="carousel slide" style="height:30%;width: 100%">
 			<div class="carousel-inner">
@@ -31,7 +31,7 @@
 			</a>
 		</div>
 	</c:forEach>
-</div> --%>	
+</div>	
 <div id="myCarousel" class="carousel slide">
     <!-- 轮播（Carousel）指标 -->
     <ol class="carousel-indicators">
@@ -58,3 +58,4 @@
 
 </body>
 </html>
+
