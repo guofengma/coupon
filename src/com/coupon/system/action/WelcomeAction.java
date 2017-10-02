@@ -62,7 +62,7 @@ public class WelcomeAction extends BaseAction {
 	public String appmain(HttpServletResponse resppose,HttpServletRequest request,ModelMap model) {
 		List<City> citys = new ArrayList<City>();
 		List<Product> product = new ArrayList<Product>();
-		if(CookieUtil.getCookie(request , "isUser").equals("true")){//未登录，显示所有product
+		if(CookieUtil.getCookie(request , "name_EN") == null){//未登录，显示所有product
 			citys = cityService.getCityUsed();
 		}
 		else{
