@@ -15,4 +15,6 @@ public interface RechargeCodeDao extends BaseDao<RechargeCode , String>{
 
 	List<RechargeCode> findCanBeGivenBatch();
 
+	RechargeCode findByKeyt(String keyt);
+
 }

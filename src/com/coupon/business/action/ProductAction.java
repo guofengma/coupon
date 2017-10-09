@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageListUtil;
+import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Product;
 import com.coupon.business.service.CustomerService;
@@ -40,6 +41,9 @@ public class ProductAction extends BaseAction{
 	
 	@Autowired CityService cityService;
 	
+	@Autowired
+	private CustomerService customerService ;
+	
 	@RequiresPermissions(value={"product:management"})
 	@RequestMapping(value = "/business/product/list")
 	public String list(HttpServletRequest request, ModelMap model) {
@@ -53,6 +57,46 @@ public class ProductAction extends BaseAction{
 		IPageList<Product> products = productService.findAll(pageNo, pageSize);
 		model.addAttribute("products",products);
 		return "business/product/list";
+	}
+	
+	/**
+	 * 查看商品详情
+	 * @param request
+	 * @param model
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/business/app/productDetail")
+	public String productDetail(HttpServletRequest request, ModelMap model,String id) {
+		Product product = productService.findById(id);
+		model.addAttribute("product",product);
+		return "business/product/list";
+	}
+	
+	/**
+	 * 客户兑换商品
+	 * @param request
+	 * @param model
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/business/app/exchange")
+	public void exchange(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		StringBuilder result = new StringBuilder();
+		String name = CookieUtil.getCookie(request, "name_EN");//获取客户信息
+		Customer customer = customerService.findByPhone(name);
+		int count = Integer.valueOf(request.getParameter("count"));//兑换数量
+		String id = request.getParameter("id"); //商品id
+		Product product = productService.findById(id);
+		if(null == customer){	
+			result.append("{\"errorCode\":\"1\",\"message\":\"登录过期，请重新登录！\"}");
+		}else if(product.getPoints()*count > customer.getPoint()){
+			result.append("{\"errorCode\":\"2\",\"message\":\"积分不够，请减少数量再兑换！\"}");
+		}else{
+			
+		}
+		response.getWriter().write(result.toString());
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
 	}
 	
 	@RequestMapping(value = "/business/product/save")

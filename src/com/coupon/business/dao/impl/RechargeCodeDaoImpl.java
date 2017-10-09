@@ -113,4 +113,11 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 		return items;
 	}
 
+	@Override
+	public RechargeCode findByKeyt(String keyt) {
+		String sql = "From RechargeCode r where r.deleted = false and r.keyt = '"+keyt+"'";
+		RechargeCode rechargeCode = (RechargeCode) this.findUnique(sql, null);
+		return rechargeCode ;
+	}
+
 }

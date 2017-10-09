@@ -39,4 +39,9 @@ public class RechargeCodeServiceImpl extends BaseServiceImpl<RechargeCode, Strin
 		return getRechargeCodeDao().findCanBeGivenBatch();
 		
 	}
+
+	@Override
+	public RechargeCode findByKeyt(String keyt) {
+		return getRechargeCodeDao().findByKeyt(keyt);
+	}
 }

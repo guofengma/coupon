@@ -30,7 +30,9 @@ import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.business.entity.Customer;
+import com.coupon.business.entity.Product;
 import com.coupon.business.entity.Record;
+import com.coupon.business.entity.RedeemCode;
 import com.coupon.business.service.BankService;
 import com.coupon.business.service.CustomerService;
 import com.coupon.business.service.RecordService;
@@ -57,6 +59,45 @@ public class RecordAction extends BaseAction{
 	
 	private static HSSFWorkbook workbook = null; 
 
+	/**
+	 * 获取交易记录
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/record/app/myRecord")
+	public String myRecord(HttpServletRequest request, ModelMap model) {
+		String name = CookieUtil.getCookie(request, "name_EN");
+		Customer customer = customerService.findByPhone(name);
+		List<Record> records = customer.getRecord();
+		List<Record> myRecords = new ArrayList<Record>();
+		for(Record temp : records){
+			if(null != temp.getProduct()){
+				myRecords.add(temp);
+			}
+		}
+		model.addAttribute("myRecords",myRecords);
+		return "record/app/myRecord";
+	}
+	
+	/**
+	 * 订单详情
+	 * @param request
+	 * @param model
+	 * @param 订单id
+	 * @return
+	 */
+	@RequestMapping(value = "/record/app/recordDetail")
+	public String recordDetail(HttpServletRequest request, ModelMap model,String id) {
+		Record record = recordService.findById(id);
+		Product product = record.getProduct();
+		RedeemCode redeemCode = record.getRedeemCode();
+		model.addAttribute("record",record);
+		model.addAttribute("product",product);
+		model.addAttribute("redeemCode",redeemCode);
+		return "record/app/recordDetail";
+	}
+	
 	/*
 	 * 根据客户id，查询客户消费记录
 	 */

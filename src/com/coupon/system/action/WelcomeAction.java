@@ -71,7 +71,18 @@ public class WelcomeAction extends BaseAction {
 		}
 		product = productService.findProductByCityIds(cityToStringIds(citys));
 		model.addAttribute("products",product.size()>4?product.subList(0, 3):product);
+		model.addAttribute("productsAll",product);
 		return "appmain";
+	}
+	
+	@RequestMapping(value = "/app/myInfo", method = RequestMethod.GET)
+	public String myInfo(HttpServletResponse resppose,HttpServletRequest request,ModelMap model) {
+		String name = CookieUtil.getCookie(request , "name_EN") ;
+		Customer customer = customerService.findByPhone(name);
+		if(null == customer)
+			return "appindex";//未登录，跳转登录页面
+		model.addAttribute("customer",customer);
+		return "app/myInfo";
 	}
 	
 	private String[] cityToStringIds(List<City> citys){

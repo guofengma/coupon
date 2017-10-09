@@ -15,4 +15,6 @@ public interface RechargeCodeService extends BaseService<RechargeCode , String>{
 
 	List<RechargeCode> findCanBeGivenBatch();
 
+	RechargeCode findByKeyt(String keyt);
+
 }

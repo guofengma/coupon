@@ -32,9 +32,11 @@ import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.base.common.utils.CookieUtil;
+import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.RechargeCode;
 import com.coupon.business.entity.Record;
 import com.coupon.business.entity.RedeemCode;
+import com.coupon.business.service.CustomerService;
 import com.coupon.business.service.RechargeCodeService;
 import com.coupon.business.service.RecordService;
 import com.coupon.security.MyRealm;
@@ -56,8 +58,47 @@ public class RechargeCodeAction extends BaseAction{
 	private CityService cityService;
 	@Autowired 
 	private RecordService recordService;
+	@Autowired
+	private CustomerService customerService;
 	
-	private static HSSFWorkbook workbook = null;  
+	private static HSSFWorkbook workbook = null;
+	
+	/**
+	 * 前台app自行充值
+	 * @param request
+	 * @param model
+	 * @param keyt e兑卡密码
+	 * @return
+	 */
+	@RequestMapping(value = "/business/app/charge")
+	public String charge(HttpServletRequest request, ModelMap model,String keyt) {
+		String name = CookieUtil.getCookie(request , "name_EN");
+		Customer customer = customerService.findByPhone(name);
+		if(null == customer){
+			model.addAttribute("loginFlag","loginExpired");
+			return "appindex";
+		}
+		try{
+			RechargeCode rechargeCode = rechargeCodeService.findByKeyt(keyt);
+			customer.setTotalAddUp(customer.getTotalAddUp()+rechargeCode.getPoints());
+			customer.setPoint(customer.getPoint()+rechargeCode.getPoints());
+			customer.setLatestChargeTime(new Date());
+			customerService.update(customer);
+			Record record = new Record();
+			record.setCustomer(customer);
+			record.setRechargeCode(rechargeCode);
+			record.setRaise(true);
+			record.setStatu(true);
+			record.setDeal(true);
+			record.setPoints(rechargeCode.getPoints());
+			recordService.save(record);
+			return "business/app/chargeSuccess";//充值成功返回页面
+		}catch(Exception e){
+			System.out.println(e.getMessage());//充值失败返回页面
+			return "business/app/chargeFailure";
+		}
+	}
+	
 	/*
 	 * 查询所有的积分充值卡批次，并分页
 	 */
