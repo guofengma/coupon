@@ -92,10 +92,10 @@ public class RechargeCodeAction extends BaseAction{
 			record.setDeal(true);
 			record.setPoints(rechargeCode.getPoints());
 			recordService.save(record);
-			return "business/app/chargeSuccess";//充值成功返回页面
+			return "app/chargeSuccess";//充值成功返回页面
 		}catch(Exception e){
 			System.out.println(e.getMessage());//充值失败返回页面
-			return "business/app/chargeFailure";
+			return "app/chargeFailed";
 		}
 	}
 	

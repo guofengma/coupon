@@ -16,6 +16,7 @@
   <body>
 	 <header class="mui-bar mui-bar-nav" style="background-color:red">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <a class="mui-icon mui-icon-closeempty mui-pull-left" href = "<%=path%>/appmain"></a>
 	    <h1 class="mui-title" style="color:white">结果</h1>
 	 </header>
      <div class="mui-content" style="background-color:white">

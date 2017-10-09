@@ -21,7 +21,7 @@
 	 </header>
      <div class="mui-content" style="background-color:white">
 	  	 <div style="padding-top:40px">
-	  	 	充值成功！
+	  	 	充值失败！原因：${message}
 	  	 </div>
 	  	 <div style="padding-top:20px">
 	  	 	<button type="button" onclick="javascript:backToMyInfo()" class="mui-btn mui-btn-danger mui-btn-outlined">查看我的积分</button>&nbsp;&nbsp;&nbsp;
