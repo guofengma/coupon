@@ -69,6 +69,8 @@ public class RecordAction extends BaseAction{
 	public String myRecord(HttpServletRequest request, ModelMap model) {
 		String name = CookieUtil.getCookie(request, "name_EN");
 		Customer customer = customerService.findByPhone(name);
+		if(null == customer)
+			return "appindex";
 		List<Record> records = customer.getRecord();
 		List<Record> myRecords = new ArrayList<Record>();
 		for(Record temp : records){
@@ -77,7 +79,7 @@ public class RecordAction extends BaseAction{
 			}
 		}
 		model.addAttribute("myRecords",myRecords);
-		return "record/app/myRecord";
+		return "app/myRecord";
 	}
 	
 	/**
@@ -93,9 +95,9 @@ public class RecordAction extends BaseAction{
 		Product product = record.getProduct();
 		RedeemCode redeemCode = record.getRedeemCode();
 		model.addAttribute("record",record);
-		model.addAttribute("product",product);
+		model.addAttribute("product",product); 
 		model.addAttribute("redeemCode",redeemCode);
-		return "record/app/recordDetail";
+		return "app/recordDetail";
 	}
 	
 	/*

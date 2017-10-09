@@ -70,7 +70,7 @@ public class ProductAction extends BaseAction{
 	public String productDetail(HttpServletRequest request, ModelMap model,String id) {
 		Product product = productService.findById(id);
 		model.addAttribute("product",product);
-		return "business/product/list";
+		return "app/productDetail";
 	}
 	
 	/**

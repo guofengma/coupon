@@ -99,6 +99,11 @@ public class RechargeCodeAction extends BaseAction{
 		}
 	}
 	
+	@RequestMapping(value = "/business/app/toChargePage")
+	public String toChargePage(HttpServletRequest request, ModelMap model) {
+		return "app/charge";
+	}
+	
 	/*
 	 * 查询所有的积分充值卡批次，并分页
 	 */
