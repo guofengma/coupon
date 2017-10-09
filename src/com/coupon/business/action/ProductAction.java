@@ -80,23 +80,21 @@ public class ProductAction extends BaseAction{
 	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/business/app/exchange")
-	public void exchange(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		StringBuilder result = new StringBuilder();
+	public String exchange(HttpServletRequest request, HttpServletResponse response,ModelMap model){
 		String name = CookieUtil.getCookie(request, "name_EN");//获取客户信息
 		Customer customer = customerService.findByPhone(name);
 		int count = Integer.valueOf(request.getParameter("count"));//兑换数量
 		String id = request.getParameter("id"); //商品id
 		Product product = productService.findById(id);
 		if(null == customer){	
-			result.append("{\"errorCode\":\"1\",\"message\":\"登录过期，请重新登录！\"}");
+			return "appindex";
 		}else if(product.getPoints()*count > customer.getPoint()){
-			result.append("{\"errorCode\":\"2\",\"message\":\"积分不够，请减少数量再兑换！\"}");
+			model.addAttribute("message","积分数量不够！");
+			return "app/exchangeFailed";
 		}else{
-			
+			return "app/exchangeSuccess";
 		}
-		response.getWriter().write(result.toString());
-		response.setContentType("application/json");
-	 	response.setCharacterEncoding("utf-8");
+
 	}
 	
 	@RequestMapping(value = "/business/product/save")

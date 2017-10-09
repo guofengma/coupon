@@ -17,6 +17,7 @@
      <header class="mui-bar mui-bar-nav" style="background-color:red">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 	    <h1 class="mui-title" style="color:white">${product.name}</h1>
+	    <input id="productId" type="hidden" value="${product.id}" />
 	 </header>
 	 <nav class="mui-bar mui-bar-tab " id="nav">  
       	<div class="mui-tab-item" id="a1">
@@ -26,7 +27,7 @@
 				<button id="add" class="mui-btn mui-numbox-btn-plus" type="button">+</button>
 			</div>
         </div>  
-        <a class="mui-tab-item  mui-active" id="a2" href="#" style="background-color:red">  
+        <a class="mui-tab-item  mui-active" id="a2" style="background-color:red">  
             <span class="mui-tab-label" style="color:white">立即兑换</span>  
         </a>  
      </nav>
@@ -48,7 +49,18 @@
 	     </div>
 	 </div>
   <script>  
- 
+  document.getElementById("a2").addEventListener('tap', function() {  
+      var btnArray = ['取消', '确定'];  
+      mui.confirm('请确认您要兑换的商品的数量', '提示', btnArray, function(e) {  
+          if (e.index == 1) {
+        	  var count = $("#numbers").val();
+        	  var id = $("#productId").val();
+              window.location.href = "<%=path%>/business/app/exchange?id="+id+"&count="+count ;
+          } else {  
+                
+          }  
+      })  
+  }); 
   </script>
   </body>
 </html>
