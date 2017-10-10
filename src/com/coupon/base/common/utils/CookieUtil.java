@@ -57,7 +57,7 @@ public class CookieUtil {
 	public static void addCookie(HttpServletResponse response, String name,
 			String value) {
 		Cookie cookie = new Cookie(name.trim(), value.trim());
-		cookie.setMaxAge(30 * 60);// 设置为30min
+		cookie.setMaxAge(2 * 60 * 60);// 设置为30min
 		cookie.setPath("/");
 		System.out.println("已添加===============");
 		response.addCookie(cookie);

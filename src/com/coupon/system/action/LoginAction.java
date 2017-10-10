@@ -133,4 +133,32 @@ public class LoginAction {
 		
 	}
 	
+	@RequestMapping(value = "/app/toPasswordPage")
+	public String toPasswordPage(ModelMap model,HttpServletRequest request, HttpServletResponse response){
+		String phone = CookieUtil.getCookie(request, "name_EN");
+		Customer customer = customerService.findByPhone(phone);
+		if(null == customer){
+			return "appindex";
+		}
+		model.addAttribute("phone",phone);
+		return "app/changePassword";
+	}
+	
+	@RequestMapping(value = "/app/changePassword", method = RequestMethod.POST)
+	public String changePassword(ModelMap model,HttpServletRequest request, HttpServletResponse response){
+		String phone = CookieUtil.getCookie(request, "name_EN");
+		String oldPassword = request.getParameter("oldPassword");
+		String newPassword = request.getParameter("newPassword");
+		Customer customer = customerService.findByPhone(phone);
+		if(customer.getPassword().equals(oldPassword)){//验证旧密码成功
+			customer.setPassword(newPassword);
+			customerService.update(customer);
+			model.addAttribute("loginFlag","passwordChange");
+			return "appindex";
+		}else{
+			model.addAttribute("status","oldPasswordError");
+			return "app/changePassword";
+		}
+	}
+	
 }
