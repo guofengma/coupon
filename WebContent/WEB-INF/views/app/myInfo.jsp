@@ -62,11 +62,10 @@
 	</div>
   <script>  
   	document.getElementById('a1').addEventListener('tap', function() {
-  	//打开关于页面
-  	mui.openWindow({
-  	url: '<%=path%>/appmain', //目标页面地址
-  	id:'a1' //触发新打开页面的id
-  	});
+	  	mui.openWindow({
+	  	url: '<%=path%>/appmain', //目标页面地址
+	  	id:'a1' //触发新打开页面的id
+	  	});
   	});
   </script>
   </body>

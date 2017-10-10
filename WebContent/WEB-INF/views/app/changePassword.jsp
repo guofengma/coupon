@@ -29,6 +29,7 @@
 	    </div>
 	    <div class="mui-button-row">
 	        <button type="submit" class="mui-btn mui-btn-primary" >修改密码</button>
+	        <button type="button" onclick="javascript:backToMyInfo()" class="mui-btn mui-btn-primary" >返回我的信息</button>
 	    </div>
 	</form>
     <script>  
@@ -37,6 +38,10 @@
 			if(status=='oldPasswordError')
 				mui.toast("旧密码错误！");
 		});
+	    
+	    function backToMyInfo(){
+			window.location.href = "<%=path%>/app/myInfo";
+		}
     </script>
   </body>
 </html>
