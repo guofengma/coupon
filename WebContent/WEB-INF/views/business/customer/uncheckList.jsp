@@ -277,7 +277,7 @@ $(function(){
 });
 
 var isNew = false ;
-var id ;
+var id ='';
 
 function clear(){//清除模态框信息
 		$("#form-name").val('');
@@ -334,32 +334,54 @@ function edit(param){
 
 function saveCustomerInfo(){
 	$.ajax({
-		url:"<%=path%>/business/customer/unCheckSave",    //请求的url地址
-	    dataType:"json",   
-	    async:false,
-	    data:{
-		"id":id,
-		"isNew":isNew,
-		"name":$("#form-name").val(),
-		"points":$("#form-points").val(),
-		"phone":$("#form-phone").val(),
-		"remark":$("#form-remark").val(),
-		"fCity":$("#fCity").val(),
-		"sCity":$("#sCity").val()==null?'null':$("#sCity").val().join(","),
-		"bankAddress":$("#form-bankAddress").val()
-		},
-	    type:"POST",   //请求方式
-	    success:function(result){
-			if(isNew)
-				alert("新建客户信息成功，等待审核！");
-			else
-				alert("修改客户信息成功");
-			window.location.href="<%=path%>/business/customer/list?statu=uncheck&condition="+$("#condition").val();
-	    },
-	    error:function(){
-			alert("保存客户信息失败！")
-	    }
-	});
+		url:"<%=path%>/business/customer/uniquenessCheck",    //电话唯一性检查
+		    dataType:"json",   
+		    async:false,
+		    data:{
+			"id":id,
+			"isNew":isNew,
+			"phone":$("#form-phone").val(),
+			},
+		    type:"POST",   //请求方式
+		    success:function(result){
+			console.log(result)
+				if(result.flag){ //唯一性检查通过，做保存
+					console.log(result.flag)
+					$.ajax({
+						url:"<%=path%>/business/customer/unCheckSave",    //请求的url地址
+					    dataType:"json",   
+					    async:false,
+					    data:{
+						"id":id,
+						"isNew":isNew,
+						"name":$("#form-name").val(),
+						"points":$("#form-points").val(),
+						"phone":$("#form-phone").val(),
+						"remark":$("#form-remark").val(),
+						"fCity":$("#fCity").val(),
+						"sCity":$("#sCity").val()==null?'null':$("#sCity").val().join(","),
+						"bankAddress":$("#form-bankAddress").val()
+						},
+					    type:"POST",   //请求方式
+					    success:function(result){
+							if(isNew)
+								alert("新建客户信息成功，等待审核！");
+							else
+								alert("修改客户信息成功");
+							window.location.href="<%=path%>/business/customer/list?statu=uncheck&condition="+$("#condition").val();
+					    },
+					    error:function(){
+							alert("保存客户信息失败！")
+					    }
+					});
+				}else{
+					alert("该号码已经存在！")
+				}
+		    },
+		    error:function(){
+				alert("检查出错！")
+		    }
+		});
 }
 
 function cancle(){

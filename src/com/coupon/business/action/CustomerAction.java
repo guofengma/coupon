@@ -433,6 +433,38 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		return "redirect:list";
 	}
 	
+	/**
+	 * 客户号码唯一性检查
+	 * @param request
+	 * @param model
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/business/customer/uniquenessCheck")
+	public void uniquenessCheck(HttpServletRequest request, ModelMap model ,HttpServletResponse response) throws IOException {
+		String result = "";
+		String phone = request.getParameter("phone");
+		String id = request.getParameter("id");
+		boolean isNew = request.getParameter("isNew").equals("true")?true:false;
+		Customer customer = customerService.findByPhone(phone);
+		if(null == customer){
+			result = "{\"flag\":true}";
+		}else{
+			if(isNew){
+				result = "{\"flag\":false}";
+			}
+			else{
+				if(customer.getId().equals(id))
+					result = "{\"flag\":true}";
+				else
+					result = "{\"flag\":false}";
+			}
+		}
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(result);
+	}
+	
 	/*
 	 * 批量审核新增的用户
 	 */
