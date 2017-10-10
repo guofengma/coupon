@@ -38,7 +38,6 @@ import com.coupon.business.service.BankService;
 import com.coupon.business.service.CustomerService;
 import com.coupon.business.service.RechargeCodeService;
 import com.coupon.business.service.RecordService;
-import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
 import com.coupon.system.entity.Role;
 import com.coupon.system.entity.User;
@@ -524,6 +523,7 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		}
 		customer.setName(request.getParameter("name"));
 		customer.setPhone(request.getParameter("phone"));
+		customer.setPassword(request.getParameter("password"));
 		customer.setPoint(Integer.parseInt(request.getParameter("points")));
 		customer.setTotalAddUp(Integer.parseInt(request.getParameter("points")));
 		customer.setRemark(request.getParameter("remark"));
@@ -533,7 +533,6 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		customer.setUser(user);
 		customer.setCity(customerCity);
 		if(isNew){
-			customer.setPassword("12345678");
 			customerService.save(customer);
 		}else{
 			customerService.update(customer);
@@ -565,7 +564,7 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		String id = request.getParameter("id");
 		StringBuilder result = new StringBuilder();
 		Customer customer = customerService.findById(id);
-		result.append("{\"name\":\""+customer.getName()+"\",\"bankAddress\":\""+customer.getBankAddress()+"\",\"points\":"+customer.getPoint()+",\"phone\":\""+customer.getPhone()+"\",\"remark\":\""+customer.getRemark()+"\",");
+		result.append("{\"name\":\""+customer.getName()+"\",\"bankAddress\":\""+customer.getBankAddress()+"\",\"points\":"+customer.getPoint()+",\"phone\":\""+customer.getPhone()+"\",\"password\":\""+customer.getPassword()+"\",\"remark\":\""+customer.getRemark()+"\",");
 		Set<City> city = customer.getCity();
 		if(city.size()==0){//不属于任何城市
 			result.append("\"fCityId\":\"null\",\"sCityId\":[]}");

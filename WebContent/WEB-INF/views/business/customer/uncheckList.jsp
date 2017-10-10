@@ -194,14 +194,15 @@
 									<input type="text" id="form-name" class="col-xs-10 col-sm-10" name="name">
 								</div>
 							 </div> 
-							 <div class="space-4"></div> 
 							 
+							 <div class="space-4"></div> 
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-points">积分数量：</label>
 								<div class="col-sm-9">
 									<input type="text" id="form-points" class="col-xs-10 col-sm-10" name="points">
 								</div>
 							 </div> 
+							 
 							 <div class="space-4"></div> 							 
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-phone">电话号码：</label>
@@ -209,6 +210,14 @@
 									<input type="text" id="form-phone" class="col-xs-10 col-sm-10" name="phone">
 								</div>
 							 </div> 
+							 
+							 <div class="space-4"></div> 							 
+							 <div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-password1">密码：</label>
+								<div class="col-sm-9">
+									<input type="text" id="form-password1" class="col-xs-10 col-sm-10" name="password">
+								</div>
+							 </div>
 							 
 							<div class="space-4"></div> 	
 							<div class="form-group">
@@ -283,7 +292,9 @@ function clear(){//清除模态框信息
 		$("#form-name").val('');
 		$("#form-points").val('');
 		$("#form-phone").val('');
+		$("#form-password1").val('');
 		$("#form-remark").val('');
+		$("#form-bankAddress").val('');
 		$("#fCity").val('null').trigger("change");
 		$("#sCity").val('null').trigger("change");
 }
@@ -318,6 +329,7 @@ function edit(param){
 	        $("#form-name").val(result.name);
 			$("#form-points").val(result.points);
 			$("#form-phone").val(result.phone);
+			$("#form-password1").val(result.password);
 			$("#form-remark").val(result.remark);
 			$("#fCity").val(result.fCityId).trigger("change");
 			$('#sCity').selectpicker('val', result.sCityId);
@@ -344,7 +356,6 @@ function saveCustomerInfo(){
 			},
 		    type:"POST",   //请求方式
 		    success:function(result){
-			console.log(result)
 				if(result.flag){ //唯一性检查通过，做保存
 					console.log(result.flag)
 					$.ajax({
@@ -357,6 +368,7 @@ function saveCustomerInfo(){
 						"name":$("#form-name").val(),
 						"points":$("#form-points").val(),
 						"phone":$("#form-phone").val(),
+						"password":$("#form-password1").val(),
 						"remark":$("#form-remark").val(),
 						"fCity":$("#fCity").val(),
 						"sCity":$("#sCity").val()==null?'null':$("#sCity").val().join(","),
@@ -457,12 +469,11 @@ function fCityChange(){
 		});
 	}
 	$('#sCity').selectpicker('refresh');
-	$('#bank').selectpicker('refresh');
+	/* $('#bank').selectpicker('refresh'); */
 }
 
-function sCityChange(){
+<%-- function sCityChange(){
 	var id = $("#sCity").val();
-	clearBank()
 	if(id!='null'){
 		$.ajax({
 			url:"<%=path%>/system/city/getBankBySCityId",    //请求的url地址
@@ -481,16 +492,16 @@ function sCityChange(){
 		});
 	}
 	$('#bank').selectpicker('refresh');
-}
+} --%>
 
 function clearSCity(){//清空二级城市下拉框所有内容（第一个默认的option不清除）
 	$("#sCity").empty();
 }
 
-function clearBank(){
+/* function clearBank(){
 	$("#bank").empty();
 	$("#bank").append("<option value='null'>选择服务兑换地址</option>"); 
-}
+} */
 
 function search(){
 	var condition = $("#condition").val();
