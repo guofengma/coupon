@@ -19,18 +19,24 @@
 	    <h1 class="mui-title" style="color:white">积分充值</h1>
 	 </header>
      <div class="mui-content" style="background-color:white;text-align:left">
-	  	 <form class="mui-input-group" action="<%=path%>/business/app/charge" method="post" style="padding-top:20px">
+	  	 <form id="chargeForm" class="mui-input-group" action="<%=path%>/business/app/charge" method="post" style="padding-top:20px">
 			<span style="padding-left:20px">请输入e兑卡密码：</span>
 		    <div class="mui-input-row">
-		    <input type="text" class="mui-input-clear" placeholder="卡密码不区分大小写" name="keyt">
+		    <input id="keyt" type="text" class="mui-input-clear" placeholder="卡密码不区分大小写" name="keyt">
 		    </div>
 		    <div class="mui-button-row">
-		        <button type="submit" class="mui-btn mui-btn-danger" >立即充值</button>
+		        <button type="button" onclick="checkEmpty()" class="mui-btn mui-btn-danger" >立即充值</button>
 		    </div>
 		</form>
 	</div>
   <script>  
-
+	function checkEmpty(){
+		if($("#keyt").val()==''){
+			mui.toast("请填写兑换码后再充值！");
+			return false;
+		}
+		$("#chargeForm").submit();
+	}
   </script>
   </body>
 </html>

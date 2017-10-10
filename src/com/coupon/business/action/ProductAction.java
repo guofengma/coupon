@@ -86,7 +86,8 @@ public class ProductAction extends BaseAction{
 		int count = Integer.valueOf(request.getParameter("count"));//兑换数量
 		String id = request.getParameter("id"); //商品id
 		Product product = productService.findById(id);
-		if(null == customer){	
+		if(null == customer){
+			model.addAttribute("loginFlag","loginExpired");
 			return "appindex";
 		}else if(product.getPoints()*count > customer.getPoint()){
 			model.addAttribute("message","积分数量不够！");

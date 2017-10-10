@@ -80,6 +80,18 @@ public class RechargeCodeAction extends BaseAction{
 		}
 		try{
 			RechargeCode rechargeCode = rechargeCodeService.findByKeyt(keyt);
+			if(null == rechargeCode){
+				model.addAttribute("message","该兑换码不存在！");
+				return "app/chargeFailed";
+			}
+			if(rechargeCode.getDeleted()||(!rechargeCode.isStatu())||(!rechargeCode.isGiven())){
+				model.addAttribute("message","该兑换码已经失效或被停用！");
+				return "app/chargeFailed";
+			}
+			if(rechargeCode.isUsed()){
+				model.addAttribute("message","该兑换码已经被使用过！");
+				return "app/chargeFailed";
+			}
 			customer.setTotalAddUp(customer.getTotalAddUp()+rechargeCode.getPoints());
 			customer.setPoint(customer.getPoint()+rechargeCode.getPoints());
 			customer.setLatestChargeTime(new Date());
@@ -92,6 +104,8 @@ public class RechargeCodeAction extends BaseAction{
 			record.setDeal(true);
 			record.setPoints(rechargeCode.getPoints());
 			recordService.save(record);
+			rechargeCode.setUsed(true);
+			rechargeCodeService.update(rechargeCode);
 			return "app/chargeSuccess";//充值成功返回页面
 		}catch(Exception e){
 			System.out.println(e.getMessage());//充值失败返回页面
