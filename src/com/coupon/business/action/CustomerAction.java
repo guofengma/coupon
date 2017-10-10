@@ -532,10 +532,12 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		customer.setUser(user);
 		customer.setCity(customerCity);
-		if(isNew)
+		if(isNew){
+			customer.setPassword("12345678");
 			customerService.save(customer);
-		else
+		}else{
 			customerService.update(customer);
+		}
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write("{\"msg\":\"保存成功\"}");

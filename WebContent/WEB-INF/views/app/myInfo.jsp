@@ -36,7 +36,12 @@
 	  	 	<div style="width:100%;height:150px;text-align:left;padding:50px">
 	  	 		<span style="color:white">${customer.phone}</span><br> 
 	  	 		<span style="color:white">我的积分：${customer.point}</span><br> 
-	  	 		<span style="color:white">所在地：</span><br> 
+	  	 		<span style="color:white">所在地：
+		  	 		<c:forEach items="${customer.customerCityByPriority}" var="city" varStatus="status">
+						<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
+						<c:if test="${!status.last&&!status.first}">;</c:if>
+					</c:forEach>
+	  	 		</span><br> 
 	  	 	</div>
 	  	 </div>
 	  	 <div style="text-align:left">

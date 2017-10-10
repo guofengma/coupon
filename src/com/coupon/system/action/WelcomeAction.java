@@ -67,7 +67,7 @@ public class WelcomeAction extends BaseAction {
 		}
 		else{
 			Customer customer = customerService.findByPhone(CookieUtil.getCookie(request , "name_EN"));
-			citys = new ArrayList(customer.getCity());
+			citys = new ArrayList(customer.getCity().size()==0?cityService.getCityUsed():customer.getCity());
 		}
 		product = productService.findProductByCityIds(cityToStringIds(citys));
 		model.addAttribute("products",product.size()>4?product.subList(0, 3):product);

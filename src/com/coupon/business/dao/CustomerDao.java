@@ -24,5 +24,7 @@ public interface CustomerDao extends BaseDao<Customer , String>{
 
 	Customer findByPhone(String phone);
 
+	Customer findCheckedByPhone(String phone);
+
 
 }

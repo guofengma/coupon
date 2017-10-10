@@ -224,7 +224,13 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 
 	@Override
 	public Customer findByPhone(String phone) {
-		return (Customer)this.findUnique("from Customer where phone = '"+phone+"'",
+		return (Customer)this.findUnique("from Customer where deleted=false and phone = '"+phone+"'",
+				null);
+	}
+
+	@Override
+	public Customer findCheckedByPhone(String phone) {
+		return (Customer)this.findUnique("from Customer where deleted=false and statu=true and phone = '"+phone+"'",
 				null);
 	}
 

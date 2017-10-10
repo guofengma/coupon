@@ -46,9 +46,11 @@
 	    $(function(){
 			var loginFlag = '${loginFlag}';
 			if(loginFlag=='failed')
-				alert("用户名或密码错误！");
+				mui.toast("用户名或密码错误！");
 			if(loginFlag=='loginExpired')
-				alert("口令已过期，请重新登录");
+				mui.toast("口令已过期，请重新登录");
+			if(loginFlag=='uncheck')
+				mui.toast("该用户还未通过审核，请耐心等待！");
 		});
 	    
 	    /* function submit(){

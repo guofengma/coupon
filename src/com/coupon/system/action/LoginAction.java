@@ -93,6 +93,10 @@ public class LoginAction {
 				model.addAttribute("loginFlag", "failed");
 				return "appindex";
 			}
+			if(!customer.isStatu()){
+				model.addAttribute("loginFlag", "uncheck");
+				return "appindex";
+			}
 			CookieUtil.addCookie(response, "isUser", "false");
 			CookieUtil.addCookie(response, "name_ZN", URLEncoder.encode(customer.getName(),"UTF-8"));
 			CookieUtil.addCookie(response, "name_EN", URLEncoder.encode(customer.getPhone(),"UTF-8"));
