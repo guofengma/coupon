@@ -18,10 +18,11 @@
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 	    <h1 class="mui-title" style="color:white">${product.name}</h1>
 	    <input id="productId" type="hidden" value="${product.id}" />
+	    <input id=canBeGivenCodeNum type="hidden" value="${product.canBeGivenCode.size()}" />
 	 </header>
 	 <nav class="mui-bar mui-bar-tab " id="nav">  
       	<div class="mui-tab-item" id="a1">
-      		 <div class="mui-numbox" data-numbox-min="1" data-numbox-max="">
+      		 <div class="mui-numbox" data-numbox-min="1" data-numbox-max="${product.canBeGivenCode.size()}">
 				<button id="less" class="mui-btn mui-numbox-btn-minus" type="button">-</button>
 				<input id="numbers" class="mui-numbox-input" type="number" disabled />
 				<button id="add" class="mui-btn mui-numbox-btn-plus" type="button">+</button>
@@ -36,6 +37,7 @@
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
 	     	<p style="font-size:22px">${product.name}</p>
 	     	<p style="color:red;font-size:24px">${product.points}积分</p>
+	     	<p style="color:blue;font-size:24px">库存：${product.canBeGivenCode.size()}</p>
 	     </div>
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
 	     	 <ul class="mui-table-view"> 
@@ -55,7 +57,12 @@
           if (e.index == 1) {
         	  var count = $("#numbers").val();
         	  var id = $("#productId").val();
-              window.location.href = "<%=path%>/business/app/exchange?id="+id+"&count="+count ;
+        	  var maxNum = $("#canBeGivenCodeNum").val();
+        	  if(maxNum == '0'){
+        		  mui.toast("没有库存，等待补货！")
+        	  }else{
+        		  window.location.href = "<%=path%>/business/app/exchange?id="+id+"&count="+count ;
+        	  }
           } else {  
                 
           }  

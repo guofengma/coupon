@@ -2,6 +2,7 @@ package com.coupon.business.action;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -27,8 +28,12 @@ import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.base.common.utils.CookieUtil;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Product;
+import com.coupon.business.entity.Record;
+import com.coupon.business.entity.RedeemCode;
 import com.coupon.business.service.CustomerService;
 import com.coupon.business.service.ProductService;
+import com.coupon.business.service.RecordService;
+import com.coupon.business.service.RedeemCodeService;
 import com.coupon.system.entity.City;
 import com.coupon.system.service.CityService;
 import com.coupon.util.FolderUtil;
@@ -41,8 +46,11 @@ public class ProductAction extends BaseAction{
 	
 	@Autowired CityService cityService;
 	
-	@Autowired
-	private CustomerService customerService ;
+	@Autowired RecordService recordService;
+	
+	@Autowired private CustomerService customerService ;
+	
+	@Autowired private RedeemCodeService redeemCodeService ;
 	
 	@RequiresPermissions(value={"product:management"})
 	@RequestMapping(value = "/business/product/list")
@@ -93,6 +101,24 @@ public class ProductAction extends BaseAction{
 			model.addAttribute("message","积分数量不够！");
 			return "app/exchangeFailed";
 		}else{
+			List<Record> records = new ArrayList<Record>();
+			List<RedeemCode> redeemCodeList = product.getCanBeGivenCode().subList(0, count);
+			for(int i=0;i<count;i++){
+				redeemCodeList.get(i).setUsed(true);
+				Record record = new Record();
+				record.setCustomer(customer);
+				record.setProduct(product);
+				record.setPoints(product.getPoints());
+				record.setRedeemCode(redeemCodeList.get(i));
+				record.setRaise(false);
+				record.setDeal(true);
+				record.setStatu(true);
+				records.add(record);
+			}
+			customer.setPoint(customer.getPoint()-product.getPoints()*count );
+			customerService.update(customer);
+			redeemCodeService.batchUpdate(redeemCodeList);
+			recordService.batchSave(records);
 			return "app/exchangeSuccess";
 		}
 
