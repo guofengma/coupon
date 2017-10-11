@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>礼品兑换手机登录</title>
+    <title>礼品兑换系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">  
     <meta name="apple-mobile-web-app-capable" content="yes">  
     <meta name="apple-mobile-web-app-status-bar-style" content="black">  
@@ -29,7 +29,7 @@
 		    </div>
 		</form>
 	</div>
-  <script>  
+  <script>  0
 	function checkEmpty(){
 		if($("#keyt").val()==''){
 			mui.toast("请填写兑换码后再充值！");

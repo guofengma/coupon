@@ -119,7 +119,7 @@ function initTable() {
         pagination: false,     //是否显示分页（*）
         sortable: true,      //是否启用排序
         sortOrder: "used asc",     //排序方式
-        url: "<%=path%>/business/rechargeCode/getRechargeCodeByBatch",//这个接口需要处理bootstrap table传递的固定参数
+        url: "<%=path%>/business/rechargeCode/getUngivenRechargeCodeByBatch",//这个接口需要处理bootstrap table传递的固定参数
         search: true, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
         strictSearch: false,
         minimumCountColumns: 2,    //最少允许的列数
@@ -172,7 +172,7 @@ function initTable() {
           			   dataType:"json",
           			   type:"GET",
           			   success:function(result){
-          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+          				 /*  $('#tb_rechargeCode').bootstrapTable('refresh');  */
           			   },
  	      			   error:function(){
 	      					alert("状态切换失败！")
@@ -202,7 +202,7 @@ function initTable() {
 	          			   dataType:"json",
 	          			   type:"GET",
 	          			   success:function(result){
-	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          				  /* $('#tb_rechargeCode').bootstrapTable('refresh');  */
 	          			   },
 	 	      			   error:function(){
 		      					alert("状态切换失败！")

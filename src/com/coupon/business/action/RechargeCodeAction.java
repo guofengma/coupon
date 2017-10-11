@@ -209,7 +209,7 @@ public class RechargeCodeAction extends BaseAction{
 	public void changeGiven(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException, ParseException {
 		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		String id = request.getParameter("id");
-		String fafangTime =  request.getParameter("fafangTime").equals("")?FolderUtil.getFolder():request.getParameter("fafangTime");
+		String fafangTime =  request.getParameter("fafangTime")==null?FolderUtil.getFolder():request.getParameter("fafangTime");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		RechargeCode rechargeCode =rechargeCodeService.findById(id);
 		boolean state = request.getParameter("state").equals("false")?false:true;
@@ -347,6 +347,27 @@ public class RechargeCodeAction extends BaseAction{
 			result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"keyt\":\""+temp.getKeyt()+"\",\"used\":"+temp.isUsed()+",\"given\":"+temp.isGiven()+",\"statu\":"+temp.isStatu()+",\"id\":\""+temp.getId()+"\"},");
 		}
 		if(batch.getChildren().size()!=0)
+			result.deleteCharAt(result.length()-1);
+		result.append("]");
+		System.out.println(result.toString());
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(result.toString());
+	}
+	
+	/*
+	 *根据批次，获取批次下的积分码
+	 */
+	@RequestMapping(value = "/business/rechargeCode/getUngivenRechargeCodeByBatch")
+	public void getUngivenRechargeCodeByBatch(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		RechargeCode batch = rechargeCodeService.findById(id);
+		StringBuilder result = new StringBuilder("[");
+		for(RechargeCode temp : batch.getChildrenOrderByUsed()){
+			if(!temp.isGiven())
+				result.append("{\"points\":\""+temp.getPoints()+"\",\"code\":\""+temp.getCode()+"\",\"keyt\":\""+temp.getKeyt()+"\",\"used\":"+temp.isUsed()+",\"given\":"+temp.isGiven()+",\"statu\":"+temp.isStatu()+",\"id\":\""+temp.getId()+"\"},");
+		}
+		if(result.length()>1)
 			result.deleteCharAt(result.length()-1);
 		result.append("]");
 		System.out.println(result.toString());
