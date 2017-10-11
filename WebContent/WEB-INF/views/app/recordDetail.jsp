@@ -19,7 +19,7 @@
 	    <h1 class="mui-title" style="color:white">订单详情</h1>
 	 </header>
      <div class="mui-content" style="background-color:white">  
-	     <div><img src='<%=path%>/img/${fn:replace(record.product.picPath,"\\","/")}' /></div>
+	     <div style="height:200px;padding:5px"><img height="190px" src='<%=path%>/img/${fn:replace(record.product.picPath,"\\","/")}' /></div>
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
 	     	<p style="font-size:20px">${record.product.name}</p>
 	     	<p style="font-size:20px">兑换日期：${fn:substring(record.createTime ,0,10)}</p>
