@@ -13,25 +13,25 @@
     <script src="<%=path%>/assets/mui-master/js/app.js"></script>
   </head>
   <body>  
-    
-    <form class="mui-input-group" action="<%=path%>/app/changePassword" method="post">
-	    <%-- <div class="mui-input-row">
-	        <label>用户名</label>
-	    	<input type="text" class="mui-input-clear" placeholder="请输入用户名" name="phone" value="${phone}">
-	    </div> --%>
-	    <div class="mui-input-row">
-	        <label>旧密码</label>
-	        <input type="password" class="mui-input-password" placeholder="请输入旧密码" name="oldPassword">
-	    </div>
-	     <div class="mui-input-row">
-	        <label>新密码</label>
-	        <input type="password" class="mui-input-password" placeholder="请输入新密码" name="newPassword">
-	    </div>
-	    <div class="mui-button-row">
-	        <button type="submit" class="mui-btn mui-btn-primary" >修改密码</button>
-	        <button type="button" onclick="javascript:backToMyInfo()" class="mui-btn mui-btn-primary" >返回我的信息</button>
-	    </div>
-	</form>
+     <header class="mui-bar mui-bar-nav" style="background-color:red">
+     	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title" style="color:white">修改密码</h1>
+	 </header>
+	 <div class="mui-content" style="background-color:white">
+	    <form class="mui-input-group" action="<%=path%>/app/changePassword" method="post" style="padding-top:50px">
+		    <div class="mui-input-row">
+		        <label>旧密码</label>
+		        <input type="password" class="mui-input-password" placeholder="请输入旧密码" name="oldPassword">
+		    </div>
+		     <div class="mui-input-row">
+		        <label>新密码</label>
+		        <input type="password" class="mui-input-password" placeholder="请输入新密码" name="newPassword">
+		    </div>
+		    <div class="mui-button-row">
+		        <button type="submit" class="mui-btn mui-btn-primary" >确认</button>
+		    </div>
+		</form>
+	</div>
     <script>  
 	    $(function(){
 			var status = '${status}';

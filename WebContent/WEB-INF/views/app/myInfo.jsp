@@ -14,7 +14,7 @@
     <script src="<%=path%>/assets/mui-master/js/app.js"></script>
   </head>
   <body>
-	 <header class="mui-bar mui-bar-nav" style="background-color:red">
+	 <header class="mui-bar mui-bar-nav"  style="background-color:red;box-shadow: 0 1px 6px red">
 	    <h1 class="mui-title" style="color:white">我的</h1>
 	 </header>
      <nav class="mui-bar mui-bar-tab " id="nav">  
@@ -29,17 +29,15 @@
      </nav>
      <div class="mui-content" style="background-color:white">
 	  	 <div style="background:red;text-align:left;vertical-align:middle">
-	  	 	<div style="float:left;width:35%;height:150px;padding:10px"> 		
-	  	 		<span class="mui-icon mui-icon-contact" style="font-size:100px"></span><br>
-	  	 		<span style="color:white">${customer.name}</span>
+	  	 	<div style="float:left;width:35%;height:130px;padding:10px;text-align:center;"> 		
+	  	 		<span><img src='<%=path%>/assets/img/app/appuser.jpg'></span><br>
 	  	 	</div>
-	  	 	<div style="width:100%;height:150px;text-align:left;padding:50px">
-	  	 		<span style="color:white">${customer.phone}</span><br> 
-	  	 		<span style="color:white">我的积分：${customer.point}</span><br> 
-	  	 		<span style="color:white">所在地：
+	  	 	<div style="width:100%;height:130px;text-align:left;padding:30px">
+	  	 		<span style="color:white;font-size:22px"><b>${customer.phone}</b></span><br> 
+	  	 		<span style="color:white;font-size:14px">我的积分：${customer.point}&nbsp;分</span><br> 
+	  	 		<span style="color:white;font-size:14px">所在省份：
 		  	 		<c:forEach items="${customer.customerCityByPriority}" var="city" varStatus="status">
-						<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
-						<c:if test="${!status.last&&!status.first}">;</c:if>
+						<c:if test="${status.first}">${city.name}</c:if>
 					</c:forEach>
 	  	 		</span><br> 
 	  	 	</div>

@@ -13,21 +13,25 @@
     <script src="<%=path%>/assets/mui-master/js/app.js"></script>
   </head>
   <body> 
-    
-    <form class="mui-input-group" action="<%=path%>/applogin" method="post">
-	    <div class="mui-input-row">
-	        <label>用户名</label>
-	    <input type="text" class="mui-input-clear" placeholder="请输入用户名" name="phone">
-	    </div>
-	    <div class="mui-input-row">
-	        <label>密码</label>
-	        <input type="password" class="mui-input-password" placeholder="请输入密码" name="password">
-	    </div>
-	    <div class="mui-button-row">
-	        <button type="submit" class="mui-btn mui-btn-primary" >登录</button>
-	    </div>
-	</form>
-    <script>  
+    <header class="mui-bar mui-bar-nav" style="background-color:red">
+	    <h1 class="mui-title" style="color:white">礼品兑换系统</h1>
+	 </header>
+	 <div class="mui-content" style="background-color:white">
+	    <form class="mui-input-group" action="<%=path%>/applogin" method="post" style="padding-top:50px">
+		    <div class="mui-input-row">
+		        <label>用户名</label>
+		    <input type="text" class="mui-input-clear" placeholder="请输入用户名" name="phone">
+		    </div>
+		    <div class="mui-input-row">
+		        <label>密码</label>
+		        <input type="password" class="mui-input-password" placeholder="请输入密码" name="password">
+		    </div>
+		    <div class="mui-button-row">
+		        <button type="submit" class="mui-btn mui-btn-primary" >登录</button>
+		    </div>
+		</form>
+	  </div>
+	  <script>  
 	    $(function(){
 			var loginFlag = '${loginFlag}';
 			if(loginFlag=='failed')
@@ -39,6 +43,6 @@
 			if(loginFlag=='passwordChange')
 				mui.toast("密码修改成功，需要重新登录！");
 		});
-    </script>
+	  </script>
   </body>
 </html>

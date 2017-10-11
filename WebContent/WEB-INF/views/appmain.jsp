@@ -14,7 +14,7 @@
     <script src="<%=path%>/assets/mui-master/js/app.js"></script>
   </head>
   <body>
-  <header class="mui-bar mui-bar-nav" style="background-color:red">
+  <header class="mui-bar mui-bar-nav" style="background-color:red;box-shadow: 0 1px 6px red">
     <h1 class="mui-title" style="color:white">e兑</h1>
   </header>
   <nav class="mui-bar mui-bar-tab " id="nav">  
@@ -32,19 +32,19 @@
 		  <div class="mui-slider-group mui-slider-loop">
 		  	<c:forEach items="${products}" var="item" varStatus="status">
 		  		<c:if test="${status.last}">
-		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:auto"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
+		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:200px;padding:5px"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
 		  		</c:if>
 		    </c:forEach>
 		  	<c:forEach items="${products}" var="item" varStatus="status">
-		    	<div class="mui-slider-item" style="height:auto"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
+		    	<div class="mui-slider-item" style="height:200px;padding:5px"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
 		    </c:forEach>
 		    <c:forEach items="${products}" var="item" varStatus="status">
 		  		<c:if test="${status.first}">
-		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:auto"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
+		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:200px;padding:5px"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
 		  		</c:if>
 		    </c:forEach>
 		  </div>
-		</div> 
+		</div>
 		<c:forEach items="${productsAll}" var="item" varStatus="status">
 			<c:if test='${status.index%2==0}'>
 				<div class="mui-card" style="width:45%;float:left">

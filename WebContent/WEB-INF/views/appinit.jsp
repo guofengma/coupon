@@ -13,8 +13,10 @@
     	color: #000;
     	line-height: 30px;
     	text-align: left; 
-}
-    }
+	}
+	.mui-bar-nav{
+	    box-shadow: 0 1px 6px rgba(255,0,0,0,0)
+	}
 </style>
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
 <link rel="stylesheet" href="<%=path %>/assets/bootstrap/css/bootstrap.min.css" type="text/css">

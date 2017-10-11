@@ -14,7 +14,7 @@
     <script src="<%=path%>/assets/mui-master/js/app.js"></script>
   </head>
   <body>
-     <header class="mui-bar mui-bar-nav" style="background-color:red">
+     <header class="mui-bar mui-bar-nav" style="background-color:red;box-shadow: 0 1px 6px red">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 	    <h1 class="mui-title" style="color:white">${product.name}</h1>
 	    <input id="productId" type="hidden" value="${product.id}" />
@@ -33,11 +33,11 @@
         </a>  
      </nav>
      <div class="mui-content" style="background-color:white">  
-	     <div><img src='<%=path%>/img/${fn:replace(product.picPath,"\\","/")}' /></div>
+	     <div style="height:200px;padding:5px"><img height="190px" src='<%=path%>/img/${fn:replace(product.picPath,"\\","/")}' /></div>
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
-	     	<p style="font-size:22px">${product.name}</p>
-	     	<p style="color:red;font-size:24px">${product.points}积分</p>
-	     	<p style="color:blue;font-size:24px">库存：${product.canBeGivenCode.size()}</p>
+	     	<p style="font-size:18px">${product.name}</p>
+	     	<p style="color:red;font-size:20px">${product.points}积分</p>
+	     	<p style="color:blue;font-size:20px">库存：${product.canBeGivenCode.size()}</p>
 	     </div>
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
 	     	 <ul class="mui-table-view"> 
