@@ -57,7 +57,7 @@
 					<!--页脚，放置补充信息或支持的操作-->
 					<div class="mui-card-footer">
 						<span style="color:red">${item.points}积分</span>
-						<span style="color:blue">库存：${item.canBeGivenCode.size()}</span>
+						<span style="color:blue">库存：${fn:length(item.canBeGivenCode)}</span>
 					</div>
 				</div>
 			</c:if>
@@ -72,7 +72,7 @@
 					<!--页脚，放置补充信息或支持的操作-->
 					<div class="mui-card-footer">
 						<span style="color:red">${item.points}积分</span>
-						<span style="color:blue">库存：${item.canBeGivenCode.size()}</span>
+						<span style="color:blue">库存：${fn:length(item.canBeGivenCode)}</span>
 					</div>
 				</div>
 			  </c:if>		

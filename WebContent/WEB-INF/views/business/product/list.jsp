@@ -66,7 +66,7 @@
 													<td>${item.name}</td>
 													<td>${item.points}</td>
 													<%-- <td>${item.description}</td> --%>
-													<td>${item.redeemCode.size()}</td>
+													<td>${fn:length(item.redeemCode)}</td>
 													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
 													<td>
 															<p>

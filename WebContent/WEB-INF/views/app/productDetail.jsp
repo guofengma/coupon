@@ -18,11 +18,11 @@
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 	    <h1 class="mui-title" style="color:white">${product.name}</h1>
 	    <input id="productId" type="hidden" value="${product.id}" />
-	    <input id=canBeGivenCodeNum type="hidden" value="${product.canBeGivenCode.size()}" />
+	    <input id=canBeGivenCodeNum type="hidden" value="${fn:length(product.canBeGivenCode)}" />
 	 </header>
 	 <nav class="mui-bar mui-bar-tab " id="nav">  
       	<div class="mui-tab-item" id="a1">
-      		 <div class="mui-numbox" data-numbox-min="1" data-numbox-max="${product.canBeGivenCode.size()}">
+      		 <div class="mui-numbox" data-numbox-min="1" data-numbox-max="${fn:length(product.canBeGivenCode)}">
 				<button id="less" class="mui-btn mui-numbox-btn-minus" type="button">-</button>
 				<input id="numbers" class="mui-numbox-input" type="number" disabled />
 				<button id="add" class="mui-btn mui-numbox-btn-plus" type="button">+</button>
@@ -37,7 +37,7 @@
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
 	     	<p style="font-size:18px">${product.name}</p>
 	     	<p style="color:red;font-size:20px">${product.points}积分</p>
-	     	<p style="color:blue;font-size:20px">库存：${product.canBeGivenCode.size()}</p>
+	     	<p style="color:blue;font-size:20px">库存：${fn:length(product.canBeGivenCode)}</p>
 	     </div>
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
 	     	 <ul class="mui-table-view"> 

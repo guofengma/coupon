@@ -70,8 +70,8 @@
 														<input name='switch' value='${item.id}' data-on-text='启用' data-off-text='禁用' type='checkbox' <c:if test="${item.statu}">checked</c:if>/>
 													</td>
 													<td>${fn:substring(item.endTime,0,10)}</td>
-													<td>${item.children.size()}</td>
-													<td>${item.unGivenChildren.size()}</td>
+													<td>${fn:length(item.children)}</td>
+													<td>${fn:length(item.item.unGivenChildren)}</td>
 													<td>
 														<c:if test="${item.made}">已制作</c:if>
 														<c:if test="${!item.made}">未制作</c:if>

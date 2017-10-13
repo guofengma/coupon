@@ -72,8 +72,8 @@
 														<input name='switch' value='${item.id}' data-on-text='启用' data-off-text='禁用' type='checkbox' <c:if test="${!item.used}">checked</c:if>/>
 													</td>
 													<td>${fn:substring(item.endTime,0,10)}</td>
-													<td>${item.children.size()}</td>
-													<td>${item.unUsedChildren.size()}</td>
+													<td>${fn:length(item.children)}</td>
+													<td>${fn:length(item.unUsedChildren)}</td>
 													<td>${item.remark}</td>
 													<td>登录名:${item.user.name}；用户名:${item.user.displayName}</td>
 													<td>
