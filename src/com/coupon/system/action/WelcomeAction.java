@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.utils.CookieUtil;
+import com.coupon.business.entity.Activity;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Product;
+import com.coupon.business.service.ActivityService;
 import com.coupon.business.service.CustomerService;
 import com.coupon.business.service.ProductService;
 import com.coupon.security.MyRealm;
@@ -31,6 +33,8 @@ public class WelcomeAction extends BaseAction {
 	CityService cityService;
 	@Autowired
 	ProductService productService;
+	@Autowired
+	ActivityService activityService;
 	
 
 	@RequestMapping(value = "/main_center", method = RequestMethod.GET)
@@ -70,7 +74,8 @@ public class WelcomeAction extends BaseAction {
 			citys = new ArrayList(customer.getCity().size()==0?cityService.getCityUsed():customer.getCity());
 		}
 		product = productService.findProductByCityIds(cityToStringIds(citys));
-		model.addAttribute("products",product.size()>4?product.subList(0, 3):product);
+		List<Activity> activitys = activityService.findAll();
+		model.addAttribute("activitys",activitys);
 		model.addAttribute("productsAll",product);
 		return "appmain";
 	}

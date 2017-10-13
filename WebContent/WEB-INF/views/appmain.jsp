@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.min.css">  
     <script src="<%=path%>/assets/mui-master/dist/js/mui.min.js"></script>  
-    <script src="<%=path%>/assets/mui-master/js/app.js"></script>
   </head>
   <body>
   <header class="mui-bar mui-bar-nav" style="background-color:red;box-shadow: 0 1px 6px red">
@@ -30,17 +29,17 @@
    <div class="mui-content" style="background-color:white">  
 	   <div class="mui-slider">
 		  <div class="mui-slider-group mui-slider-loop">
-		  	<c:forEach items="${products}" var="item" varStatus="status">
+		  	<c:forEach items="${activitys}" var="item" varStatus="status">
 		  		<c:if test="${status.last}">
-		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:200px;padding:5px"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
+		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:200px;padding:5px"><a href="<%=path%>/activity/app/toActivityPage?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
 		  		</c:if>
 		    </c:forEach>
-		  	<c:forEach items="${products}" var="item" varStatus="status">
-		    	<div class="mui-slider-item" style="height:200px;padding:5px"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
+		  	<c:forEach items="${activitys}" var="item" varStatus="status">
+		    	<div class="mui-slider-item" style="height:200px;padding:5px"><a href="<%=path%>/activity/app/toActivityPage?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
 		    </c:forEach>
-		    <c:forEach items="${products}" var="item" varStatus="status">
+		    <c:forEach items="${activitys}" var="item" varStatus="status">
 		  		<c:if test="${status.first}">
-		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:200px;padding:5px"><a href="<%=path%>/business/app/productDetail?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
+		  			<div class="mui-slider-item mui-slider-item-duplicate" style="height:200px;padding:5px"><a href="<%=path%>/activity/app/toActivityPage?id=${item.id}"><img height="190px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a></div>
 		  		</c:if>
 		    </c:forEach>
 		  </div>

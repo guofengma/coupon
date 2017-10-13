@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.min.css">  
     <script src="<%=path%>/assets/mui-master/dist/js/mui.min.js"></script>  
-    <script src="<%=path%>/assets/mui-master/js/app.js"></script>
   </head>
   <body> 
     <header class="mui-bar mui-bar-nav" style="background-color:red">

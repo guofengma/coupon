@@ -65,6 +65,9 @@
 	                <li>
 	                    <a href="<c:url value='/business/rechargeCode/batchlist'/>" ><i class="icon-barcode"></i> 积分码管理 </a>
 	                </li>
+	                 <li>
+	                    <a href="<c:url value='/business/activity/list'/>" ><i class="icon-bullhorn"></i> 活动管理 </a>
+	                </li>
 	                <li>
 	                    <a href="<c:url value='/business/record/achievement'/>" ><i class="icon-bar-chart"></i> 业绩统计 </a>
 	                </li>

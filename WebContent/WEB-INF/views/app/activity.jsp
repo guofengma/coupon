@@ -15,15 +15,14 @@
   <body>
 	 <header class="mui-bar mui-bar-nav" style="background-color:red">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-	    <h1 class="mui-title" style="color:white">兑换结果</h1>
+	    <h1 class="mui-title" style="color:white">e兑活动页面</h1>
 	 </header>
-     <div class="mui-content" style="background-color:white">
-	  	 <div style="padding-top:40px">
-	  	 	兑换失败！原因：${message}
-	  	 </div>
+     <div class="mui-content" style="background-color:white;">
+	  	 <a id="activityUrl" href="${url}" target="ifrPage"></a>
+		<iframe height="100%" width="100%" frameborder="0" id="ifrPage" name="ifrPage" src=""></iframe>
 	</div>
-  <script>  
-
+  <script>
+  	document.getElementById("activityUrl").click();
   </script>
   </body>
 </html>
