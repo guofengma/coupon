@@ -70,7 +70,7 @@
 															<c:if test="${!status.last&&!status.first}">;</c:if>
 														</c:forEach>
 													</td>
-													<td>${item.createTime.toLocaleString()}</td> 
+													<td>${item.createTime}</td> 
 													<td>
 														<c:if test="${item.name!=currentUser}">
 															<p>

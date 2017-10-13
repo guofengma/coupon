@@ -57,7 +57,7 @@
 												<tr class="odd gradeX">
 													<td>${item.name}</td>
 													<td>${item.priority}</td>
-													<td>${item.createTime.toLocaleString()}</td>
+													<td>${item.createTime}</td>
 													<td>
 														<p>
 															<a  href="<c:url value='/system/role/edit?id=${item.id}'/>" class="btn-sm btn-app btn-primary no-radius">
