@@ -262,13 +262,13 @@ public class RedeemCodeAction extends BaseAction{
 					fileName = fileName.substring(fileName.lastIndexOf("\\") + 1,
 							fileName.length());
 					String prefix = System.currentTimeMillis() + "";
-					File file = new File(request.getServletContext().getRealPath("/")
+					File file = new File(request.getSession().getServletContext().getRealPath("/")
 							+ "excel\\" + FolderUtil.getFolder());
 					if (!file.exists())
 						file.mkdirs();
-					File uploadedFile = new File(request.getServletContext().getRealPath("/")+ "excel\\"+FolderUtil.getFolder()+ "\\"+ prefix + fileName);
+					File uploadedFile = new File(request.getSession().getServletContext().getRealPath("/")+ "excel\\"+FolderUtil.getFolder()+ "\\"+ prefix + fileName);
 					item.write(uploadedFile);
-					importResult = importToBase(request.getServletContext().getRealPath("/")+ "excel\\"+FolderUtil.getFolder()+ "\\"+ prefix + fileName,batch.getId());
+					importResult = importToBase(request.getSession().getServletContext().getRealPath("/")+ "excel\\"+FolderUtil.getFolder()+ "\\"+ prefix + fileName,batch.getId());
 			}
 		}
 		model.addAttribute("id",batch.getProduct().getId());

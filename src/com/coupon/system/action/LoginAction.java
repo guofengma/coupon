@@ -49,7 +49,7 @@ public class LoginAction {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(String username, String password, ModelMap model,
-			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		UserUtil.userList = userService.getAllUsers();
 		CookieUtil.delCookie(request, response, "menus");
 		Subject subject = SecurityUtils.getSubject();
@@ -74,12 +74,15 @@ public class LoginAction {
 			model.addAttribute("loginFlag", "failed");
 			return "index";
 		}
+		/*response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().write(username);*/
 	}
 	
 	@RequestMapping(value = "/applogin", method = RequestMethod.POST)
 	public String applogin(String phone, String password, ModelMap model,
-			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-		//UserUtil.userList = userService.getAllUsers();
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
+		UserUtil.customerList = customerService.getAllCustomers();
 		Subject subject = SecurityUtils.getSubject();
 		SecurityUtils.getSecurityManager().logout(subject);
 		// 登录后存放进shiro token

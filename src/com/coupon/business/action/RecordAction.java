@@ -288,7 +288,7 @@ public class RecordAction extends BaseAction{
 		String endTime = request.getParameter("endTime");
 		List<Record> records = recordService.findAchievementByStaff(userId,startTime,endTime);
 		String prefix = System.currentTimeMillis() + "";
-		String path = request.getServletContext().getRealPath("/")+ "excel\\" + FolderUtil.getFolder();
+		String path = request.getSession().getServletContext().getRealPath("/")+ "excel\\" + FolderUtil.getFolder();
 		String temp = path +"\\" + prefix +user.getDisplayName()+"业绩.xls";
 		String fileDir = temp;
 		if(fileExist(fileDir))

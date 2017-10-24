@@ -73,6 +73,8 @@
 		var loginFlag = '${loginFlag}';
 		if(loginFlag=='failed')
 			alert("用户名或密码错误！");
+		if(loginFlag=='tokenExpires')
+			alert("用户名或密码错误！");
 	});
 	</script>
 </html>

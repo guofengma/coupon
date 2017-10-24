@@ -169,7 +169,7 @@ public class ProductAction extends BaseAction{
 		}else{
 			product = productService.findById(oldId);
 			if(fileChanged){
-				String root = request.getServletContext().getRealPath("/");
+				String root = request.getSession().getServletContext().getRealPath("/");
 				String oldFilePath = root + "img\\"+product.getPicPath();
 				File oldfile = new File(oldFilePath);
 				if(oldfile.exists())
@@ -188,13 +188,11 @@ public class ProductAction extends BaseAction{
 					fileName = fileName.substring(fileName.lastIndexOf("\\") + 1,
 							fileName.length());
 					String prefix = System.currentTimeMillis() + "";
-					File file = new File(request.getServletContext().getRealPath(
-							"/")
+					File file = new File(request.getSession().getServletContext().getRealPath("/")
 							+ "img\\" + FolderUtil.getFolder());
 					if (!file.exists())
 						file.mkdirs();
-					File uploadedFile = new File(request.getServletContext()
-							.getRealPath("/")
+					File uploadedFile = new File(request.getSession().getServletContext().getRealPath("/")
 							+ "img\\"+FolderUtil.getFolder()
 							+ "\\"
 							+ prefix + fileName);

@@ -71,7 +71,7 @@
 													</td>
 													<td>${fn:substring(item.endTime,0,10)}</td>
 													<td>${fn:length(item.children)}</td>
-													<td>${fn:length(item.item.unGivenChildren)}</td>
+													<td>${fn:length(item.unGivenChildren)}</td>
 													<td>
 														<c:if test="${item.made}">已制作</c:if>
 														<c:if test="${!item.made}">未制作</c:if>

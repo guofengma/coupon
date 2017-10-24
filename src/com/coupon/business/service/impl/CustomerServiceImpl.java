@@ -64,4 +64,9 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer, String> imple
 	public Customer findCheckedByPhone(String phone) {
 		return getCustomerDao().findCheckedByPhone(phone);
 	}
+
+	@Override
+	public List<Customer> getAllCustomers() {
+		return getCustomerDao().getAllCustomers();
+	}
 }

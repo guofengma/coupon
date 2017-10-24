@@ -380,7 +380,7 @@ public class RechargeCodeAction extends BaseAction{
 	private void exportExcel(HttpServletResponse response, HttpServletRequest request, ModelMap model,String id) throws Exception {
 			 RechargeCode batch = rechargeCodeService.findById(id);
 			 String prefix = System.currentTimeMillis() + "";
-			 String path = request.getServletContext().getRealPath("/")+ "excel\\" + FolderUtil.getFolder();
+			 String path = request.getSession().getServletContext().getRealPath("/")+ "excel\\" + FolderUtil.getFolder();
 			 String temp = path +"\\" + prefix + batch.getBatch()+".xls";
 			 String fileDir = temp;
 			 if(fileExist(fileDir))

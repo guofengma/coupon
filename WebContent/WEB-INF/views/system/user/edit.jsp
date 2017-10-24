@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 <%@include file="/WEB-INF/views/init.jsp" %>
 <head>
@@ -112,7 +113,7 @@
 								 <select class="selectpicker" multiple id="sCity" name="sCity">
 								 	<c:forEach items="${sCityUsedList}" var="item">
 									  	<option value="${item.id}" 
-									  		<c:if test="${userCity.contains(item)}">
+									  		<c:if test="${fn:contains(userCity,item)}">
 										  		selected
 										  	</c:if>>${item.name}
 										</option>
@@ -128,7 +129,7 @@
                     			<c:if test="${!role.isSuper}">
 		                    		<label class="checkbox-inline">
 			                            <input type="radio" name="roleIds" value="${role.id}" 
-			                            <c:if test='${userRoleList.contains(role) }'>
+			                            <c:if test='${fn:contains(userRoleList,role)}'>
 			                            	checked="checked" 
 			                            </c:if>
 			                            >${role.name}

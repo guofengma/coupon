@@ -22,21 +22,20 @@
 				<img src="<%=path%>/assets/error/images/error2.png" title="error"  /><br />
 				<a href="<%=path%>/index">返回登录页面</a>
    			</div>
-   			<div class="content" id="appindex500"  style="display:none">
+   			<%-- <div class="content" id="appindex500"  style="display:none">
 				<img src="<%=path%>/assets/error/images/error2.png" title="error"  /><br />
 				<a href="<%=path%>/appindex">返回登录页面</a>
-   			</div>
+   			</div> --%>
 			<!--End-Cotent------>
 		</div>
 		<!--End-wrap--->
 	</body>
 	<script type="text/javascript">
-		var isUser = '${cookie['isUser'].value}';
-		console.log(isUser)
+		//var isUser = '${cookie['isUser'].value}';
 		if(isUser=='true'){
 			$("#index500").show();
 		}else{
-			$("#appindex500").show();
+			$("#index500").show();
 		}
 	</script>
 </html>

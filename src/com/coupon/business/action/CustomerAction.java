@@ -77,6 +77,10 @@ public class CustomerAction extends BaseAction{
 		CookieUtil.showCookies(request, null);
 		System.out.println(request.getParameter("statu")+check);
 		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null == user){
+			model.addAttribute("loginFlag","tokenExpires");
+			return "index";
+		}
 		StringBuilder roleString = new StringBuilder() ;
 		Set<Role> roles = user.getRoles();
 		for(Role temp : roles){
@@ -198,7 +202,7 @@ public class CustomerAction extends BaseAction{
 		String condition[] = new String[]{startTime,endTime,name,latestName,city,phone,roleType};
 		List <Customer> customers = customerService.exportByCondition(user,condition);
 		String prefix = System.currentTimeMillis() + "";
-		String path = request.getServletContext().getRealPath("/")+ "excel\\" + FolderUtil.getFolder();
+		String path = request.getSession().getServletContext().getRealPath("/")+ "excel\\" + FolderUtil.getFolder();
 		String temp = path +"\\" + prefix +"customer.xls";
 		String fileDir = temp;
 		if(fileExist(fileDir))

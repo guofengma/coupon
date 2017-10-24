@@ -39,13 +39,13 @@ public abstract class ProductEntity extends BaseEntity{
 	
 	protected boolean statu ;//是否可用，也就是上架下架
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "product")
+	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL }, mappedBy = "product")
 	protected List<Record> record;
 	
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "product")
+	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL }, mappedBy = "product")
 	protected List<RedeemCode> redeemCode;
 	
-	@ManyToMany(targetEntity = City.class, fetch = FetchType.EAGER)
+	@ManyToMany(targetEntity = City.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "coupon_city_product", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "CITY_ID"))
 	protected Set<City> city = new HashSet<City>();
 

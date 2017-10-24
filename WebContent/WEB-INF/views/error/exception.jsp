@@ -23,21 +23,21 @@
 				<p>服务器发生异常了，请联系管理员</p>
 				<a href="<%=path%>/index">返回登录页面</a>
    			</div>
-   			<div class="content" id="appindexException"  style="display:none">
+   			<%-- <div class="content" id="appindexException"  style="display:none">
 				<img src="<%=path%>/assets/error/images/error3.png" title="error" />
 				<p>服务器发生异常了，请联系管理员</p>
 				<a href="<%=path%>/appindex">返回登录页面</a>
-   			</div>
+   			</div> --%>
 			<!--End-Cotent------>
 		</div>
 		<!--End-wrap--->
 	</body>
 	<script type="text/javascript">
-		var isUser = '${cookie['isUser'].value}';
+		//var isUser = '${cookie['isUser'].value}';
 		if(isUser=='true'){
 			$("#indexException").show();
 		}else{
-			$("#appindexException").show();
+			$("#indexException").show();
 		}
 	</script>
 </html>

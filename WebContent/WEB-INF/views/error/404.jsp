@@ -23,21 +23,21 @@
 				<p><span>哎呀.....</span>您访问的页面不存在</p>
 				<a href="<%=path%>/index">返回登录页面</a>
    			</div>
-   			<div class="content" id="appindex404" style="display:none">
+   			<%-- <div class="content" id="appindex404" style="display:none">
 				<img src="<%=path%>/assets/error/images/app-error-img.png" title="error" />
 				<p><span>哎呀.....</span>您访问的页面不存在</p>
 				<a href="<%=path%>/appindex">返回登录页面</a>
-   			</div>
+   			</div> --%>
 			<!--End-Cotent------>
 		</div>
 		<!--End-wrap--->
 	</body>
 	<script type="text/javascript">
-		var isUser = '${cookie['isUser'].value}';
+		//var isUser = '${cookie['isUser'].value}';
 		if(isUser=='true'){
 			$("#index404").show();
 		}else{
-			$("#appindex404").show();
+			$("#index404").show();
 		}
 	</script>
 </html>

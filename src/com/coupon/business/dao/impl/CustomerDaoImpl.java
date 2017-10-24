@@ -234,4 +234,10 @@ public class CustomerDaoImpl extends BaseDaoImpl<Customer, String> implements Cu
 				null);
 	}
 
+	@Override
+	public List<Customer> getAllCustomers() {
+		return (List<Customer>) this.queryByHql("from Customer where deleted=false and statu=true",
+				null);
+	}
+
 }

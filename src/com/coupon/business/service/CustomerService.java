@@ -26,4 +26,6 @@ public interface CustomerService extends BaseService<Customer , String>{
 
 	Customer findCheckedByPhone(String phone);
 
+	List<Customer> getAllCustomers();
+
 }

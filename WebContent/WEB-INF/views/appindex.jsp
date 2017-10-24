@@ -16,7 +16,7 @@
 	    <h1 class="mui-title" style="color:white">礼品兑换系统</h1>
 	 </header>
 	 <div class="mui-content" style="background-color:white">
-	    <form class="mui-input-group" action="<%=path%>/applogin" method="post" style="padding-top:50px">
+	    <form id="loginForm" class="mui-input-group" action="<%=path%>/applogin" method="post" style="padding-top:50px">
 		    <div class="mui-input-row">
 		        <label>用户名</label>
 		    <input type="text" class="mui-input-clear" placeholder="请输入用户名" name="phone">
@@ -26,7 +26,7 @@
 		        <input type="password" class="mui-input-password" placeholder="请输入密码" name="password">
 		    </div>
 		    <div class="mui-button-row">
-		        <button type="submit" class="mui-btn mui-btn-primary" >登录</button>
+		        <button type="submit" class="mui-btn mui-btn-primary">登录</button>
 		    </div>
 		</form>
 	  </div>
@@ -41,7 +41,23 @@
 				mui.toast("该用户还未通过审核，请耐心等待！");
 			if(loginFlag=='passwordChange')
 				mui.toast("密码修改成功，需要重新登录！");
-		});
+		});	    
+	    
+	<%-- function login(){
+	    	for(var i=0;i<5;i++){
+	    		console.log(i)
+	    		$.ajax({
+		    		 url:"<%=path%>/login",    //请求的url地址
+		    		     dataType:"json",   //返回格式为json
+		    		     async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+		    		     data:{"phone":1111+i,"password":"123"},    //参数值
+		    		     type:"POST",
+			    		 success:function(result){
+			    			 console.log(result.result);
+			    		 }
+		    	});
+	    	}
+	    }  --%>
 	  </script>
   </body>
 </html>
