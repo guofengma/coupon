@@ -33,7 +33,7 @@
 		<!--End-wrap--->
 	</body>
 	<script type="text/javascript">
-		//var isUser = '${cookie['isUser'].value}';
+		var isUser = '${cookie['isUser'].value}';
 		if(isUser=='true'){
 			$("#indexException").show();
 		}else{

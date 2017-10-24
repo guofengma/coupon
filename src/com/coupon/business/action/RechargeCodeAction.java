@@ -293,7 +293,7 @@ public class RechargeCodeAction extends BaseAction{
 	@RequestMapping(value = "/business/rechargeCode/changeBatchState")
 	public void changeBatchState(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
 		String id = request.getParameter("id");
-		boolean state = request.getParameter("state").equals("false");
+		boolean state = request.getParameter("state").equals("true");
 		RechargeCode rechargeCode = rechargeCodeService.findById(id);
 		rechargeCode.setStatu(state);
 		rechargeCodeService.update(rechargeCode);

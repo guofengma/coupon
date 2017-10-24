@@ -44,7 +44,9 @@
 							发放批次： 
 							<select class="selectpicker" id="batch" onchange="batchChange()">
 								 <c:forEach items="${batch}" var="item">
-								  	<option value="${item.id}">${item.batch}</option>
+									 <c:if test="${item.statu}">
+								  		<option value="${item.id}">${item.batch}</option>
+								  	 </c:if>
 								 </c:forEach>
 							 </select>
 							</td>
