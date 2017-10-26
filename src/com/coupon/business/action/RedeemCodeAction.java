@@ -308,8 +308,10 @@ public class RedeemCodeAction extends BaseAction{
 		        	throw new Exception("暂时只支持xlsx和xls格式的excel读取");
 		          }
 		          
-		          for (int numSheet = 0; numSheet < workbook.getNumberOfSheets(); numSheet++) {
+		          for (int numSheet = 0; numSheet < 1; numSheet++) {
+		         // for (int numSheet = 0; numSheet < workbook.getNumberOfSheets(); numSheet++) {
 	        	        Sheet sheetAt = workbook.getSheetAt(numSheet);
+	        	       
 	        	        if (sheetAt == null) {
 	        	         continue;
 	        	        }
@@ -318,12 +320,16 @@ public class RedeemCodeAction extends BaseAction{
 		        	         Row row = sheetAt.getRow(rowNum);
 		        	         if (row != null) {
 		        	        	    count++;
-			                        row.getCell(0).setCellType(Cell.CELL_TYPE_STRING); 
-			                        RedeemCode temp = new RedeemCode();
-			                        temp.setParent(batch);
-			                        temp.setCode(row.getCell(0).getStringCellValue());
-			                        temp.setUsed(false);
-			                        addList.add(temp)  ;
+		        	        	    if(row.getCell(0) != null){
+		        	        	    	row.getCell(0).setCellType(Cell.CELL_TYPE_STRING); 
+				                        if(!row.getCell(0).getStringCellValue().equals("")){
+				                        	RedeemCode temp = new RedeemCode();
+					                        temp.setParent(batch);
+					                        temp.setCode(row.getCell(0).getStringCellValue());
+					                        temp.setUsed(false);
+					                        addList.add(temp)  ;
+				                        }
+		        	        	    }
 		        	         }
 	        	        }
 		            redeemCodeService.batchSave(addList);

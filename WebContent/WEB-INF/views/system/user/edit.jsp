@@ -126,7 +126,7 @@
                     	
                     	<div class="col-sm-9 control-label" style="text-align:left;">
                     		<c:forEach items="${roleList}" var="role">
-                    			<c:if test="${!role.isSuper}">
+                    			<%-- <c:if test="${!role.isSuper}"> --%>
 		                    		<label class="checkbox-inline">
 			                            <input type="radio" name="roleIds" value="${role.id}" 
 			                            <c:if test='${fn:contains(userRoleList,role)}'>
@@ -134,7 +134,7 @@
 			                            </c:if>
 			                            >${role.name}
 			                        </label>
-		                        </c:if>
+		                        <%-- </c:if> --%>
                     		</c:forEach>
                     	</div>
                     </div>

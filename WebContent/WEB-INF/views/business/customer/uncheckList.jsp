@@ -117,12 +117,12 @@
 												</td>
 												<td>
 													<p>
-														<shiro:hasPermission name="customer:edit">
+														<%-- <shiro:hasPermission name="customer:edit"> --%>
 															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
 																<i class="icon-edit bigger-200"></i>
 																编辑
 															</a>&nbsp;&nbsp;
-														</shiro:hasPermission>
+														<%-- </shiro:hasPermission> --%>
 														<shiro:hasPermission name="customer:delete">
 															<a href="javascript:del('<c:url value='/business/customer/delete?condition=${condition}&id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																<i class="icon-trash bigger-200"></i>
