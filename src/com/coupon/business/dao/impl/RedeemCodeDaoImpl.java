@@ -55,7 +55,7 @@ public class RedeemCodeDaoImpl extends BaseDaoImpl<RedeemCode, String> implement
 		if(!condition[4].equals(""))
 			sql.append(" and r.parent.product.name like '%"+condition[4]+"%'");
 		if(!condition[5].equals(""))
-			sql.append(" and r.code = "+condition[5]);
+			sql.append(" and r.code = '"+condition[5]+"'");
 		if(condition[6].equals("1")) //未过期中未兑换的  
 			sql.append(" and r.used = false and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
 		if(condition[6].equals("2")) //未过期中已经兑换的 

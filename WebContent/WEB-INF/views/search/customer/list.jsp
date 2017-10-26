@@ -57,8 +57,8 @@
 									<thead>
 										<tr>
 											<th>序号</th>
-											<th>客户姓名</th>
 											<th>客户电话</th>
+											<th>客户姓名</th>
 											<th>最近一次充值人员</th>
 											<th>最近一次充值时间</th>
 											<th>累计兑换积分数量</th>
@@ -72,22 +72,22 @@
 									<c:forEach items="${customers.items}" var="item" varStatus="status">
 											<tr class="odd gradeX">
 												<td>${status.count}</td>
-												<td>${item.name}</td>
-												<td>${item.phone}</td>
-												<td>${item.latestChargeUser.displayName}</td>
-												<td>${fn:substring(item.latestChargeTime,0,10)}</td>
-												<td>${item.totalAddUp}</td>
-												<td>${item.point}</td>
+												<td>${item[0].phone}</td>
+												<td>${item[0].name}</td>
+												 <td>${item[0].latestChargeUser.displayName}</td>
+												<td>${fn:substring(item[0].latestChargeTime,0,10)}</td>
+												<td>${item[0].totalAddUp}</td>
+												<td>${item[0].point}</td>
 												<td>
-													<c:forEach items="${item.customerCityByPriority}" var="city" varStatus="status">
+													<c:forEach items="${item[0].customerCityByPriority}" var="city" varStatus="status">
 														<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
 														<c:if test="${!status.last&&!status.first}">;</c:if>
 													</c:forEach>
 												</td>
-												<td>${item.bank.name}</td>
+												<td>${item[0].bankAddress}</td>
 												<td>
 													<p>
-														<a href="<c:url value="/search/record/findByCustomerId?id=${item.id}"/>" class="btn-sm btn-app btn-primary no-radius">
+														<a href="<c:url value="/search/record/findByCustomerId?id=${item[0].id}"/>" class="btn-sm btn-app btn-primary no-radius">
 															<i class="icon-eye-open bigger-200"></i>
 															点击查看
 														</a>&nbsp;&nbsp;
