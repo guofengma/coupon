@@ -87,63 +87,63 @@
 										<c:forEach items="${customers.items}" var="item">
 											<tr class="odd gradeX">
 												<td>
-													<c:if test="${!item.deal}">
-														<input type="checkbox" value="${item.id}" name="customer">
+													<c:if test="${!item[0].deal}">
+														<input type="checkbox" value="${item[0].id}" name="customer">
 													</c:if>
 												</td>
-												<td>${item.name }</td>
-												<td>${item.phone }</td>
-												<td>${item.point }</td>
+												<td>${item[0].name }</td>
+												<td>${item[0].phone }</td>
+												<td>${item[0].point }</td>
 												<td>
-													<c:forEach items="${item.customerCityByPriority}" var="city" varStatus="status">
+													<c:forEach items="${item[0].customerCityByPriority}" var="city" varStatus="status">
 														<c:if test="${status.first}">【</c:if>${city.name}<c:if test="${status.first}">】</c:if>
 														<c:if test="${!status.last&&!status.first}">;</c:if>
 													</c:forEach>
 												</td>
-												<td>${item.bankAddress }</td>
+												<td>${item[0].bankAddress }</td>
 												<td>
-													<c:if test="${item.register}">
+													<c:if test="${item[0].register}">
 														前台注册
 													</c:if>
-													${item.user.displayName}
+													${item[0].user.displayName}
 												</td>
 												<td>
-													<c:if test ="${item.deal}">
+													<c:if test ="${item[0].deal}">
 														<font color="#FF0000">已处理，未通过</font>
 													</c:if>
-													<c:if test ="${!item.deal}">
+													<c:if test ="${!item[0].deal}">
 														未处理
 													</c:if>
 												</td>
 												<td>
 													<p>
 														<%-- <shiro:hasPermission name="customer:edit"> --%>
-															<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">
+															<a href="javascript:edit('${item[0].id}')" class="btn-sm btn-app btn-primary no-radius">
 																<i class="icon-edit bigger-200"></i>
 																编辑
 															</a>&nbsp;&nbsp;
 														<%-- </shiro:hasPermission> --%>
 														<shiro:hasPermission name="customer:delete">
-															<a href="javascript:del('<c:url value='/business/customer/delete?condition=${condition}&id=${item.id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
+															<a href="javascript:del('<c:url value='/business/customer/delete?condition=${condition}&id=${item[0].id}'/>');" class="btn-sm btn-app btn-danger no-radius" >
 																<i class="icon-trash bigger-200"></i>
 																删除
 															</a>&nbsp;&nbsp;
 														</shiro:hasPermission>
 														<shiro:hasPermission name="customer:check">
-															<c:if test="${!item.deal}">
-																<a href="javascript:check('<c:url value='/business/customer/check?condition=${condition}&id=${item.id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
+															<c:if test="${!item[0].deal}">
+																<a href="javascript:check('<c:url value='/business/customer/check?condition=${condition}&id=${item[0].id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-thumbs-up bigger-200"></i>
 																	审核通过
 																</a>&nbsp;&nbsp;
-																<a href="javascript:check('<c:url value='/business/customer/check?condition=${condition}&id=${item.id}&pass=false'/>');" class="btn-sm btn-app btn-success no-radius" >
+																<a href="javascript:check('<c:url value='/business/customer/check?condition=${condition}&id=${item[0].id}&pass=false'/>');" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-thumbs-down bigger-200"></i>
 																	审核不通过
 																</a>&nbsp;&nbsp;
 															</c:if>
 														</shiro:hasPermission>
 														<shiro:hasPermission name="customer:add">
-															<c:if test="${item.deal}">
-																<a href="<c:url value='/business/customer/requestCheck?condition=${condition}&id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
+															<c:if test="${item[0].deal}">
+																<a href="<c:url value='/business/customer/requestCheck?condition=${condition}&id=${item[0].id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-share-alt bigger-200"></i>
 																	重新发送审核请求
 																</a>&nbsp;&nbsp;

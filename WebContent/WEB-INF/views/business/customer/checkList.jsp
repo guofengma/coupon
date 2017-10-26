@@ -67,20 +67,20 @@
 									<tbody>
 										<c:forEach items="${customers.items}" var="item">
 											<tr class="odd gradeX">
-													<td>${item.name }</td>
-													<td>${item.phone }</td>
-													<td>${item.password }</td>
-													<td>${item.point }</td>
-													<td>${item.checkUser.displayName}</td>
+													<td>${item[0].name }</td>
+													<td>${item[0].phone }</td>
+													<td>${item[0].password }</td>
+													<td>${item[0].point }</td>
+													<td>${item[0].checkUser.displayName}</td>
 													<td>
 														<p>
 															<shiro:hasPermission name="recharge:recharge">
-																<a href="javascript:showModal('${item.name}','${item.id}');" class="btn-sm btn-app btn-primary no-radius" >
+																<a href="javascript:showModal('${item[0].name}','${item[0].id}');" class="btn-sm btn-app btn-primary no-radius" >
 																	<i class="icon-plus bigger-200"></i>
 																	充值
 																</a>&nbsp;&nbsp;
 															</shiro:hasPermission>
-															<a href="<c:url value="/search/record/findByCustomerId?id=${item.id}"/>" class="btn-sm btn-app btn-primary no-radius">
+															<a href="<c:url value="/search/record/findByCustomerId?id=${item[0].id}"/>" class="btn-sm btn-app btn-primary no-radius">
 																<i class="icon-eye-open bigger-200"></i>
 																点击查看
 															</a>
