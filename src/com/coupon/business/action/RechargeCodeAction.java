@@ -96,14 +96,14 @@ public class RechargeCodeAction extends BaseAction{
 			customer.setPoint(customer.getPoint()+rechargeCode.getPoints());
 			customer.setLatestChargeTime(new Date());
 			customerService.update(customer);
-			Record record = new Record();
+			Record record = rechargeCode.getRecord();
 			record.setCustomer(customer);
 			record.setRechargeCode(rechargeCode);
 			record.setRaise(true);
 			record.setStatu(true);
 			record.setDeal(true);
 			record.setPoints(rechargeCode.getPoints());
-			recordService.save(record);
+			recordService.update(record);
 			rechargeCode.setUsed(true);
 			rechargeCodeService.update(rechargeCode);
 			return "app/chargeSuccess";//充值成功返回页面
