@@ -26,7 +26,7 @@
           <span class="mui-tab-label">我的</span>  
       </a>  
    </nav>
-   <div class="mui-content" style="background-color:white;padding-top:50px;padding-bottom:450px;width:100%">  
+   <div class="mui-content" style="background-color:white;padding-top:50px;width:100%;overflow:scroll">  
 	   <div class="mui-slider">
 		  <div class="mui-slider-group mui-slider-loop">
 		  	<c:forEach items="${activitys}" var="item" varStatus="status">
@@ -44,19 +44,19 @@
 		    </c:forEach>
 		  </div>
 		</div>
-		<div style="width:100%">
+		<div style="width:100%;">
 			<c:forEach items="${productsAll}" var="item" varStatus="status">
 				<c:if test='${status.index%2==0}'>
 					<div style="width:50%;float:left">
-						<div class="mui-card">
+						<div class="mui-card" style="height:200px">
 							<!--页眉，放置标题-->
-							<div class="mui-card-header"><span style="font-size:14px">${item.name}</span></div>
+							<div class="mui-card-header" style="height:15%"><span style="font-size:14px">${item.name}</span></div>
 							<!--内容区-->
-							<div class="mui-card-content">
-								<a href="<%=path%>/business/app/productDetail?id=${item.id}"><img src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a>
+							<div class="mui-card-content" style="height:60%">
+								<a href="<%=path%>/business/app/productDetail?id=${item.id}"><img style="height:110px;padding-top:5px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a>
 							</div>
 							<!--页脚，放置补充信息或支持的操作-->
-							<div class="mui-card-footer">
+							<div class="mui-card-footer" style="height:25%">
 								<span style="color:red">${item.points}积分</span>
 								<span style="color:blue">库存：${fn:length(item.canBeGivenCode)}</span>
 							</div>
@@ -65,15 +65,15 @@
 				</c:if>
 				<c:if test='${status.index%2==1}'>
 					<div style="width:50%;float:left">
-						<div class="mui-card">
+						<div class="mui-card" style="height:200px">
 							<!--页眉，放置标题-->
-							<div class="mui-card-header"><span style="font-size:14px">${item.name}</span></div>
+							<div class="mui-card-header" style="height:15%"><span style="font-size:14px">${item.name}</span></div>
 							<!--内容区-->
-							<div class="mui-card-content">
-								<a href="<%=path%>/business/app/productDetail?id=${item.id}"><img src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a>
+							<div class="mui-card-content" style="height:60%">
+								<a href="<%=path%>/business/app/productDetail?id=${item.id}"><img style="height:110px;padding-top:5px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a>
 							</div>
 							<!--页脚，放置补充信息或支持的操作-->
-							<div class="mui-card-footer">
+							<div class="mui-card-footer" style="height:25%">
 								<span style="color:red">${item.points}积分</span>
 								<span style="color:blue">库存：${fn:length(item.canBeGivenCode)}</span>
 							</div>
@@ -81,6 +81,9 @@
 					</div>
 				  </c:if>		
 				</c:forEach>
+			</div>
+			<div style="width:100%;height:80px">
+			
 			</div>
 		</div>
     <script>  
