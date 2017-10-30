@@ -61,7 +61,7 @@ public class RechargeCodeEntity extends BaseEntity{
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "parent")
 	protected List<RechargeCode> children;
 	
-	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "rechargeCode",fetch=FetchType.EAGER)
+	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "rechargeCode", fetch = FetchType.EAGER)
 	protected Record record;
 
 	public String getCode() {

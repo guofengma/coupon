@@ -40,9 +40,10 @@ public class CityDaoImpl extends BaseDaoImpl<City, String> implements CityDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<City> getCityUsed() {//获取已经有业务的城市
-		return (List<City>)this.queryByHql(
+		List<City> list=(List<City>)this.queryByHql(
 				"from City where deleted=false and used=true order by priority asc", null
 				);
+		return list;
 	}
 
 	@Override

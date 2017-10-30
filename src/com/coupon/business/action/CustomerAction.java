@@ -121,6 +121,10 @@ public class CustomerAction extends BaseAction{
 		List<City> fCityUsedList = cityService.getFCityUsed();
 		model.addAttribute("fCityUsedList",fCityUsedList);
 		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null == user){
+			model.addAttribute("loginFlag","tokenExpires");
+			return "index";
+		}
 		StringBuilder roleString = new StringBuilder() ;
 		String roleType = "";
 		Set<Role> roles = user.getRoles();
@@ -399,6 +403,10 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 	@RequestMapping(value = "/business/customer/check")
 	public String check(HttpServletRequest request, ModelMap model) {
 		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null == user){
+			model.addAttribute("loginFlag","tokenExpires");
+			return "index";
+		}
 		String id = request.getParameter("id");
 		boolean pass = request.getParameter("pass").equals("true");
 		Customer customer = customerService.findById(id);

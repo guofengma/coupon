@@ -15,15 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.util.Assert;
-
 import com.coupon.base.dao.CommonDao;
-import com.coupon.base.entity.BaseEntity;
 import com.coupon.base.exception.DAOException;
 
 public abstract class CommonDaoImpl extends HibernateDaoSupport implements
 		CommonDao {
-
+	
 	/**
 	 * 用于记录日志
 	 */
@@ -33,7 +30,7 @@ public abstract class CommonDaoImpl extends HibernateDaoSupport implements
 	private void setMyHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		super.setHibernateTemplate(hibernateTemplate);
 	}
-
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List queryByHql(final String hql, final List params) {
@@ -48,6 +45,9 @@ public abstract class CommonDaoImpl extends HibernateDaoSupport implements
 			throw new DAOException("查询数据失败," + e.getMessage());
 		}
 	}
+	
+	
+	
 
 	/**
 	 * 通过HQL查询唯一对象

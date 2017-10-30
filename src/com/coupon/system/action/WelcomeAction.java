@@ -61,7 +61,7 @@ public class WelcomeAction extends BaseAction {
 	public String main(HttpServletResponse response,HttpServletRequest request,ModelMap model) {
 		return "main";
 	}
-	//@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	@RequestMapping(value = "/appmain", method = RequestMethod.GET)
 	public String appmain(HttpServletResponse resppose,HttpServletRequest request,ModelMap model) {
 		List<City> citys = new ArrayList<City>();

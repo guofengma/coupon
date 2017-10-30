@@ -30,7 +30,7 @@
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li class="active">
-					<i class="icon-barcode"></i> 客户信息查询
+					<i class="icon-group"></i> 客户信息查询
 				</li>
 			</ul>
 		</div>

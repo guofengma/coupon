@@ -45,7 +45,7 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "parent")
 	protected List<RedeemCode> children;
 
-	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "redeemCode",fetch=FetchType.EAGER)
+	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "redeemCode",fetch = FetchType.EAGER)
 	protected Record record;
 	
 	@ManyToOne(fetch=FetchType.EAGER)

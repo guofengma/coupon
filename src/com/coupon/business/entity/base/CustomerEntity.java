@@ -41,13 +41,13 @@ public abstract class CustomerEntity extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(name = "bankId")
-	protected Bank bank;  //对应兑换服务地址
+	protected Bank bank;
 	
-	@ManyToMany(targetEntity = City.class, fetch = FetchType.EAGER)
+	@ManyToMany(targetEntity = City.class,fetch = FetchType.EAGER)
 	@JoinTable(name = "coupon_customer_city", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "CITY_ID"))
 	protected Set<City> city = new HashSet<City>();
 	
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer" ,fetch=FetchType.EAGER)
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer" ,fetch = FetchType.EAGER)
 	protected List<Record> record; //对应兑换记录
 	
 	@ManyToOne
