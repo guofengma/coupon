@@ -154,7 +154,7 @@ function initTable() {
           			   dataType:"json",
           			   type:"GET",
           			   success:function(result){
-          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+          				  /* $('#tb_rechargeCode').bootstrapTable('refresh');  */
           			   },
  	      			   error:function(){
 	      					alert("状态切换失败！")
@@ -180,7 +180,7 @@ function initTable() {
 	          			   dataType:"json",
 	          			   type:"GET",
 	          			   success:function(result){
-	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          				 /*  $('#tb_rechargeCode').bootstrapTable('refresh');  */
 	          			   },
 	 	      			   error:function(){
 		      					alert("状态切换失败！")
@@ -208,7 +208,7 @@ function initTable() {
 	          			   dataType:"json",
 	          			   type:"GET",
 	          			   success:function(result){
-	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          				 /*  $('#tb_rechargeCode').bootstrapTable('refresh'); */ 
 	          			   },
 	 	      			   error:function(){
 		      					alert("状态切换失败！")
@@ -234,7 +234,7 @@ function initTable() {
 	          			   dataType:"json",
 	          			   type:"GET",
 	          			   success:function(result){
-	          				  $('#tb_rechargeCode').bootstrapTable('refresh'); 
+	          				  /* $('#tb_rechargeCode').bootstrapTable('refresh');  */
 	          			   },
 	 	      			   error:function(){
 		      					alert("状态切换失败！")
@@ -260,7 +260,7 @@ function deleterechargeCode(param){
 			data:{"id":param},
 		    type:"GET",   //请求方式
 		    success:function(result){
-		       	 $('#tb_rechargeCode').bootstrapTable('refresh');   
+		       	 /* $('#tb_rechargeCode').bootstrapTable('refresh');  */  
 		    },
 		    error:function(){
 				alert("读取批次信息失败！")

@@ -41,7 +41,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<form class="form-horizontal" role="form" action="<%=path%>/system/user/save" method="post">
+				<form class="form-horizontal" role="form" action="<%=path%>/system/user/save" method="post" id="addUserForm">
 					<input type="hidden" value="<%=isAdd%>" name="isAdd"/>
 					<input type="hidden" value="${user.id }" name="id"/>
 				
@@ -62,32 +62,34 @@
 							<input type="text" id="form-field-2" placeholder="员工姓名" class="col-xs-10 col-sm-5" name="displayName" value="${user.displayName}">
 						</div>
 					</div>				
-
-						<div class="space-4"></div>
 						
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 密码 </label>
-	
-							<div class="col-sm-9">
-								<input type="password" id="form-field-3" placeholder="密码" class="col-xs-10 col-sm-5" name="password">
-								<!-- <span class="help-inline col-xs-12 col-sm-7">
-									<span class="middle">Inline help text</span>
-								</span> -->
+						<c:if test='<%=isAdd%>'>
+							<div class="space-4"></div>
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 密码 </label>
+		
+								<div class="col-sm-9">
+									<input type="password" id="form-field-3" placeholder="密码" class="col-xs-10 col-sm-5" name="password">
+									<!-- <span class="help-inline col-xs-12 col-sm-7">
+										<span class="middle">Inline help text</span>
+									</span> -->
+								</div>
 							</div>
-						</div>
-	
-						<div class="space-4"></div>
-						
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 重复输入 </label>
-	
-							<div class="col-sm-9">
-								<input type="password" id="form-field-4" placeholder="重复输入密码" class="col-xs-10 col-sm-5">
-								<!-- <span class="help-inline col-xs-12 col-sm-7">
-									<span class="middle">Inline help text</span>
-								</span> -->
+		
+							<div class="space-4"></div>
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 重复输入 </label>
+		
+								<div class="col-sm-9">
+									<input type="password" id="form-field-4" placeholder="重复输入密码" class="col-xs-10 col-sm-5">
+									<!-- <span class="help-inline col-xs-12 col-sm-7">
+										<span class="middle">Inline help text</span>
+									</span> -->
+								</div>
 							</div>
-						</div>
+						</c:if>
 						
 						<div class="space-4"></div>		
 						<div class="form-group">
@@ -141,7 +143,7 @@
 					<div class="clearfix form-actions">
 						<div class="col-md-3"></div>
 						<div class="col-md-9">
-							<button class="btn-sm btn-success no-radius" type="submit" onclick="test()" >
+							<button class="btn-sm btn-success no-radius" type="button" onclick="check()" >
 								<i class="icon-ok bigger-200"></i>
 								确认
 							</button>
@@ -198,8 +200,12 @@ function fCityChange(){
 	$('#sCity').selectpicker('refresh');
 }
 
-function test(){
-	
+function check(){
+	if($("#form-field-4").val()==$("#form-field-3").val())
+		$("#addUserForm").submit();
+	else{
+		alert("密码前后输入不一致，请重新输入！");
+	}
 }
 
 function clearSCity(){//清空二级城市下拉框所有内容（第一个默认的option不清除）

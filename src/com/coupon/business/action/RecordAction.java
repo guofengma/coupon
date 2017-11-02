@@ -67,7 +67,7 @@ public class RecordAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/record/app/myRecord")
 	public String myRecord(HttpServletRequest request, ModelMap model) {
-		String name = CookieUtil.getCookie(request, "name_EN");
+		String name = CookieUtil.getCookie(request, "phone_EN");
 		Customer customer = customerService.findByPhone(name);
 		if(null == customer)
 			return "appindex";

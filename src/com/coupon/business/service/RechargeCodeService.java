@@ -17,4 +17,6 @@ public interface RechargeCodeService extends BaseService<RechargeCode , String>{
 
 	RechargeCode findByKeyt(String keyt);
 
+	List<RechargeCode> findByIds(String ids);
+
 }

@@ -44,4 +44,16 @@ public class RechargeCodeServiceImpl extends BaseServiceImpl<RechargeCode, Strin
 	public RechargeCode findByKeyt(String keyt) {
 		return getRechargeCodeDao().findByKeyt(keyt);
 	}
+
+	@Override
+	public List<RechargeCode> findByIds(String ids) {
+		String[] idsArray = ids.split(";");
+		StringBuilder idSql = new StringBuilder("");
+		for(String temp : idsArray){
+			idSql.append("'" + temp + "',");
+		}
+		if(idsArray.length>0)
+			idSql.deleteCharAt(idSql.length()-1);
+		return  getRechargeCodeDao().findByIds(idSql.toString());
+	}
 }

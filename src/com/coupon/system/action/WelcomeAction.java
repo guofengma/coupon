@@ -66,11 +66,11 @@ public class WelcomeAction extends BaseAction {
 	public String appmain(HttpServletResponse resppose,HttpServletRequest request,ModelMap model) {
 		List<City> citys = new ArrayList<City>();
 		List<Product> product = new ArrayList<Product>();
-		if(CookieUtil.getCookie(request , "name_EN") == null){//未登录，显示所有product
+		if(CookieUtil.getCookie(request , "phone_EN") == null){//未登录，显示所有product
 			citys = cityService.getCityUsed();
 		}
 		else{
-			Customer customer = customerService.findByPhone(CookieUtil.getCookie(request , "name_EN"));
+			Customer customer = customerService.findByPhone(CookieUtil.getCookie(request , "phone_EN"));
 			citys = new ArrayList(customer.getCity().size()==0?cityService.getCityUsed():customer.getCity());
 		}
 		product = productService.findProductByCityIds(cityToStringIds(citys));
@@ -82,7 +82,7 @@ public class WelcomeAction extends BaseAction {
 	
 	@RequestMapping(value = "/app/myInfo", method = RequestMethod.GET)
 	public String myInfo(HttpServletResponse resppose,HttpServletRequest request,ModelMap model) {
-		String name = CookieUtil.getCookie(request , "name_EN") ;
+		String name = CookieUtil.getCookie(request , "phone_EN") ;
 		Customer customer = customerService.findByPhone(name);
 		if(null == customer)
 			return "appindex";//未登录，跳转登录页面

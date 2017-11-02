@@ -72,7 +72,7 @@ public class RechargeCodeAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/business/app/charge")
 	public String charge(HttpServletRequest request, ModelMap model,String keyt) {
-		String name = CookieUtil.getCookie(request , "name_EN");
+		String name = CookieUtil.getCookie(request , "phone_EN");
 		Customer customer = customerService.findByPhone(name);
 		if(null == customer){
 			model.addAttribute("loginFlag","loginExpired");
@@ -231,6 +231,42 @@ public class RechargeCodeAction extends BaseAction{
 		}
 		rechargeCode.setGiven(state);
 		rechargeCodeService.update(rechargeCode);
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{\"result\":\"success\"}");
+	}
+	
+	/**
+	 * 批量发放兑换码
+	 * @param request
+	 * @param model
+	 * @param response
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@RequestMapping(value = "/business/rechargeCode/batchGiveCode")
+	public void batchGiveCode(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException, ParseException {
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		String ids = request.getParameter("ids");
+		String fafangTime =  request.getParameter("fafangTime")==null?FolderUtil.getFolder():request.getParameter("fafangTime");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		List<RechargeCode> rechargeCodes =rechargeCodeService.findByIds(ids);
+		List<Record> records = new ArrayList<Record>();
+		for(RechargeCode temp : rechargeCodes){
+			Record record = new Record();
+			record.setModifiedTime(new Timestamp(formatter.parse(fafangTime).getTime()));
+			record.setUser(user);
+			record.setDeal(true);
+			record.setStatu(true);
+			record.setPoints(temp.getPoints());
+			record.setRaise(true);
+			record.setRechargeCode(temp);
+			record.setDescription("e兑码");
+			temp.setGiven(true);
+			records.add(record);
+		}
+		recordService.batchSave(records);
+		rechargeCodeService.batchUpdate(rechargeCodes);
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write("{\"result\":\"success\"}");

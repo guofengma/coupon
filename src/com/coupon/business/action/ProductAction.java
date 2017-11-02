@@ -89,7 +89,7 @@ public class ProductAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/business/app/exchange")
 	public String exchange(HttpServletRequest request, HttpServletResponse response,ModelMap model){
-		String name = CookieUtil.getCookie(request, "name_EN");//获取客户信息
+		String name = CookieUtil.getCookie(request, "phone_EN");//获取客户信息
 		Customer customer = customerService.findByPhone(name);
 		int count = Integer.valueOf(request.getParameter("count"));//兑换数量
 		String id = request.getParameter("id"); //商品id

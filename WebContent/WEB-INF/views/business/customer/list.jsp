@@ -59,6 +59,15 @@
 									<span class="add-on"><i class="icon-calendar"></i></span>
 								</div>
 							</td>
+							<td>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</td>
+							<td>
+								<a href="javascript:batchGiveCode()" class="btn-sm btn-app btn-success no-radius">
+									批量发放
+								</a>
+							</td>
 						</tr>
 					</table>
 					</div>
@@ -128,6 +137,14 @@ function initTable() {
         clickToSelect: true,    //是否启用点击选中行
         searchOnEnterKey: false,
         columns: [
+          {
+              title: "选择",
+              field: "选择",
+              checkbox : true,
+              class:"tablebody",
+              align:"center",
+              valign:"middle"
+          },
          {
             title: "兑换码",
             field: "code",
@@ -198,7 +215,7 @@ function initTable() {
 	          			   data:{
 	          				   id:id,
 	          				   state:state,
-	          				 fafangTime:fafangTime
+	          				   fafangTime:fafangTime
 	          			   },
 	          			   async:false,
 	          			   dataType:"json",
@@ -221,6 +238,39 @@ function initTable() {
 
 function batchChange(){
 	initTable();
+}
+
+function batchGiveCode(){
+	var fafangTime = $("#fafangTime").val();
+	var rows = $('#tb_rechargeCode').bootstrapTable('getSelections');
+	var ids = [];
+	for(var i=0;i<rows.length;i++){
+		ids.push(rows[i].id);
+	}
+	if(ids.length==0){
+		alert('选择兑换码后再批量发放');
+	}else{
+		var given =  confirm('确定批量发放所选的'+ids.length+'个兑换码吗？', '确认对话框');
+		if(given){
+			$.ajax({
+				   url:"<%=path%>/business/rechargeCode/batchGiveCode",
+				   data:{
+					   ids:ids.join(";"),
+					   fafangTime:fafangTime
+				   },
+				   async:false,
+				   dataType:"json",
+				   type:"GET",
+				   success:function(result){
+					   alert("发放成功");
+					   $('#tb_rechargeCode').bootstrapTable('refresh');
+				   },
+				   error:function(){
+						alert("批量发放积分码失败！")
+				    }
+			   });
+		}
+	}
 }
 
 function getCurrentDate(){

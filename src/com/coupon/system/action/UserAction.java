@@ -125,7 +125,8 @@ public class UserAction extends BaseAction {
 		bean.setDisplayName(user.getDisplayName());
 		bean.setName(user.getName());
 		bean.setCity(userCity);
-		bean.setPassword(user.getPassword());
+		if(isAdd)
+			bean.setPassword(user.getPassword());
 		// 更新角色
 		bean.getRoles().clear();// 先清空角色
 		if (roleIds != null) {

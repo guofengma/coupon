@@ -101,8 +101,8 @@ public class LoginAction {
 				return "appindex";
 			}
 			CookieUtil.addCookie(response, "isUser", "false");
-			CookieUtil.addCookie(response, "name_ZN", URLEncoder.encode(customer.getName(),"UTF-8"));
-			CookieUtil.addCookie(response, "name_EN", URLEncoder.encode(customer.getPhone(),"UTF-8"));
+			CookieUtil.addCookie(response, "phone_ZN", URLEncoder.encode(customer.getName(),"UTF-8"));
+			CookieUtil.addCookie(response, "phone_EN", URLEncoder.encode(customer.getPhone(),"UTF-8"));
 			return "redirect:appmain";
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
@@ -138,7 +138,7 @@ public class LoginAction {
 	
 	@RequestMapping(value = "/app/toPasswordPage")
 	public String toPasswordPage(ModelMap model,HttpServletRequest request, HttpServletResponse response){
-		String phone = CookieUtil.getCookie(request, "name_EN");
+		String phone = CookieUtil.getCookie(request, "phone_EN");
 		Customer customer = customerService.findByPhone(phone);
 		if(null == customer){
 			return "appindex";
@@ -149,7 +149,7 @@ public class LoginAction {
 	
 	@RequestMapping(value = "/app/changePassword", method = RequestMethod.POST)
 	public String changePassword(ModelMap model,HttpServletRequest request, HttpServletResponse response){
-		String phone = CookieUtil.getCookie(request, "name_EN");
+		String phone = CookieUtil.getCookie(request, "phone_EN");
 		String oldPassword = request.getParameter("oldPassword");
 		String newPassword = request.getParameter("newPassword");
 		Customer customer = customerService.findByPhone(phone);

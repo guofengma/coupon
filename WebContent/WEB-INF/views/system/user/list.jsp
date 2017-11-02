@@ -48,6 +48,7 @@
 										<tr>
 											<th>登录名</th>
 											<th>员工名</th>
+											<th>密码</th>
 											<th>角色</th>
 											<th>所属城市</th>
 											<th>添加时间</th>
@@ -59,6 +60,7 @@
 											<tr class="odd gradeX">
 													<td>${item.name}</td>
 													<td>${item.displayName}</td>
+													<td>${item.password}</td>
 													<td>
 														<c:forEach items="${item.roles}" var="role" varStatus="status">
 															${role.name}<c:if test="${!status.last}">;</c:if>
@@ -93,7 +95,7 @@
 							</div>
 							<c:import url ="../../common/paging.jsp">
 		        				<c:param name="pageModelName" value="users"/>
-		        				<c:param name="urlAddress" value="/user/list"/>
+		        				<c:param name="urlAddress" value="/system/user/list"/>
 	       				 	</c:import>
 	       				 	
 	       				 	<!-- 模态框（Modal） -->

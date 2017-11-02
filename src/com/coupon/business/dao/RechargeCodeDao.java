@@ -17,4 +17,6 @@ public interface RechargeCodeDao extends BaseDao<RechargeCode , String>{
 
 	RechargeCode findByKeyt(String keyt);
 
+	List<RechargeCode> findByIds(String string);
+
 }

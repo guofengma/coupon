@@ -120,4 +120,12 @@ public class RechargeCodeDaoImpl extends BaseDaoImpl<RechargeCode, String> imple
 		return rechargeCode ;
 	}
 
+	@Override
+	public List<RechargeCode> findByIds(String idSql) {
+		String sql = "From RechargeCode r where id in ("+idSql+")";
+		List<RechargeCode> items = this.queryByHql(sql, null);
+		System.out.println(items.size());
+		return items;
+	}
+
 }
