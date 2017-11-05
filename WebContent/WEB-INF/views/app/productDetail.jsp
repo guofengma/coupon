@@ -14,7 +14,7 @@
   </head>
   <body>
      <header class="mui-bar mui-bar-nav" style="background-color:red;box-shadow: 0 1px 6px red">
-	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <a class="mui-icon mui-icon-left-nav mui-pull-left" id="toMain"></a>
 	    <h1 class="mui-title" style="color:white">${product.name}</h1>
 	    <input id="productId" type="hidden" value="${product.id}" />
 	    <input id=canBeGivenCodeNum type="hidden" value="${fn:length(product.canBeGivenCode)}" />
@@ -67,6 +67,10 @@
           }  
       })  
   }); 
+  
+  mui('body').on('tap','#toMain',function(){
+	  history.go(-1); 
+  });
   </script>
   </body>
 </html>

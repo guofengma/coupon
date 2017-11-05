@@ -20,12 +20,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.coupon.base.action.BaseAction;
 import com.coupon.base.common.paging.IPageList;
 import com.coupon.base.common.paging.PageListUtil;
 import com.coupon.base.common.utils.CookieUtil;
+import com.coupon.business.entity.Activity;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Product;
 import com.coupon.business.entity.Record;
@@ -274,5 +276,42 @@ public class ProductAction extends BaseAction{
 		response.getWriter().write(result.toString());
 	}
 	
-
+	@RequestMapping(value = "/getRefreshProduct", method = RequestMethod.GET)
+	public void getRefreshProduct(HttpServletResponse response,HttpServletRequest request,ModelMap model) throws IOException {
+		StringBuilder result = new StringBuilder("[");
+		int page = Integer.valueOf(request.getParameter("page"));
+		int count = Integer.valueOf(request.getParameter("count"));
+		List<City> citys = new ArrayList<City>();
+		if(CookieUtil.getCookie(request , "phone_EN") == null){//未登录，显示所有product
+			citys = cityService.getCityUsed();
+		}
+		else{
+			Customer customer = customerService.findByPhone(CookieUtil.getCookie(request , "phone_EN"));
+			citys = new ArrayList(customer.getCity().size()==0?cityService.getCityUsed():customer.getCity());
+		}
+		List<Product> productAll = productService.findProductByCityIds(cityToStringIds(citys));
+		List<Product> product = new ArrayList<Product>();
+		if(productAll.size()<page*count)
+			result.append("]");
+		else{
+			product = productAll.subList(page*count, productAll.size()>(page+1)*count?(page+1)*count:productAll.size());
+			for(Product temp : product){
+				result.append("{\"id\":\""+temp.getId()+"\",\"name\":\""+temp.getName()+"\",\"picPath\":\""+temp.getPicPath().replace("\\", "\\\\")+"\",\"points\":"+temp.getPoints()+",\"canBeGivenCode\":"+temp.getCanBeGivenCode().size()+"},");
+			}
+			if(product.size()>0)
+				result.deleteCharAt(result.length()-1);
+		result.append("]");
+		}
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(result.toString());
+	}
+	
+	private String[] cityToStringIds(List<City> citys){
+		StringBuilder result = new StringBuilder();
+		for(City temp : citys){
+			result.append(temp.getId()+";");
+		}
+		return result.toString().split(";");
+	}
 }

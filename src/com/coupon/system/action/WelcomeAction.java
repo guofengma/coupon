@@ -76,7 +76,7 @@ public class WelcomeAction extends BaseAction {
 		product = productService.findProductByCityIds(cityToStringIds(citys));
 		List<Activity> activitys = activityService.findAll();
 		model.addAttribute("activitys",activitys);
-		model.addAttribute("productsAll",product);
+		model.addAttribute("productsFour",product.size()>4?product.subList(0, 4):product);
 		return "appmain";
 	}
 	
