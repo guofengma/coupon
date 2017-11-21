@@ -54,6 +54,9 @@
 			    <li class="mui-table-view-cell">
 			        <a class="mui-navigate-right" href="<%=path%>/app/toPasswordPage">修改密码</a>
 			    </li>
+			    <li class="mui-table-view-cell">
+			        <a class="mui-navigate-right" href="<%=path%>/appindex">退出系统</a>
+			    </li>
 			</ul>
 		</div>
 	</div>
