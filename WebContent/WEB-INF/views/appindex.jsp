@@ -19,11 +19,11 @@
 	    <form id="loginForm" class="mui-input-group" action="<%=path%>/applogin" method="post" style="padding-top:50px">
 		    <div class="mui-input-row">
 		        <label>用户名</label>
-		    <input type="text" class="mui-input-clear" placeholder="请输入用户名" name="phone">
+		    <input type="text" class="mui-input-clear" placeholder="请输入用户名" name="phone" value="${phone}">
 		    </div>
 		    <div class="mui-input-row">
 		        <label>密码</label>
-		        <input type="password" class="mui-input-password" placeholder="请输入密码" name="password">
+		        <input type="password" class="mui-input-password" placeholder="请输入密码" name="password" value="${password}">
 		    </div>
 		    <div class="mui-button-row">
 		        <button type="submit" class="mui-btn mui-btn-primary">登录</button>

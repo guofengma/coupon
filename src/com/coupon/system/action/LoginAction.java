@@ -43,7 +43,11 @@ public class LoginAction {
 	}
 	
 	@RequestMapping(value = "/appindex", method = RequestMethod.GET)
-	public String appindex(Model model) {
+	public String appindex(Model model,HttpServletRequest request) {
+		String phone = CookieUtil.getCookie(request, "phone_EN");
+		String password = CookieUtil.getCookie(request, "phone_password");
+		model.addAttribute("phone",phone);
+		model.addAttribute("password",password);
 		return "appindex";
 	}
 
@@ -103,6 +107,7 @@ public class LoginAction {
 			CookieUtil.addCookie(response, "isUser", "false");
 			CookieUtil.addCookie(response, "phone_ZN", URLEncoder.encode(customer.getName(),"UTF-8"));
 			CookieUtil.addCookie(response, "phone_EN", URLEncoder.encode(customer.getPhone(),"UTF-8"));
+			CookieUtil.addCookie(response, "phone_password", URLEncoder.encode(customer.getPassword(),"UTF-8"));
 			return "redirect:appmain";
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
