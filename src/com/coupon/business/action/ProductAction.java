@@ -226,6 +226,18 @@ public class ProductAction extends BaseAction{
 		String id = request.getParameter("id");
 		Product product =productService.findById(id);
 		product.setDeleted(true);
+		List<RedeemCode> batch = product.getRedeemCode();//获取商品的兑换码批次
+		List<RedeemCode> codes = new ArrayList<RedeemCode>();
+		for(RedeemCode temp : batch){
+			codes.add(temp);
+			if(temp.getChildren().size()>0){
+				codes.addAll(temp.getChildren());
+			}
+		}
+		for(RedeemCode temp:codes){
+			temp.setDeleted(true);
+		}
+		redeemCodeService.batchUpdate(codes);
 		productService.update(product);
 		return "redirect:list";
 	}

@@ -61,6 +61,7 @@
 											<th>客户兑换时间</th>
 											<th>到期时间</th>
 											<th>兑换状态</th>
+											<th>启用/停用</th>
 											<th>兑换客户手机号</th>
 											<th>兑换客户所在城市</th>
 											<th>备注</th>
@@ -86,6 +87,14 @@
 													</c:if>
 													<c:if test="${item.parent.endTime<date}">
 														已过期
+													</c:if>
+												</td>
+												<td>
+													<c:if test="${item.statu}">
+														停用
+													</c:if>
+													<c:if test="${!item.statu}">
+														启用
 													</c:if>
 												</td>
 												<td>
