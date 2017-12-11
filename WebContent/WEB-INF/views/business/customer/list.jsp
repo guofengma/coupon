@@ -156,6 +156,14 @@ function initTable() {
             searchable:false
         },
         {
+            title: "停用状态",
+            field: "statu",
+            searchable:false,
+            formatter: function (value, row, index) {
+            	return value?"<font color='#00FF00'>正常</font>":"<font color='#FF0000'>已停用</font>"
+            }
+        },
+        {
             title: "发放状态",
             field: "given",
             searchable:false,
@@ -168,48 +176,19 @@ function initTable() {
             field: "used",
             searchable:false,
             formatter: function (value, row, index) {
-            	/* return generateSwitch(row.id,value); */
             	return value?"<font color='#00FF00'>已兑换</font>":"<font color='#0000FF'>未兑换</font>"
             }
         }
         ],
         onLoadSuccess:function(){
 	      	$("input[name='switch1']").each(function(){
-	      		$(this).bootstrapSwitch({});
-	      		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-          		   var change = true ;  
-            	   var id = $(this).val();
-          		   var fafangTime = $("#fafangTime").val();
-          		   $.ajax({
-          			   url:"<%=path%>/business/rechargeCode/changeGiven",
-          			   data:{
-          				   id:id,
-          				   state:state,
-          				   fafangTime:fafangTime
-          			   },
-          			   async:false,
-          			   dataType:"json",
-          			   type:"GET",
-          			   success:function(result){
-          				 /*  $('#tb_rechargeCode').bootstrapTable('refresh');  */
-          			   },
- 	      			   error:function(){
-	      					alert("状态切换失败！")
-	      			    }
-          		   });
-          		   if(!change){
-          			   $(this).bootstrapSwitch('state',!state, true);
-          		   }
-	          });
-	      	});
-        },
-        onSearch: function (text) {
-        	$("input[name='switch1']").each(function(){
-	      		$(this).bootstrapSwitch({});
-	      		$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-	          		   var change = true ;  
-	            	   var id = $(this).val();
-	          		   var fafangTime = $("#fafangTime").val();
+	      		$(this).click(function (state) {
+	      		   var state = $(this).is(':checked'); 
+           	       var id = $(this).val();
+     			   var temp = state?'发放':"取消发放";
+     			   var fafangTime = $("#fafangTime").val();
+     			   var isGiven =  confirm('确定'+temp+'该兑换码吗？', '确认对话框');
+     			   if(isGiven){       		   
 	          		   $.ajax({
 	          			   url:"<%=path%>/business/rechargeCode/changeGiven",
 	          			   data:{
@@ -221,17 +200,51 @@ function initTable() {
 	          			   dataType:"json",
 	          			   type:"GET",
 	          			   success:function(result){
-	          				  /* $('#tb_rechargeCode').bootstrapTable('refresh');  */
+	          				  //$('#tb_rechargeCode').bootstrapTable('refresh');
 	          			   },
 	 	      			   error:function(){
+	 	      				    $(this).prop("checked",!state);
 		      					alert("状态切换失败！")
 		      			    }
 	          		   });
-	          		   if(!change){
-	          			   $(this).bootstrapSwitch('state',!state, true);
-	          		   }
-		         });
-	         });
+     			   }else{
+     				  $(this).prop("checked",!state);
+     			   }
+	          });
+	      	});
+        },
+        onSearch: function (text) {
+        	$("input[name='switch1']").each(function(){
+        		$(this).click(function (state) {
+ 	      		   var state = $(this).is(':checked'); 
+            	       var id = $(this).val();
+      			   var temp = state?'发放':"取消发放";
+      			   var fafangTime = $("#fafangTime").val();
+      			   var isGiven =  confirm('确定'+temp+'该兑换码吗？', '确认对话框');
+      			   if(isGiven){       		   
+ 	          		   $.ajax({
+ 	          			   url:"<%=path%>/business/rechargeCode/changeGiven",
+ 	          			   data:{
+ 	          				   id:id,
+ 	          				   state:state,
+ 	          				   fafangTime:fafangTime
+ 	          			   },
+ 	          			   async:false,
+ 	          			   dataType:"json",
+ 	          			   type:"GET",
+ 	          			   success:function(result){
+ 	          				  //$('#tb_rechargeCode').bootstrapTable('refresh');
+ 	          			   },
+ 	 	      			   error:function(){
+ 	 	      				    $(this).prop("checked",!state);
+ 		      					alert("状态切换失败！")
+ 		      			    }
+ 	          		   });
+      			   }else{
+      				  $(this).prop("checked",!state);
+      			   }
+ 	          });
+        	}); 
         }
     });
 }

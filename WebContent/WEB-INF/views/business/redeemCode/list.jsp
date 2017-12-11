@@ -55,16 +55,18 @@
 var tableHeight ; 
 function generateSwitch(id,used){
 	if(used)
-		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox' checked/>";
+		//return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox' checked/>";
+		return "<font color='#00FF00'>已兑换</font>";
 	else
-		return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox'/>";
+		//return "<input value='"+id+"'name='switch"+"' data-on-text='已兑换' data-off-text='未兑换' type='checkbox'/>";
+		return "<font color='#0000FF'>未兑换</font>";
 }
 
 function generateSwitch1(id,statu){
 	if(statu)
-		return "<input value='"+id+"'name='switch1"+"' data-on-text='已停用' data-off-text='正常' type='checkbox' checked/>";
+		return "<input value='"+id+"'name='switch1"+"' type='checkbox' checked/>";
 	else
-		return "<input value='"+id+"'name='switch1"+"' data-on-text='已停用' data-off-text='正常' type='checkbox'/>";
+		return "<input value='"+id+"'name='switch1"+"' type='checkbox'/>";
 }
 
 $(function(){
@@ -93,6 +95,11 @@ function initTable() {
         clickToSelect: true,    //是否启用点击选中行
         searchOnEnterKey: false,
         columns: [
+          {
+        	  title: "ID",
+              field: "id",
+              visible:false
+          },
          {
             title: "兑换码",
             field: "code",
@@ -107,7 +114,7 @@ function initTable() {
             }
         },
         {
-            title: "停用/启用",
+            title: "停用",
             field: "statu",
             searchable:false,
             formatter: function (value, row, index) {
@@ -124,76 +131,70 @@ function initTable() {
             	if(value)
             		return '';
             	else
-            		return "<a href=\"javascript:deleteRedeemCode('"+row.id+"')\" class='btn-sm btn-app btn-danger no-radius'><i class='icon-trash bigger-200'></i>删除</a>&nbsp;&nbsp;"
-            				/* +"<a href=\"javascript:editRedeemCode("+row.id+"')\" class='btn-sm btn-app btn-primary no-radius'><i class='icon-edit bigger-200'></i>修改</a>" */;
-            		
+            		return "<a href=\"javascript:deleteRedeemCode('"+row.id+"')\" class='btn-sm btn-app btn-danger no-radius'><i class='icon-trash bigger-200'></i>删除</a>&nbsp;&nbsp;";
             }
         }
         ],
         onLoadSuccess:function(){
-	      	  $("input[name='switch']").each(function(){
-	      		$(this).bootstrapSwitch({
-	      			disabled:true
-	      		});
-	         });
 	      	  $("input[name='switch1']").each(function(){
-		      		$(this).bootstrapSwitch();
-		         	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-             		   var change = true ;  
+		         	$(this).click(function () {
                		   var id = $(this).val();
-             		   $.ajax({
-             			   url:"<%=path%>/business/redeemCode/changeState",
-             			   data:{
-             				   id:id,
-             				   state:state
-             			   },
-             			   async:false,
-             			   dataType:"json",
-             			   type:"GET",
-             			   success:function(result){
-             				  $('#tb_redeemCode').bootstrapTable('refresh'); 
-             			   },
-    	      			   error:function(){
-   	      					alert("状态切换失败！")
-   	      			    }
-             		   });
-             		   if(!change){
-             			   $(this).bootstrapSwitch('state',!state, true);
+               		   var state = $(this).is(':checked');
+               		   var temp = state?'停用':"启用";
+             		   var isStop =  confirm('确定'+temp+'该兑换码吗？', '确认对话框');
+             		   if(isStop){
+             			  $.ajax({
+                			   url:"<%=path%>/business/redeemCode/changeState",
+                			   data:{
+                				   id:id,
+                				   state:state
+                			   },
+                			   async:false,
+                			   dataType:"json",
+                			   type:"GET",
+                			   success:function(result){
+                				 // $('#tb_redeemCode').bootstrapTable('refresh');
+                			   },
+       	      			  	   error:function(){
+       	      			  	      $(this).prop("checked",!state);
+      	      					  alert("状态切换失败！")
+      	      			       }
+                		   });
+             		   }else{
+             			  $(this).prop("checked",!state);
              		   }
+             		  
                	}); 
 		      });
         },
         onSearch: function (text) {
-        	 $("input[name='switch']").each(function(){
- 	      		$(this).bootstrapSwitch({
- 	      			disabled:true
- 	      		});
- 	         });
         	 $("input[name='switch1']").each(function(){
-  	      		$(this).bootstrapSwitch();
-	  	      	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
-	      		   var change = true ;  
-	        		   var id = $(this).val();
-	      		   $.ajax({
-	      			   url:"<%=path%>/business/redeemCode/changeState",
-	      			   data:{
-	      				   id:id,
-	      				   state:state
-	      			   },
-	      			   async:false,
-	      			   dataType:"json",
-	      			   type:"GET",
-	      			   success:function(result){
-	      				 $('#tb_redeemCode').bootstrapTable('refresh'); 
-	      			   },
-	      			   error:function(){
-	      					alert("状态切换失败！")
-	      			   }
-	      		   });
-	      		   if(!change){
-	      			   $(this).bootstrapSwitch('state',!state, true);
-	      		   }
-	        	});
+        			$(this).click(function () {
+                   		   var id = $(this).val();
+                   		   var state = $(this).is(':checked');
+                   		   var temp = state?'停用':"启用";
+                 		   var isStop =  confirm('确定'+temp+'该兑换码吗？', '确认对话框');
+                 		   if(isStop){
+                 			  $.ajax({
+                    			   url:"<%=path%>/business/redeemCode/changeState",
+                    			   data:{
+                    				   id:id,
+                    				   state:state
+                    			   },
+                    			   async:false,
+                    			   dataType:"json",
+                    			   type:"GET",
+                    			   success:function(result){
+                    					//$('#tb_redeemCode').bootstrapTable('refresh');
+                    			   },
+           	      			  	   error:function(){
+          	      					  alert("状态切换失败！")
+          	      			       }
+                    		   });
+                 		   }else{
+                 			  $(this).prop("checked",!state);
+                 		   }
+                   	}); 
   	         });
         },
 
@@ -210,10 +211,13 @@ function deleteRedeemCode(param){
 			data:{"id":param},
 		    type:"GET",   //请求方式
 		    success:function(result){
-		       	 $('#tb_redeemCode').bootstrapTable('refresh');   
+		       	$('#tb_redeemCode').bootstrapTable('remove',{
+							field:'id',
+							values:[param]
+						});    
 		    },
 		    error:function(){
-				alert("删除信息失败！")
+				alert("删除兑换码失败！");
 		    }
 		});
 	}
