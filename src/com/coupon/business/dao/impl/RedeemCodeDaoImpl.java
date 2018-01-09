@@ -37,58 +37,65 @@ public class RedeemCodeDaoImpl extends BaseDaoImpl<RedeemCode, String> implement
 	}
 
 	/*
-	 * String condition[] = new String[]{exStartTime,exEndTime,startTime,endTime,name,code,statu,city,phone}
+	 * String condition[] = new String[]{exStartTime,exEndTime,startTime,endTime,name,code,statu,city,phone,roleString}
 	 */
 	@Override
 	public PageList<RedeemCode> findByCondition(int pageNo , int pageSize ,String[] condition) {
 		StringBuilder sql = new StringBuilder("from RedeemCode r where r.deleted = false and r.parent is not null");
-		if(!condition[0].equals("")||!condition[1].equals("")||condition[6].equals("2")||!condition[7].equals("null")||!condition[8].equals(""))
-			sql.append(" and r.record.id !=''");
-		if(!condition[0].equals(""))
-			sql.append(" and r.record.createTime >= '"+condition[0]+"'");
-		if(!condition[1].equals(""))
-			sql.append(" and r.record.createTime <= '"+condition[1]+"'");
-		if(!condition[2].equals(""))
-			sql.append(" and r.parent.endTime >= '"+condition[2]+"'");
-		if(!condition[3].equals(""))
-			sql.append(" and r.parent.endTime <= '"+condition[3]+"'");
-		if(!condition[4].equals(""))
-			sql.append(" and r.parent.product.name like '%"+condition[4]+"%'");
-		if(!condition[5].equals(""))
-			sql.append(" and r.code = '"+condition[5]+"'");
-		if(condition[6].equals("1")) //未过期中未兑换的  
-			sql.append(" and r.used = false and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
-		if(condition[6].equals("2")) //未过期中已经兑换的 
-			sql.append(" and r.used = true and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
-		if(condition[6].equals("3")) //已经过期的 
-			sql.append(" and r.parent.endTime < '" + FolderUtil.getFolder() + "'");
-		/*if(!condition[7].equals("null"))
-			sql.append(" and r.record.customer.city.id = '"+condition[7]+"'");*/
-		if(!condition[8].equals(""))
-			sql.append(" and r.record.customer.phone = '"+condition[8]+"'");
-		String sql1 = sql+ " order by r.parent.product.name desc, r.parent.batch desc, r.parent.endTime desc , used asc";
-		System.out.println(sql);
 		int first = (pageNo - 1) * pageSize;
-		if(condition[7].equals("null")){
-			List<RedeemCode> items = this.queryByHql(sql1, null,first, pageSize);
+		if(condition[9].contains("客服")||condition[9].contains("员工")){//只能通过精确查找来查询商品兑换码
+			sql.append(" and r.code = '"+condition[5]+"'");
+			List<RedeemCode> items = this.queryByHql(sql.toString(), null,first, pageSize);
 			int count = Integer.parseInt(this.findUnique("select count(*) "+sql, null).toString());
 			return PageListUtil.getPageList(count, pageNo, items, pageSize);
 		}else{
-			List<RedeemCode> tempList = this.queryByHql(sql1, null);
-			System.out.println("+++++++++++"+tempList.size());
-			List<RedeemCode> tempList1 = new ArrayList<RedeemCode>();
-			for(RedeemCode temp : tempList){
-				boolean is = false ;
-				for(City tempCity : temp.getRecord().getCustomer().getCity()){
-					if(tempCity.getId().equals(condition[7]))
-						is = true ;
+			if(!condition[0].equals("")||!condition[1].equals("")||condition[6].equals("2")||!condition[7].equals("null")||!condition[8].equals(""))
+				sql.append(" and r.record.id !=''");
+			if(!condition[0].equals(""))
+				sql.append(" and r.record.createTime >= '"+condition[0]+"'");
+			if(!condition[1].equals(""))
+				sql.append(" and r.record.createTime <= '"+condition[1]+"'");
+			if(!condition[2].equals(""))
+				sql.append(" and r.parent.endTime >= '"+condition[2]+"'");
+			if(!condition[3].equals(""))
+				sql.append(" and r.parent.endTime <= '"+condition[3]+"'");
+			if(!condition[4].equals(""))
+				sql.append(" and r.parent.product.name like '%"+condition[4]+"%'");
+			if(!condition[5].equals(""))
+				sql.append(" and r.code = '"+condition[5]+"'");
+			if(condition[6].equals("1")) //未过期中未兑换的  
+				sql.append(" and r.used = false and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
+			if(condition[6].equals("2")) //未过期中已经兑换的 
+				sql.append(" and r.used = true and r.parent.endTime >= '" + FolderUtil.getFolder() + "'");
+			if(condition[6].equals("3")) //已经过期的 
+				sql.append(" and r.parent.endTime < '" + FolderUtil.getFolder() + "'");
+			/*if(!condition[7].equals("null"))
+				sql.append(" and r.record.customer.city.id = '"+condition[7]+"'");*/
+			if(!condition[8].equals(""))
+				sql.append(" and r.record.customer.phone = '"+condition[8]+"'");
+			String sql1 = sql+ " order by r.parent.product.name desc, r.parent.batch desc, r.parent.endTime desc , used asc";
+			System.out.println(sql);
+			if(condition[7].equals("null")){
+				List<RedeemCode> items = this.queryByHql(sql1, null,first, pageSize);
+				int count = Integer.parseInt(this.findUnique("select count(*) "+sql, null).toString());
+				return PageListUtil.getPageList(count, pageNo, items, pageSize);
+			}else{
+				List<RedeemCode> tempList = this.queryByHql(sql1, null);
+				System.out.println("+++++++++++"+tempList.size());
+				List<RedeemCode> tempList1 = new ArrayList<RedeemCode>();
+				for(RedeemCode temp : tempList){
+					boolean is = false ;
+					for(City tempCity : temp.getRecord().getCustomer().getCity()){
+						if(tempCity.getId().equals(condition[7]))
+							is = true ;
+					}
+					if(is)
+						tempList1.add(temp);
 				}
-				if(is)
-					tempList1.add(temp);
-			}
-			int count = tempList1.size();
-			List<RedeemCode> items = getPageRedeemCode(tempList1,first,pageSize);
-			return PageListUtil.getPageList(count, pageNo, items, pageSize);
+				int count = tempList1.size();
+				List<RedeemCode> items = getPageRedeemCode(tempList1,first,pageSize);
+				return PageListUtil.getPageList(count, pageNo, items, pageSize);
+			}	
 		}	
 	}
 	

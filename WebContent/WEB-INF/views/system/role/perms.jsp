@@ -37,6 +37,9 @@ var setting = {
 						{ id: 41, pId: 4, name: "充值", perm:"recharge:recharge"},
 						{ id: 42, pId: 4, name: "审核", perm:"recharge:check"},
 						{ id: 43, pId: 4, name: "查询", perm:"recharge:search"},
+						{ id: 431, pId: 43, name: "商品兑换码查询", perm:"search:redeemCode"},
+						{ id: 432, pId: 43, name: "客户信息查询", perm:"search:customerInfo"},
+						{ id: 433, pId: 43, name: "积分兑换码查询", perm:"search:rechargeCode"},
 						{ id: 5, pId: 0, name: "系统管理", perm:"system:management"}
 		              ];
 		 

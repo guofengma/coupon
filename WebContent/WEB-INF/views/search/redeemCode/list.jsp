@@ -61,7 +61,7 @@
 											<th>客户兑换时间</th>
 											<th>到期时间</th>
 											<th>兑换状态</th>
-											<th>启用/停用</th>
+											<th>停用</th>
 											<th>兑换客户手机号</th>
 											<th>兑换客户所在城市</th>
 											<th>备注</th>
@@ -91,10 +91,10 @@
 												</td>
 												<td>
 													<c:if test="${item.statu}">
-														停用
+														<input value='${item.id}' name="switch" type='checkbox' checked/>
 													</c:if>
 													<c:if test="${!item.statu}">
-														启用
+														<input value='${item.id}' name="switch" type='checkbox'/>
 													</c:if>
 												</td>
 												<td>
@@ -333,6 +333,37 @@ function clearSCity(){//清空二级城市下拉框所有内容（第一个默�
 	$("#sCity").empty();
 	$("#sCity").append("<option value='null'>选择市县</option>"); 
 }
+
+$("input[name='switch']").each(function(){
+ 	$(this).click(function () {
+		   var id = $(this).val();
+		   var state = $(this).is(':checked');
+		   var temp = state?'停用':"启用";
+		   var isStop =  confirm('确定'+temp+'该兑换码吗？', '确认对话框');
+		   if(isStop){
+			  $.ajax({
+				   url:"<%=path%>/business/redeemCode/changeState",
+				   data:{
+					   id:id,
+					   state:state
+				   },
+				   async:false,
+				   dataType:"json",
+				   type:"GET",
+				   success:function(result){
+					  /* alert("状态切换成功"); */
+				   },
+			  	   error:function(){
+			  	      $(this).prop("checked",!state);
+				 	  alert("状态切换失败！")
+		       	   }
+		   	   });
+		   }else{
+			  $(this).prop("checked",!state);
+		   }
+		  
+	}); 
+});
 </script>
 </html>
 	

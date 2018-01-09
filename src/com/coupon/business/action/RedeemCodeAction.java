@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,10 +43,12 @@ import com.coupon.business.service.ProductService;
 import com.coupon.business.service.RedeemCodeService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
+import com.coupon.system.entity.Role;
 import com.coupon.system.entity.User;
 import com.coupon.system.service.CityService;
 import com.coupon.system.service.UserService;
 import com.coupon.util.FolderUtil;
+import com.coupon.util.RoleToString;
 
 @Controller
 public class RedeemCodeAction extends BaseAction{
@@ -95,6 +98,12 @@ public class RedeemCodeAction extends BaseAction{
 	@RequestMapping(value = "/search/redeemCode/findByCondition")
 	public String findByCondition(HttpServletRequest request, ModelMap model) {
 		super.addMenuParams(request, model);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null == user){
+			model.addAttribute("loginFlag","tokenExpires");
+			return "index";
+		}
+		String roleString = RoleToString.roleToString(user.getRoles());
 		List<City> fCityUsedList = cityService.getFCityUsed();
 		model.addAttribute("fCityUsedList",fCityUsedList);
 		int pageNo = ServletRequestUtils.getIntParameter(request,
@@ -112,7 +121,7 @@ public class RedeemCodeAction extends BaseAction{
 		String sCity = request.getParameter("sCity")==null?"null":request.getParameter("sCity");
 		String city = sCity.equals("null")?fCity:sCity;
 		String phone = request.getParameter("phone")==null?"":request.getParameter("phone");
-		String condition[] = new String[]{exStartTime,exEndTime,startTime,endTime,name,code,statu,city,phone};
+		String condition[] = new String[]{exStartTime,exEndTime,startTime,endTime,name,code,statu,city,phone,roleString};
 		PageList<RedeemCode> redeemCodes = redeemCodeService.findByCondition(pageNo,pageSize,condition);
 		model.addAttribute("redeemCodes",redeemCodes);
 		model.addAttribute("exStartTime",exStartTime);
