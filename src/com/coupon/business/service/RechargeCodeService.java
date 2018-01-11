@@ -19,4 +19,12 @@ public interface RechargeCodeService extends BaseService<RechargeCode , String>{
 
 	List<RechargeCode> findByIds(String ids);
 
+	IPageList<RechargeCode> findMyApplyRecharegeCode(int pageNo, int pageSize,String userId);
+
+	List<RechargeCode> findFrontBatch();
+
+	IPageList<RechargeCode> findUndealRechargeCodeByAdmin(int pageNo, int pageSize);
+
+	IPageList<RechargeCode> findUndealRechargeByManager(int pageNo, int pageSize, String cityIds);
+
 }

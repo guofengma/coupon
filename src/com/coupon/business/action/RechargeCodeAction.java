@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,11 +42,13 @@ import com.coupon.business.service.RechargeCodeService;
 import com.coupon.business.service.RecordService;
 import com.coupon.security.MyRealm;
 import com.coupon.system.entity.City;
+import com.coupon.system.entity.Role;
 import com.coupon.system.entity.User;
 import com.coupon.system.service.CityService;
 import com.coupon.system.service.UserService;
 import com.coupon.util.FolderUtil;
 import com.coupon.util.RandomCode;
+import com.coupon.util.RoleToString;
 
 @Controller
 public class RechargeCodeAction extends BaseAction{
@@ -92,6 +95,10 @@ public class RechargeCodeAction extends BaseAction{
 				model.addAttribute("message","该兑换码已经被使用过！");
 				return "app/chargeFailed";
 			}
+			if(rechargeCode.getEndTime().getTime()<new Date().getTime()){
+				model.addAttribute("message","该兑换码已经过期！");
+				return "app/chargeFailed";
+			}
 			customer.setTotalAddUp(customer.getTotalAddUp()+rechargeCode.getPoints());
 			customer.setPoint(customer.getPoint()+rechargeCode.getPoints());
 			customer.setLatestChargeTime(new Date());
@@ -131,6 +138,57 @@ public class RechargeCodeAction extends BaseAction{
 		IPageList<RechargeCode>  rechargeCodes =  rechargeCodeService.findBatch(pageNo, pageSize);
 		model.addAttribute("rechargeCodes",rechargeCodes);
 		return "business/rechargeCode/batchList";
+	}
+	
+	/*
+	 * 查询所有的自己申请的积分码，并分页
+	 */
+	@RequestMapping(value = "/business/rechargeCodeApply/list")
+	public String rechargeCodeApplyList(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null==user){
+			return "index" ;
+		}
+		int pageNo = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_NO_NAME, PageListUtil.DEFAULT_PAGE_NO);
+		int pageSize = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
+		IPageList<RechargeCode>  rechargeCodes =  rechargeCodeService.findMyApplyRecharegeCode(pageNo, pageSize,user.getId());
+		List<RechargeCode> frontBatchs = rechargeCodeService.findFrontBatch();//查询没有过期，可用的前台批次
+		model.addAttribute("rechargeCodes",rechargeCodes);
+		model.addAttribute("frontBatchs",frontBatchs);
+		return "business/rechargeCode/rechargeCodeApplyList";
+	}
+	
+	/*
+	 * 选择批次后，申请兑换码保存
+	 */
+	@RequestMapping(value = "/business/rechargeCodeApply/frontBatchSave")
+	public String frontBatchSave(HttpServletRequest request, ModelMap model,String batchId,String points,String count,String endTime,String remark) throws ParseException {
+		super.addMenuParams(request, model);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null==user){
+			return "index" ;
+		}
+		RechargeCode batch = rechargeCodeService.findById(batchId);
+		List<RechargeCode> addList = new ArrayList<RechargeCode>();
+		for(int i=0;i<Integer.parseInt(count);i++){
+			RechargeCode temp = new RechargeCode();
+			temp.setApproved("1");
+			temp.setCode(RandomCode.generate_18("ka"));
+			temp.setKeyt(RandomCode.generate_18("mi"));
+			temp.setRemark(remark);
+			temp.setStatu(false);
+			temp.setPoints(Integer.parseInt(points));
+	        temp.setParent(batch);
+	        temp.setUsed(false);
+	        temp.setEndTime(new SimpleDateFormat("yyyy-MM-dd").parse(endTime));
+	        temp.setUser(user);//谁申请的
+	        addList.add(temp) ;
+		}
+		rechargeCodeService.batchSave(addList);
+		return "redirect:list";
 	}
 	
 	/*
@@ -186,11 +244,46 @@ public class RechargeCodeAction extends BaseAction{
 		String id = request.getParameter("id");
 		StringBuilder result = new StringBuilder();
 		RechargeCode rechargeCode = rechargeCodeService.findById(id);
-		result.append("{\"batch\":\""+rechargeCode.getBatch()+"\",\"points\":\""+rechargeCode.getChildren().get(0).getPoints()+"\",\"count\":\""+rechargeCode.getChildren().size()+"\",\"endTime\":\""+rechargeCode.getEndTime().toString().substring(0, 10)+"\",\"remark\":\""+rechargeCode.getRemark()+"\"}");
+		if(rechargeCode.getSource().equals("1"))
+			result.append("{\"source\":\""+rechargeCode.getSource()+"\",\"batch\":\""+rechargeCode.getBatch()+"\",\"points\":\""+rechargeCode.getChildren().get(0).getPoints()+"\",\"count\":\""+rechargeCode.getChildren().size()+"\",\"endTime\":\""+rechargeCode.getEndTime().toString().substring(0, 10)+"\",\"remark\":\""+rechargeCode.getRemark()+"\"}");
+		else
+			result.append("{\"source\":\""+rechargeCode.getSource()+"\",\"batch\":\""+rechargeCode.getBatch()+"\",\"remark\":\""+rechargeCode.getRemark()+"\",\"endTime\":\""+rechargeCode.getEndTime().toString().substring(0, 10)+"\"}");
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write(result.toString());
+	}
+	
+	/*
+	 * 单个审核兑换码
+	 */
+	@RequestMapping(value = "/business/rechargeCode/check")
+	public String check(HttpServletRequest request, ModelMap model) {
+		String id = request.getParameter("id");
+		String pass = request.getParameter("pass").equals("true")?"2":"3";
+		RechargeCode rechargeCode = rechargeCodeService.findById(id);
+		rechargeCode.setApproved(pass);
+		rechargeCode.setStatu(pass.equals("2"));
+		rechargeCodeService.update(rechargeCode);
+		return "redirect:undeal";
+	}
+	
+	/*
+	 * 批量审核新增的用户
+	 */
+	@RequestMapping(value = "/business/rechargeCode/multiCheck")
+	public void multiCheck(HttpServletRequest request, ModelMap model ,HttpServletResponse response) throws IOException {		
+		String ids = request.getParameter("ids");
+		String pass = request.getParameter("pass").equals("true")?"2":"3";
+		List<RechargeCode> rechargeCodes = rechargeCodeService.findByIds(ids);
+		for(RechargeCode rechargeCode : rechargeCodes){
+			rechargeCode.setApproved(pass);
+			rechargeCode.setStatu(pass.equals("2"));
+		}
+		rechargeCodeService.batchUpdate(rechargeCodes);
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write("{\"msg\":\"批量审核积分码成功\"}");
 	}
 	
 	@RequestMapping(value = "/business/rechargeCode/changeStatu")//启用停用单个兑换码
@@ -203,6 +296,36 @@ public class RechargeCodeAction extends BaseAction{
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write("{\"result\":\"success\"}");
+	}
+	
+	/*
+	 * 根据员工，查询各自对应的积分码审核申请
+	 */
+	@RequestMapping(value = "/business/rechargeCode/undeal")
+	public String undealList(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		int pageNo = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_NO_NAME, PageListUtil.DEFAULT_PAGE_NO);
+		int pageSize = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null == user){
+			return "index";
+		}
+		String roleString = RoleToString.roleToString(user.getRoles());
+		if(roleString.contains("管理员")){
+			IPageList<RechargeCode> rechargeCodes = rechargeCodeService.findUndealRechargeCodeByAdmin(pageNo, pageSize);
+			model.addAttribute("rechargeCodes",rechargeCodes);
+		}
+		if(roleString.contains("大区经理")){
+			StringBuilder cityIds = new StringBuilder();
+			for(City temp : user.getCity()){
+				cityIds.append(temp.getId()+";");
+			}
+			IPageList<RechargeCode> rechargeCodes = rechargeCodeService.findUndealRechargeByManager(pageNo, pageSize,cityIds.toString());
+			model.addAttribute("rechargeCodes",rechargeCodes);
+		}
+		return "business/rechargeCode/undealList";		
 	}
 	
 	@RequestMapping(value = "/business/rechargeCode/changeGiven")
@@ -273,32 +396,38 @@ public class RechargeCodeAction extends BaseAction{
 	}
 	
 	@RequestMapping(value = "/business/rechargeCode/batchSave")
-	public String batchSave(HttpServletRequest request, ModelMap model,String productId,String oldId,String batch,String points , String count,String endTime,String remark) throws ParseException {
+	public String batchSave(HttpServletRequest request, ModelMap model,String oldId,String source,String batch,String points , String count,String endTime,String remark) throws ParseException {
 		super.addMenuParams(request, model);
 		RechargeCode rechargeCode = new RechargeCode();
-		if(oldId.equals("null")){
+		if(oldId.equals("null")){//新建
 			rechargeCode.setStatu(true);
-		}else{
+		}else{//修改
 			rechargeCode = rechargeCodeService.findById(oldId);
 		}
+		rechargeCode.setApproved("2");
 		rechargeCode.setBatch(batch);
-		rechargeCode.setEndTime(new SimpleDateFormat("yyyy-MM-dd").parse(endTime));
+		rechargeCode.setSource(source);
 		rechargeCode.setRemark(remark);
 		rechargeCode.setUser(userService.findByUserName(CookieUtil.getCookie(request, "name_EN")));
+		rechargeCode.setEndTime(new SimpleDateFormat("yyyy-MM-dd").parse(endTime));
 		if(oldId.equals("null")){
 			rechargeCodeService.save(rechargeCode);
-			List<RechargeCode> addList = new ArrayList<RechargeCode>();
-			for(int i=0;i<Integer.parseInt(count);i++){
-				RechargeCode temp = new RechargeCode();
-				temp.setCode(RandomCode.generate_18("ka"));
-				temp.setKeyt(RandomCode.generate_18("mi"));
-				temp.setStatu(true);
-				temp.setPoints(Integer.parseInt(points));
-		        temp.setParent(rechargeCode);
-		        temp.setUsed(false);
-		        addList.add(temp) ;
+			if("1".equals(source)){//后台生成
+				List<RechargeCode> addList = new ArrayList<RechargeCode>();
+				for(int i=0;i<Integer.parseInt(count);i++){
+					RechargeCode temp = new RechargeCode();
+					temp.setApproved("2");
+					temp.setCode(RandomCode.generate_18("ka"));
+					temp.setKeyt(RandomCode.generate_18("mi"));
+					temp.setStatu(true);
+					temp.setPoints(Integer.parseInt(points));
+			        temp.setParent(rechargeCode);
+			        temp.setUsed(false);
+			        temp.setEndTime(new SimpleDateFormat("yyyy-MM-dd").parse(endTime));
+			        addList.add(temp) ;
+				}
+				rechargeCodeService.batchSave(addList);
 			}
-			rechargeCodeService.batchSave(addList);
 		}else{
 			rechargeCodeService.update(rechargeCode);
 		}
@@ -309,7 +438,7 @@ public class RechargeCodeAction extends BaseAction{
 	 * 删除该批次和该批次下的所有积分码
 	 */
 	@RequestMapping(value = "/business/rechargeCode/deleteBatch")
-	public String deleteBatch(HttpServletRequest request, ModelMap model,String productId,String oldId,String batch,String endTime,String remark) throws ParseException {
+	public String deleteBatch(HttpServletRequest request, ModelMap model) throws ParseException {
 		super.addMenuParams(request, model);
 		String id = request.getParameter("id");
 		RechargeCode rechargeCode = rechargeCodeService.findById(id);

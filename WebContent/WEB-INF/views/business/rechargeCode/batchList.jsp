@@ -187,37 +187,48 @@
 						<form class="form-horizontal" role="form" id="batchFrom" action="<%=path%>/business/rechargeCode/batchSave" method="post">
 							<input name="oldId" id="oldId" type="hidden" value="null"/>							
 							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="points">生成方式：</label>
+								<div class="col-sm-9">
+									<label class="col-sm-5 no-padding-right"><input type="radio" name="source" value="1">后台生成</label>
+									<label class="col-sm-5 no-padding-right"><input type="radio" name="source" value="2">前台生成</label>
+								</div>
+							</div> 
+							 
+							<div class="space-4"></div> 	
+							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">批次信息：</label>
 								<div class="col-sm-9">
 									<input type="text" id="batch" class="col-xs-10 col-sm-10" name="batch">
 								</div>
 							 </div> 
 							 
-							 <div class="space-4"></div> 	
-							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="points">积分分值：</label>
-								<div class="col-sm-9">
-									<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
-								</div>
-							 </div> 
-							 
-							 <div class="space-4"></div> 							 
-							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="count">制作数量：</label>
-								<div class="col-sm-9">
-									<input type="text" id="count" class="col-xs-10 col-sm-10" name="count">
-								</div>
-							 </div> 
-							 
-							 <div class="space-4"></div> 
-							 <div class="form-group">
+							 <div class="source">
+								 <div class="space-4"></div> 	
+								 <div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="points">积分分值：</label>
+									<div class="col-sm-9">
+										<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
+									</div>
+								 </div> 
+								 
+								 <div class="space-4"></div> 							 
+								 <div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="count">制作数量：</label>
+									<div class="col-sm-9">
+										<input type="text" id="count" class="col-xs-10 col-sm-10" name="count">
+									</div>
+								 </div> 
+							</div> 
+							
+							<div class="space-4"></div> 
+							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">有效期至：</label>
 								<div class="col-sm-9 input-append date form_datetime " id='datetimepicker'>
 									<input size="16" value="" type="text" id="endTime" class="col-xs-10 col-sm-10" name="endTime" readonly>
 									<span class="add-on"><i class="icon-th"></i></span>
 								</div>
-							 </div> 
-							
+							</div>
+								 
 							<div class="space-4"></div> 
 							 	<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">描述信息：</label>
@@ -245,6 +256,14 @@
 </div>
 </body>
 <script type="text/javascript">
+//选择前台、后台生成的时候，隐藏现实div
+$("input[name='source']").click(function(){
+	if($(this).val()=='1')
+		$(".source").show();
+	if($(this).val()=='2')
+		$(".source").hide();
+});
+
 $("input[name='switch']").each(function(){
 	$(this).bootstrapSwitch();
 	$(this).on('switchChange.bootstrapSwitch', function (event,state) {
@@ -276,14 +295,19 @@ $("#datetimepicker").datetimepicker({
     });
 
 function add(){
+	$(".source").show();
+	$("input[name='source']").each(function(){  
+		$(this).attr("disabled",false);
+	});
+	document.getElementById("points").readOnly=false;
+	document.getElementById("count").readOnly=false;
+	$("input[name='source'][value='1']").prop("checked",true); 
 	$("#oldId").val('null');
 	$("#batch").val('');
 	$("#points").val('');
 	$("#count").val('');
 	$("#remark").val('');
 	$("#endTime").val('');
-	document.getElementById("points").readOnly=false;
-	document.getElementById("count").readOnly=false;
 	openModal("#batchInfo");
 }
 
@@ -300,14 +324,27 @@ function edit(param){
 		data:{"id":param},
 	    type:"GET",   //请求方式
 	    success:function(result){
+			$("input[name='source']").each(function(){  
+				$(this).attr("disabled",false);
+			});
+		   $("input[name='source'][value='"+result.source+"']").prop("checked",true); 
 	       $("#batch").val(result.batch);
-		   $("#points").val(result.points);
-		   $("#count").val(result.count);
 		   $("#remark").val(result.remark);
 		   $("#endTime").val(result.endTime);
-		   document.getElementById("points").readOnly = true;
-		   document.getElementById("count").readOnly = true;
-		   console.log(result);		   
+		   if(result.source=="1"){
+			   $("input[name='source'][value='1']").prop("checked",true); 
+			   $("input[name='source'][value='2']").attr("disabled", true);
+			   $(".source").show();
+			   $("#points").val(result.points);
+			   $("#count").val(result.count);
+			   document.getElementById("points").readOnly = true;
+			   document.getElementById("count").readOnly = true;
+		   }
+		   if(result.source=="2"){
+			   $("input[name='source'][value='2']").prop("checked",true); 
+			   $("input[name='source'][value='1']").attr("disabled", true);
+			   $(".source").hide();
+		   }	   
 	    },
 	    error:function(){
 			alert("读取批次信息失败！")

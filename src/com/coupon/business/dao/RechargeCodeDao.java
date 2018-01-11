@@ -19,4 +19,12 @@ public interface RechargeCodeDao extends BaseDao<RechargeCode , String>{
 
 	List<RechargeCode> findByIds(String string);
 
+	IPageList<RechargeCode> findMyApplyRecharegeCode(int pageNo, int pageSize,String userId);
+
+	List<RechargeCode> findFrontBatch();
+
+	IPageList<RechargeCode> findUndealRechargeCodeByAdmin(int pageNo, int pageSize);
+
+	IPageList<RechargeCode> findUndealRechargeByManager(int pageNo, int pageSize, String cityIds);
+
 }

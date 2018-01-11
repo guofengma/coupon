@@ -29,7 +29,7 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-comment"></i> 后台充值审核</li>
+				<li class="active"><i class="icon-comment"></i> 积分码审核</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -52,7 +52,7 @@
 						
 						<div class="dataTables_wrapper form-inline" role="grid">
 							<div class="table-scrollable">
-								<table class="table table-striped table-bordered table-hover" id="record-table">
+								<table class="table table-striped table-bordered table-hover" id="rechargeCode-table">
 									<thead>
 										<tr>
 											<th>
@@ -60,64 +60,58 @@
 												<input type="checkbox" id="contraryCheck" onclick="contraryCheck()">反选
 											</th>
 											<th>送审员工</th>
-											<!-- <th>审核员工</th> -->
-											<th>客户姓名</th>
-											<th>充值时间</th>
-											<th>充值积分数</th>
+											<th>申请时间</th>
+											<th>兑换码</th>
+											<th>分值</th>
+											<th>有效期</th>
+											<th>审核状态</th>
 											<th>状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${records.items}" var="item">
+										<c:forEach items="${rechargeCodes.items}" var="item">
 											<tr class="odd gradeX">
 													<td>
-														<c:if test="${!item.deal}">
-															<input type="checkbox" value="${item.id}" name="record">
-														</c:if>
+														<input type="checkbox" value="${item.id}" name="rechargeCode">
 													</td>
 													<td>${item.user.displayName}</td>
-													<%-- <td>${item.checkUser.displayName}</td> --%>
-													<td>${item.customer.name}</td>
-													<td>${fn:substringBefore(item.createTime,".")}</td>
+													<td>${fn:substring(item.createTime,0,19)}</td>
+													<td>${item.code}</td>
 													<td>${item.points}</td>
+													<td>${fn:substring(item.endTime,0,10)}</td>
 													<td>
-														<c:if test ="${item.deal}">
-														已处理，未通过
-														</c:if>
-														<c:if test ="${!item.deal}">
-															未处理
-														</c:if>
+														<c:if test="${item.approved=='1'}">待审核</c:if>
+														<c:if test="${item.approved=='2'}">审核通过</c:if>
+														<c:if test="${item.approved=='3'}">审核未通过</c:if>
+													</td>
+													<td>
+														<c:if test="${item.statu}">可用</c:if>
+														<c:if test="${!item.statu}">不可用</c:if>
 													</td>
 													<td>
 														<p>
-															<c:if test="${!item.deal}">
-																<a href="javascript:check('<c:url value='/business/record/check?id=${item.id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
+															<c:if test="${item.approved=='1'}">
+																<a href="javascript:check('<c:url value='/business/rechargeCode/check?id=${item.id}&pass=true'/>');" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-thumbs-up bigger-200"></i>
-																	审核通过
+																	通过
 																</a>&nbsp;&nbsp;
-																<a href="javascript:check('<c:url value='/business/record/check?id=${item.id}&pass=false'/>');" class="btn-sm btn-app btn-success no-radius" >
+																<a href="javascript:check('<c:url value='/business/rechargeCode/check?id=${item.id}&pass=false'/>');" class="btn-sm btn-app btn-success no-radius" >
 																	<i class="icon-thumbs-down bigger-200"></i>
-																	审核不通过
-																</a>&nbsp;&nbsp;
-															</c:if>
-															<c:if test="${item.deal}">
-																<a href="<c:url value='/business/record/requestCheck?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
-																	<i class="icon-share-alt bigger-200"></i>
-																	重新发送审核请求
+																	不通过
 																</a>&nbsp;&nbsp;
 															</c:if>
 														</p>
-												</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
-							<c:import url ="../../common/paging.jsp">
-		        				<c:param name="pageModelName" value="records"/>
-		        				<c:param name="urlAddress" value="/business/record/undeal"/>
-	       				 	</c:import>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								<c:import url ="../../common/paging.jsp">
+			        				<c:param name="pageModelName" value="rechargeCodes"/>
+			        				<c:param name="urlAddress" value="/business/rechargeCode/undeal"/>
+		       				 	</c:import>
 	       				 	
 	       				 	<!-- 模态框（Modal） -->
 							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
@@ -147,20 +141,20 @@ function check(url){
 }
 
 function checkAll(){//全选
-	   $("#record-table").find("input[type=checkbox][name=record]").each(function(){
+	   $("#rechargeCode-table").find("input[type=checkbox][name=rechargeCode]").each(function(){
 		$(this).prop("checked", $('#checkAll').is(':checked'));
 	});
 }
 
 function contraryCheck(){//反选
-	$("#record-table").find("input[type=checkbox][name=record]").each(function(){
+	$("#rechargeCode-table").find("input[type=checkbox][name=rechargeCode]").each(function(){
 		$(this).prop("checked",!$(this).is(':checked'));
 	});
 }
 
 function multiCheck(pass){//批量审核
 	var ids = [];
-	 $("#record-table").find("input[type=checkbox][name=record]").each(function(){
+	 $("#rechargeCode-table").find("input[type=checkbox][name=rechargeCode]").each(function(){
 		if($(this).is(':checked'))
 			ids.push($(this).val());
 	});
@@ -168,21 +162,21 @@ function multiCheck(pass){//批量审核
 		alert("请选记录，再进行审核");
 		return false;
 	}
-	var isChecked =  confirm('确定批量审核勾选的充值记录吗？', '确认对话框');
+	var isChecked =  confirm('确定批量审核勾选的记录吗？', '确认对话框');
 	if(isChecked){
 		$.ajax({
-			url:"<%=path%>/business/record/multiCheck",    //请求的url地址
+			url:"<%=path%>/business/rechargeCode/multiCheck",    //请求的url地址
 		    dataType:"json",   
 		    async:false,
 		    data:{"ids":ids.join(";"),
 				"pass":pass},
 		    type:"GET",   //请求方式
 		    success:function(result){
-				alert("批量审核充值记录成功");
-				window.location.href="<%=path%>/business/record/undeal";
+				alert("批量审核成功");
+				window.location.href="<%=path%>/business/rechargeCode/undeal";
 		    },
 		    error:function(){
-				alert("批量审核充值记录失败！")
+				alert("批量审核失败！")
 		    }
 		});
 	}

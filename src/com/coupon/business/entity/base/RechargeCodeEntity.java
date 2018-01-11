@@ -40,16 +40,12 @@ public class RechargeCodeEntity extends BaseEntity{
 	
 	protected boolean statu;//状态  0为正常，1为停用
 	
+	protected String approved;//前台申请e兑码审核，1未审核，2审核已通过，3审核未通过
+	
+	protected String source;//来源（后台生成为1，前台申请生成为2）
+	
 	protected User fafangUser;//发放该兑换码的员工
 	
-	public boolean isStatu() {
-		return statu;
-	}
-
-	public void setStatu(boolean statu) {
-		this.statu = statu;
-	}
-
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	protected  User user;
@@ -126,6 +122,37 @@ public class RechargeCodeEntity extends BaseEntity{
 
 	public void setMade(boolean made) {
 		this.made = made;
+	}
+
+	public boolean isStatu() {
+		return statu;
+	}
+
+	public void setStatu(boolean statu) {
+		this.statu = statu;
+	}
+	public String getApproved() {
+		return approved;
+	}
+
+	public void setApproved(String approved) {
+		this.approved = approved;
+	}
+	
+	public User getFafangUser() {
+		return fafangUser;
+	}
+
+	public void setFafangUser(User fafangUser) {
+		this.fafangUser = fafangUser;
+	}
+	
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 	public boolean isGiven() {

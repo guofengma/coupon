@@ -18,7 +18,11 @@
 			<li><a href="javascript:showUserInfo();"><i class="icon-cog"></i> 修改密码</a></li>
 			<shiro:hasPermission name="recharge:check">
 				<li class="divider"></li>
-				<li><a href="<c:url value='/business/record/undeal'/>"><i class="icon-comment"></i> 待办事项</a></li>
+				<li><a href="<c:url value='/business/record/undeal'/>"><i class="icon-comment"></i> 后台充值审核</a></li>
+		    </shiro:hasPermission>
+		    <shiro:hasPermission name="rechargeCode:check">
+				<li class="divider"></li>
+				<li><a href="<c:url value='/business/rechargeCode/undeal'/>"><i class="icon-barcode"></i> 积分码申请审核</a></li>
 		    </shiro:hasPermission>
 		</ul>
 	</li>

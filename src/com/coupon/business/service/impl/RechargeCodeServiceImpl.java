@@ -56,4 +56,24 @@ public class RechargeCodeServiceImpl extends BaseServiceImpl<RechargeCode, Strin
 			idSql.deleteCharAt(idSql.length()-1);
 		return  getRechargeCodeDao().findByIds(idSql.toString());
 	}
+
+	@Override
+	public IPageList<RechargeCode> findMyApplyRecharegeCode(int pageNo, int pageSize,String userId) {
+		return  getRechargeCodeDao().findMyApplyRecharegeCode(pageNo,pageSize,userId);
+	}
+
+	@Override
+	public List<RechargeCode> findFrontBatch() {
+		return  getRechargeCodeDao().findFrontBatch();
+	}
+
+	@Override
+	public IPageList<RechargeCode> findUndealRechargeCodeByAdmin(int pageNo, int pageSize) {
+		return  getRechargeCodeDao().findUndealRechargeCodeByAdmin(pageNo,pageSize);
+	}
+
+	@Override
+	public IPageList<RechargeCode> findUndealRechargeByManager(int pageNo, int pageSize, String cityIds) {
+		return  getRechargeCodeDao().findUndealRechargeByManager( pageNo, pageSize, cityIds);
+	}
 }
