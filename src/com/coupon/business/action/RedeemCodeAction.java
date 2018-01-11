@@ -199,18 +199,20 @@ public class RedeemCodeAction extends BaseAction{
 	 * 删除该批次和该批次下的所有兑换码
 	 */
 	@RequestMapping(value = "/business/redeemCode/deleteBatch")
-	public String deleteBatch(HttpServletRequest request, ModelMap model,String productId,String oldId,String batch,String endTime,String remark) throws ParseException {
+	public String deleteBatch(HttpServletRequest request, ModelMap model,String oldId,String batch,String endTime,String remark) throws ParseException {
 		super.addMenuParams(request, model);
 		String id = request.getParameter("id");
 		RedeemCode redeemCode = redeemCodeService.findById(id);
+		String productId = redeemCode.getProduct().getId();
 		redeemCode.setDeleted(true);
+		redeemCode.setProduct(null);
 		redeemCodeService.update(redeemCode);
 		List<RedeemCode> children = redeemCode.getChildren();
 		for(RedeemCode temp : children){
 			temp.setDeleted(true);
 		}
 		redeemCodeService.batchUpdate(children);
-		model.addAttribute("id",redeemCode.getProduct().getId());
+		model.addAttribute("id",productId);
 		return "redirect:batchlist";
 	}
 	
