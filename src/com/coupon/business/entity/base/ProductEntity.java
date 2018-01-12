@@ -38,6 +38,10 @@ public abstract class ProductEntity extends BaseEntity{
 	protected String description ;
 	
 	protected boolean statu ;//是否可用，也就是上架下架
+	
+	protected boolean frontExchange;//是否可以前台预约服务
+	
+	protected int delayDays;//如果可以，可以预约几天后的服务
 
 	@OneToMany(fetch = FetchType.LAZY,cascade = { CascadeType.ALL }, mappedBy = "product")
 	protected List<Record> record;
@@ -107,6 +111,22 @@ public abstract class ProductEntity extends BaseEntity{
 
 	public void setStatu(boolean statu) {
 		this.statu = statu;
+	}
+
+	public boolean isFrontExchange() {
+		return frontExchange;
+	}
+
+	public int getDelayDays() {
+		return delayDays;
+	}
+
+	public void setFrontExchange(boolean frontExchange) {
+		this.frontExchange = frontExchange;
+	}
+
+	public void setDelayDays(int delayDays) {
+		this.delayDays = delayDays;
 	}
 
 	public void setDescription(String description) {

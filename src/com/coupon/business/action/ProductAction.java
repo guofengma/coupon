@@ -133,6 +133,8 @@ public class ProductAction extends BaseAction{
 		String name = "";
 		String points="";
 		String description="" ;
+		boolean frontExchange = false;
+		int delayDays = 0;
 		super.addMenuParams(request, model);
 		Product product = new Product();
 		request.setCharacterEncoding("utf-8");
@@ -158,6 +160,10 @@ public class ProductAction extends BaseAction{
 					city = item.getString("utf-8");
 				if(item.getFieldName().equals("name"))
 					name = item.getString("utf-8");
+				if(item.getFieldName().equals("frontExchange"))
+					frontExchange = item.getString("utf-8").equals("true");
+				if(item.getFieldName().equals("delayDays"))
+					delayDays = Integer.parseInt(item.getString("utf-8").equals("")?"0":item.getString("utf-8"));
 				if(item.getFieldName().equals("points"))
 					points = item.getString("utf-8");
 				if(item.getFieldName().equals("fileChanged"))
@@ -208,6 +214,8 @@ public class ProductAction extends BaseAction{
 		Set<City> citys = cityService.findByIds(city.split(";"));
 		product.setCity(citys);
 		product.setName(name);
+		product.setFrontExchange(frontExchange);
+		product.setDelayDays(delayDays);
 		product.setDescription(description);
 		product.setPoints(Integer.parseInt(points));
 		if(oldId.equals("null")){
@@ -279,9 +287,9 @@ public class ProductAction extends BaseAction{
 		if(citys.size()!=0)
 			cityIds.deleteCharAt(cityIds.length()-1);
 		if(product.getDescription()==null)
-			result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
+			result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"frontExchange\":"+product.isFrontExchange()+",\"delayDays\":"+product.getDelayDays()+",\"points\":"+product.getPoints()+",\"description\":\"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
 		else
-			result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription().replace("\"", "'")+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
+			result.append("{\"picName\":\""+product.getPicName()+"\",\"cityIds\":\""+cityIds.toString()+"\",\"name\":\""+product.getName()+"\",\"frontExchange\":"+product.isFrontExchange()+",\"delayDays\":"+product.getDelayDays()+",\"points\":"+product.getPoints()+",\"description\":\""+product.getDescription().replace("\"", "'")+"\",\"picPath\":\""+product.getPicPath().replace("\\", "\\\\")+"\"}");
 		System.out.println(result.toString());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");

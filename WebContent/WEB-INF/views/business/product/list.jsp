@@ -54,8 +54,8 @@
 										<tr>
 											<th>商品名称</th>
 											<th>所需积分</th>
-											<!-- <th>描述信息</th> -->
 											<th>批次数量</th>
+											<th>兑换方式</th>
 											<th>预览图</th>
 											<th>操作</th>
 										</tr>
@@ -65,8 +65,11 @@
 											<tr class="odd gradeX">
 													<td>${item.name}</td>
 													<td>${item.points}</td>
-													<%-- <td>${item.description}</td> --%>
 													<td>${fn:length(item.redeemCode)}</td>
+													<td>
+														<c:if test="${item.frontExchange}">可在前台预约${item.delayDays}天后服务</c:if>
+														<c:if test="${!item.frontExchange}">不可在前台预约</c:if>
+													</td>
 													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
 													<td>
 															<p>
@@ -136,7 +139,7 @@
 							<input name="oldId" id="oldId" type="hidden" value="null"/> 
 							<input name="city" id="city" type="hidden" value=""/>
 							<input name="fileChanged" id="fileChanged" type="hidden" value="false"/>
-							 <div class="form-group">
+							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品名称：</label>
 								<div class="col-sm-9">
 									<input type="text" id="name" class="col-xs-10 col-sm-10" name="name" value="${product.name}">
@@ -149,22 +152,33 @@
 								<div class="col-sm-9">
 									<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
 								</div>
+							 </div>
+							 
+							  <div class="space-4"></div> 
+							 <div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">前台兑换：</label>
+								<div class="col-sm-9">
+									<label class="col-sm-2 no-padding-right"><input type="radio" name="frontExchange" value="true" checked>是</label>
+									<label class="col-sm-2 no-padding-right"><input type="radio" name="frontExchange" value="false">否</label>
+									<div class="frontExchange">
+										<label class="col-sm-2" style="text-align:right">可预约</label>
+										<input type="text" id="delayDays" class="col-xs-2 col-sm-2" name="delayDays">
+										<label class="col-sm-2" style="text-align:left">天后服务</label>
+									</div>
+								</div>
 							 </div> 
 							 
 							 <div class="space-4"></div> 	
-							<div class="form-group">
+							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 可用城市： </label>
 								<div class="col-sm-9" style="text-align:left;">
 									<ul id="cityTree" class="ztree"></ul>
 								</div>
-							</div>
+							 </div>
 							
-							<div class="space-4"></div> 
+							 <div class="space-4"></div> 
 							 	<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品说明：</label>
-								<!-- <div class="col-sm-9">
-									<input type="text" id="description" class="col-xs-10 col-sm-10" name="description">
-								</div> -->
 								<div class="col-sm-9">
 									<script id="container" name="description" type="text/plain" ></script>
 									<script type="text/javascript" src="<%=path%>/assets/UEditor/ueditor.config.js"></script>
@@ -173,7 +187,7 @@
 										var ue=UE.getEditor('container',{elementPathEnable:false});
 									</script>
 								</div>
-							 </div> 
+							  </div> 
 							
 							 <div class="space-4"></div> 							 
 							 <div class="form-group">
@@ -209,6 +223,13 @@
 </div>
 </body>
 <script type="text/javascript">
+$("input[name='frontExchange']").click(function(){
+	if($(this).val()=='true')
+		$(".frontExchange").show();
+	if($(this).val()=='false')
+		$(".frontExchange").hide();
+});
+
 var setting = {
 		  view: {
 	    selectedMulti: true
@@ -315,6 +336,9 @@ function offline(url){
 
 function add(){
 	 $("#name").val('');
+	 $("input[name='frontExchange'][value='true']").prop("checked",true); 
+	 $(".frontExchange").show();
+	 $("#delayDays").val('');
 	 $("#points").val('');
 	 var ue=UE.getEditor('container');
 	 ue.setContent('');
@@ -339,6 +363,14 @@ function edit(param){
 	    type:"GET",   //请求方式
 	    success:function(result){
 	       $("#name").val(result.name);
+		   if(result.frontExchange){
+			   $("input[name='frontExchange'][value='true']").prop("checked",true); 
+			   $(".frontExchange").show();
+			   $("#delayDays").val(result.delayDays); 
+		   }else{
+			   $("input[name='frontExchange'][value='false']").prop("checked",true); 
+			   $(".frontExchange").hide();
+		   }
 		   $("#points").val(result.points);
 		   var ue=UE.getEditor('container');
 		   ue.setContent(result.description);
