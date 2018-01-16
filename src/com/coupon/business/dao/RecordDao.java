@@ -21,4 +21,6 @@ public interface RecordDao extends BaseDao<Record , String>{
 
 	List<Record> findAchievementByStaff(String userId, String startTime, String endTime);
 
+	List<Record> findRecordCanExchangeService(String productId, String customerId);
+
 }

@@ -54,4 +54,9 @@ public class RecordServiceImpl extends BaseServiceImpl<Record, String> implement
 	public List<Record> findAchievementByStaff(String userId, String startTime, String endTime) {
 		return getRecordDao().findAchievementByStaff(userId, startTime, endTime);
 	}
+
+	@Override
+	public List<Record> findRecordCanExchangeService(String productId, String customerId) {
+		return getRecordDao().findRecordCanExchangeService(productId, customerId);
+	}
 }

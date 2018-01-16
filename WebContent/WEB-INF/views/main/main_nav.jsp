@@ -36,6 +36,11 @@
 	            <a href="<c:url value='/business/rechargeCodeApply/list'/>"><i class="icon-barcode"></i> 积分码申请<i></i></a>
 	         </li> 
          </shiro:hasPermission>
+         <shiro:hasPermission name="serviceInfo:deal">
+	         <li>
+	            <a href="<c:url value='/business/serviceInfo/undealList'/>"><i class="icon-phone"></i> 预约回复<i></i></a>
+	         </li> 
+         </shiro:hasPermission>
          <li>
             <a href="#search" data-toggle="collapse" class="nav-header collapsed" ><i class="icon-search" ></i> 信息查询 <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="search" class="nav nav-list collapse" style="height:0px;">

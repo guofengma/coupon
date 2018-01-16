@@ -28,6 +28,30 @@
 			                <p class='mui-ellipsis'>有效期至：${fn:substring(item.redeemCode.parent.endTime,0,10)}</p>
 			            </div>
 			        </a>
+			        <c:if test="${item.product.frontExchange}"><!-- 可以预约 -->
+			        	<%-- <c:if test="${item.serviceInfo}"><!-- 已经预约 -->
+			        		<c:if test="${item.serviceInfo.deal=='1'}"><!-- 已经预约 -->
+						                   预约处理中
+						    </c:if>
+						    <c:if test="${item.serviceInfo.deal=='2'}"><!-- 已经预约 -->
+						                   预约成功
+						    </c:if>
+						    <c:if test="${item.serviceInfo.deal=='3'}"><!-- 已经预约 -->
+						                   预约失败
+						    </c:if>  
+					     </c:if>
+					     <c:if test="${item.serviceInfo}"><!-- 未预约 -->
+					        <a href="<%=path%>/serviceInfo/app/toExchangeServicePage?recordId=${item.id}">
+					         	  去预约
+					        </a>
+					     </c:if> --%>
+					     <a href="<%=path%>/serviceInfo/app/toExchangeServicePage?recordId=${item.id}">
+					         	去预约
+					     </a>
+				    </c:if>
+				     <c:if test="${!item.product.frontExchange}"><!-- 可以预约 -->
+				     	不可前台预约
+				     </c:if>
 			    </li>
 			</c:forEach>
 		</ul>

@@ -42,6 +42,7 @@ var setting = {
 						{ id: 433, pId: 43, name: "积分兑换码查询", perm:"search:rechargeCode"},
 						{ id: 44, pId: 4, name: "积分码申请", perm:"rechargeCode:apply"},
 						{ id: 45, pId: 4, name: "积分码审核", perm:"rechargeCode:check"},
+						{ id: 46, pId: 4, name: "服务预约处理", perm:"serviceInfo:deal"},
 						{ id: 5, pId: 0, name: "系统管理", perm:"system:management"}
 		              ];
 		 

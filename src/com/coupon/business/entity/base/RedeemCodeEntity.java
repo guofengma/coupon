@@ -24,7 +24,9 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 	
 	protected String code ;//兑换码
 	
-	protected boolean used ;//兑换状态
+	protected boolean used ;//兑换状态（指积分兑换此码）
+	
+	protected boolean exchangeService;//兑换服务状态（0未兑换服务，1兑换了服务）
 	
 	protected boolean statu;//停用、启用状态 0启用  1停用
 	
@@ -62,6 +64,14 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 
 	public boolean isUsed() {
 		return used;
+	}
+
+	public boolean isExchangeService() {
+		return exchangeService;
+	}
+
+	public void setExchangeService(boolean exchangeService) {
+		this.exchangeService = exchangeService;
 	}
 
 	public void setUsed(boolean used) {

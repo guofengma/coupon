@@ -52,6 +52,9 @@
 			        <a class="mui-navigate-right" href="<%=path%>/record/app/myRecord">我的订单</a>
 			    </li>
 			    <li class="mui-table-view-cell">
+			        <a class="mui-navigate-right" href="<%=path%>/serviceInfo/app/myService">我的预约</a>
+			    </li>
+			    <li class="mui-table-view-cell">
 			        <a class="mui-navigate-right" href="<%=path%>/app/toPasswordPage">修改密码</a>
 			    </li>
 			    <li class="mui-table-view-cell">

@@ -121,6 +121,8 @@ public class ProductAction extends BaseAction{
 			customerService.update(customer);
 			redeemCodeService.batchUpdate(redeemCodeList);
 			recordService.batchSave(records);
+			model.addAttribute("product",product);
+			model.addAttribute("record",records.get(0));
 			return "app/exchangeSuccess";
 		}
 

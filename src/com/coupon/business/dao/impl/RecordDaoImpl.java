@@ -13,6 +13,7 @@ import com.coupon.business.dao.RecordDao;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Record;
 import com.coupon.system.entity.City;
+import com.coupon.util.FolderUtil;
 
 @Repository
 public class RecordDaoImpl extends BaseDaoImpl<Record, String> implements RecordDao{
@@ -99,6 +100,13 @@ public class RecordDaoImpl extends BaseDaoImpl<Record, String> implements Record
 	public List<Record> findAchievementByStaff(String userId, String startTime, String endTime) {
 		List<Record> items = this.queryByHql(
 				"from Record r where r.deleted=false and r.raise = true and r.user.id = '"+userId +"' and r.modifiedTime > '"+startTime+"' and r.modifiedTime <= '"+endTime+"' order by modifiedTime desc", null);
+		return items ;
+	}
+
+	@Override
+	public List<Record> findRecordCanExchangeService(String productId, String customerId) {
+		List<Record> items = this.queryByHql(
+				"from Record r where r.deleted=false and r.product.id = '"+productId+"' and r.customer.id = '"+customerId +"' and r.redeemCode.used=true and r.redeemCode.statu=false and r.redeemCode.exchangeService=false and '"+FolderUtil.getFolder()+"' < "+"r.redeemCode.parent.endTime order by r.redeemCode.parent.endTime asc" , null);
 		return items ;
 	}
 

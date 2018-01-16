@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import com.coupon.base.entity.BaseEntity;
 import com.coupon.business.entity.Bank;
 import com.coupon.business.entity.Record;
+import com.coupon.business.entity.ServiceInfo;
 import com.coupon.system.entity.City;
 import com.coupon.system.entity.User;
 

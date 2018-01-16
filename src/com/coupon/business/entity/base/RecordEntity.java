@@ -1,5 +1,6 @@
 package com.coupon.business.entity.base;
 
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,7 +11,9 @@ import com.coupon.base.entity.BaseEntity;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Product;
 import com.coupon.business.entity.RechargeCode;
+import com.coupon.business.entity.Record;
 import com.coupon.business.entity.RedeemCode;
+import com.coupon.business.entity.ServiceInfo;
 import com.coupon.system.entity.User;
 
 @MappedSuperclass
@@ -36,7 +39,10 @@ public abstract class RecordEntity extends BaseEntity{
 	@JoinColumn(name = "checkUserId")
 	protected User checkUser;  //审核记录的员工
 	
-	@ManyToOne
+	@OneToOne(cascade = { CascadeType.ALL }, mappedBy = "record",fetch = FetchType.EAGER)
+	protected ServiceInfo serviceInfo;
+	
+	@OneToOne
 	@JoinColumn(name = "productId")
 	protected Product product;  //对应商品
 	

@@ -25,6 +25,10 @@
 	  	 <div style="padding-top:20px">
 	  	 	<button type="button" onclick="javascript:backToMyRecord()" class="mui-btn mui-btn-danger mui-btn-outlined">查看订单</button>&nbsp;&nbsp;&nbsp;
 	  	 	<button type="button" onclick="javascript:backToMain()"class="mui-btn mui-btn-danger mui-btn-outlined">返回首页</button>
+	  	 	<c:if test="${product.frontExchange}">
+	  	 		&nbsp;&nbsp;&nbsp;
+	  	 		<button type="button" onclick="javascript:toExchangeServicePage('${record.id}')"class="mui-btn mui-btn-danger mui-btn-outlined">预约服务</button>
+	  	 	</c:if>
 	  	 </div>
 	</div>
   <script>  
@@ -33,6 +37,9 @@
 	}
 	function backToMyRecord(){
 		window.location.href = "<%=path%>/record/app/myRecord";
+	}
+	function toExchangeServicePage(id){
+		window.location.href = "<%=path%>/serviceInfo/app/toExchangeServicePage?recordId="+id;
 	}
   </script>
   </body>
