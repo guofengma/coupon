@@ -2,6 +2,7 @@ package com.coupon.business.action;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -91,7 +92,9 @@ public class ServiceInfoAction extends BaseAction{
 		Customer customer = customerService.findByPhone(name);
 		if(null == customer)
 			return "appindex";
+		String openId = request.getParameter("serviceInfoId");
 		List<ServiceInfo> serviceInfos = serviceInfoService.findMyServiceInfo(customer.getId());
+		model.addAttribute("openId",openId);//由订单信息查看预约服务信息，默认展开的服务信息
 		model.addAttribute("serviceInfos",serviceInfos);
 		return "app/myService";
 	}
@@ -151,6 +154,33 @@ public class ServiceInfoAction extends BaseAction{
 		json.put("reservationAddress", serviceInfo.getReservationAddress());
 		json.put("contact", serviceInfo.getContact());
 		json.put("comments", serviceInfo.getComments());
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(json.toString());
+	}
+	
+	@RequestMapping(value = "	/serviceInfo/app/cancelService")
+	public void cancelService(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		Date currentTime = new Date();
+		String id = request.getParameter("id");
+		JSONObject json = new JSONObject();
+		ServiceInfo serviceInfo =serviceInfoService.findById(id);
+		if(serviceInfo.getDeal().equals("1")){
+			if(serviceInfo.getConfirmReservationTime().getTime()-currentTime.getTime()>24*3600*1000){
+				json.put("statu", true);
+				serviceInfo.setRecord(null);
+				serviceInfo.setDeal("3");
+				serviceInfoService.update(serviceInfo);
+			}else{
+				json.put("statu", false);
+			}
+		}else{
+			json.put("statu", true);
+			serviceInfo.setRecord(null);
+			serviceInfo.setDeal("3");
+			serviceInfoService.update(serviceInfo);
+			json.put("statu", true);
+		}
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write(json.toString());

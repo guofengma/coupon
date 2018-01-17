@@ -29,28 +29,41 @@
 			            </div>
 			        </a>
 			        <c:if test="${item.product.frontExchange}"><!-- 可以预约 -->
-			        	<%-- <c:if test="${item.serviceInfo}"><!-- 已经预约 -->
-			        		<c:if test="${item.serviceInfo.deal=='1'}"><!-- 已经预约 -->
-						                   预约处理中
+			        	<c:if test="${!empty item.serviceInfo}"><!-- 已经预约 -->
+			        		<c:if test='${item.serviceInfo.deal=="0"}'>
+						       <p class='mui-ellipsis' style="color:blue"> 预约处理中</p>
+						       <%-- <a href="<%=path%>/serviceInfo/app/toExchangeServicePage?recordId=${item.id}" class="mui-btn mui-btn-danger">
+					         	 取消预约
+					           </a>  --%>          
 						    </c:if>
-						    <c:if test="${item.serviceInfo.deal=='2'}"><!-- 已经预约 -->
-						                   预约成功
+						    <c:if test='${item.serviceInfo.deal=="1"}'><!-- 已经预约 -->
+						   	  <%--  <c:set var="nowDate" value="<%=System.currentTimeMillis()%>"></c:set> --%>
+						       <p class='mui-ellipsis' style="color:green">预约成功</p>
+						       <%-- <c:if test='${item.serviceInfo.confirmReservationTime.time-nowDate>24*3600*1000}'><!--24小时外可以取消预约-->
+							       <a href="<%=path%>/serviceInfo/app/cancelService?serviceInfoId=${item.serviceInfo.id}" class="mui-btn mui-btn-danger">
+						         	 取消预约
+						           </a>
+						       </c:if>  --%>
+						       <%-- <a href="<%=path%>/serviceInfo/app/myService?serviceInfoId=${item.serviceInfo.id}" class="mui-btn mui-btn-danger">
+					         	查看
+					           </a> --%>
 						    </c:if>
-						    <c:if test="${item.serviceInfo.deal=='3'}"><!-- 已经预约 -->
-						                   预约失败
-						    </c:if>  
+						    <c:if test='${item.serviceInfo.deal=="2"}'><!-- 已经预约 -->
+						    	<p class='mui-ellipsis' style="color:red">预约失败</p>
+						    </c:if>
+						    <a href="<%=path%>/serviceInfo/app/myService?serviceInfoId=${item.serviceInfo.id}" class="mui-btn mui-btn-danger">
+					         	查看
+					        </a> 
 					     </c:if>
-					     <c:if test="${item.serviceInfo}"><!-- 未预约 -->
-					        <a href="<%=path%>/serviceInfo/app/toExchangeServicePage?recordId=${item.id}">
+					     <c:if test="${empty item.serviceInfo}"><!-- 未预约 -->
+					     	<p class='mui-ellipsis' style="color:red">可预约${item.product.delayDays}天后服务</p>
+					        <a href="<%=path%>/serviceInfo/app/toExchangeServicePage?recordId=${item.id}" class="mui-btn mui-btn-danger">
 					         	  去预约
 					        </a>
-					     </c:if> --%>
-					     <a href="<%=path%>/serviceInfo/app/toExchangeServicePage?recordId=${item.id}">
-					         	去预约
-					     </a>
+					     </c:if>
 				    </c:if>
 				     <c:if test="${!item.product.frontExchange}"><!-- 可以预约 -->
-				     	不可前台预约
+				     	 <p class='mui-ellipsis'>不可前台预约</p>
 				     </c:if>
 			    </li>
 			</c:forEach>

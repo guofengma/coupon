@@ -13,20 +13,6 @@
     <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.picker.min.css">  
     <script src="<%=path%>/assets/mui-master/dist/js/mui.min.js"></script>    
     <script src="<%=path%>/assets/mui-master/dist/js/mui.picker.min.js"></script>  
-    <style>
-    	.texaarea{
-		    line-height: 21px;
-		    width: 100%;
-		    margin-bottom: 15px;
-		    padding: 10px 15px;
-		    -webkit-user-select: text;
-		    border: 1px solid rgba(0,0,0,.2);
-		    border-radius: 3px;
-		    outline: 0;
-		    background-color: #fff;
-		    -webkit-appearance: none;
-		}
-    </style>
   </head>
   <body>
 	 <header class="mui-bar mui-bar-nav" style="background-color:red">
@@ -44,24 +30,22 @@
 		    	<label style="padding-left:5px">预约时间：</label>
 		    	<input id="reservationTime" type="text" name="reservationTime" readonly>
 		    </div>
-		    <div class="mui-input-row">
+		    <div class="mui-input-row" style="height:auto">
 		    	<label style="padding-left:5px">服务地址：</label>
-		    	<textarea id="reservationAddress" rows="5" placeholder="请输入详细地址" name="reservationAddress">
-		    	&nbsp;
-		    	</textarea>
+	    		<textarea id="reservationAddress" rows="4" name="reservationAddress"></textarea>
 		    </div>
 		    <div class="mui-input-row">
 		    	<label style="padding-left:5px">联系方式：</label>
 		    	<input id="contact" type="text" name="contact">
 		    </div>
-		    <div class="mui-input-row">
+		    <div class="mui-input-row" style="height:auto">
 		    	<label style="padding-left:5px">客户留言：</label>
-		    	<textarea id="comments" rows="5" name="comments">
-		    	</textarea>
+		    	<textarea id="comments" name="comments" rows="4"></textarea>
 		    </div>
 		    <div class="mui-button-row">
 		        <button type="button" onclick="checkEmpty()" class="mui-btn mui-btn-danger" >预约服务</button>
 		        <button type="button" onclick="backToMyRecord()" class="mui-btn mui-btn-danger" >返回我的订单</button>
+		    	<button type="button" onclick="backToMyInfo()" class="mui-btn mui-btn-danger" >返回我的信息</button>
 		    </div>
 		</form>
 	</div>
@@ -73,9 +57,21 @@ function backToMyRecord(){
 	window.location.href = "<%=path%>/record/app/myRecord";
 }
 
+function backToMyInfo(){
+	window.location.href = "<%=path%>/app/myInfo";
+}
+
 function checkEmpty(){	
 	if($("#reservationTime").val()==''){
 		mui.toast("请填写服务时间再预约！");
+		return false;
+	}
+	if($("#reservationAddress").val()==''){
+		mui.toast("请填写服务地址再预约！");
+		return false;
+	}
+	if($("#contact").val()==''){
+		mui.toast("请填写联系方式再预约！");
 		return false;
 	}
 	$("#exchangeServiceForm").submit();

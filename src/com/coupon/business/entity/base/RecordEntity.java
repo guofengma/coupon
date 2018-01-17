@@ -11,7 +11,6 @@ import com.coupon.base.entity.BaseEntity;
 import com.coupon.business.entity.Customer;
 import com.coupon.business.entity.Product;
 import com.coupon.business.entity.RechargeCode;
-import com.coupon.business.entity.Record;
 import com.coupon.business.entity.RedeemCode;
 import com.coupon.business.entity.ServiceInfo;
 import com.coupon.system.entity.User;
@@ -96,6 +95,14 @@ public abstract class RecordEntity extends BaseEntity{
 		this.checkUser = checkUser;
 	}
 
+	public ServiceInfo getServiceInfo() {
+		return serviceInfo;
+	}
+
+	public void setServiceInfo(ServiceInfo serviceInfo) {
+		this.serviceInfo = serviceInfo;
+	}
+	
 	public Product getProduct() {
 		return product;
 	}
