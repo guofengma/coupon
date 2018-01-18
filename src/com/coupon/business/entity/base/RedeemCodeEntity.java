@@ -153,7 +153,7 @@ public abstract class RedeemCodeEntity extends BaseEntity {
 	public List<RedeemCode> getUnUsedChildren(){
 		List<RedeemCode> redeemCodeList = new ArrayList<RedeemCode>();
 		for(RedeemCode temp : getChildren()){
-			if(!temp.isUsed())
+			if((!temp.isUsed())&&(!temp.isStatu()))
 				redeemCodeList.add(temp);
 		}
 		return redeemCodeList;

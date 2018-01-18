@@ -21,13 +21,13 @@
 			<div class="content" id="index404" style="display:none">
 				<img src="<%=path%>/assets/error/images/error-img.png" title="error" />
 				<p><span>哎呀.....</span>您访问的页面不存在</p>
-				<a href="<%=path%>/index">返回登录页面</a>
+				<%-- <a href="<%=path%>/index">返回登录页面</a> --%>
    			</div>
-   			<%-- <div class="content" id="appindex404" style="display:none">
+   			<div class="content" id="appindex404" style="display:none">
 				<img src="<%=path%>/assets/error/images/app-error-img.png" title="error" />
 				<p><span>哎呀.....</span>您访问的页面不存在</p>
-				<a href="<%=path%>/appindex">返回登录页面</a>
-   			</div> --%>
+				<%-- <a href="<%=path%>/appindex">返回登录页面</a> --%>
+   			</div>
 			<!--End-Cotent------>
 		</div>
 		<!--End-wrap--->
@@ -37,7 +37,7 @@
 		if(isUser=='true'){
 			$("#index404").show();
 		}else{
-			$("#index404").show();
+			$("#appindex404").show();
 		}
 	</script>
 </html>

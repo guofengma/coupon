@@ -205,7 +205,7 @@ public class RedeemCodeAction extends BaseAction{
 		RedeemCode redeemCode = redeemCodeService.findById(id);
 		String productId = redeemCode.getProduct().getId();
 		redeemCode.setDeleted(true);
-		redeemCode.setProduct(null);
+		//redeemCode.setProduct(null);
 		redeemCodeService.update(redeemCode);
 		List<RedeemCode> children = redeemCode.getChildren();
 		for(RedeemCode temp : children){

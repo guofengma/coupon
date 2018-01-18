@@ -56,7 +56,7 @@
 											<th>所需积分</th>
 											<th>批次数量</th>
 											<th>兑换方式</th>
-											<th>预览图</th>
+											<!-- <th>预览图</th> -->
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -65,12 +65,12 @@
 											<tr class="odd gradeX">
 													<td>${item.name}</td>
 													<td>${item.points}</td>
-													<td>${fn:length(item.redeemCode)}</td>
+													<td>${fn:length(item.canBeGivenBatch)}</td>
 													<td>
 														<c:if test="${item.frontExchange}">可在前台预约${item.delayDays}天后服务</c:if>
 														<c:if test="${!item.frontExchange}">不可在前台预约</c:if>
 													</td>
-													<td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> 
+													<%-- <td><img width="100px" height="100px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}'/></td> --%> 
 													<td>
 															<p>
 																<a href="javascript:edit('${item.id}')" class="btn-sm btn-app btn-primary no-radius">

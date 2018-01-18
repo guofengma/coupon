@@ -4,17 +4,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>礼品兑换系统</title>
+    <title>兑好礼</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">  
     <meta name="apple-mobile-web-app-capable" content="yes">  
     <meta name="apple-mobile-web-app-status-bar-style" content="black">  
 
-    <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.min.css">  
+    <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.min.css">
+	<link rel="stylesheet" href="<%=path%>/assets/css/common.css">
     <script src="<%=path%>/assets/mui-master/dist/js/mui.min.js"></script>  
   </head>
   <body>
-     <header class="mui-bar mui-bar-nav" style="background-color:red;box-shadow: 0 1px 6px red">
-	    <a class="mui-icon mui-icon-left-nav mui-pull-left" id="toMain"></a>
+     <header class="mui-bar mui-bar-nav commonHeader">
+	<a class="mui-icon mui-icon-left-nav mui-pull-left" id="toMain"></a>
 	    <h1 class="mui-title" style="color:white">${product.name}</h1>
 	    <input id="productId" type="hidden" value="${product.id}" />
 	    <input id=canBeGivenCodeNum type="hidden" value="${fn:length(product.canBeGivenCode)}" />
@@ -27,17 +28,17 @@
 				<button id="add" class="mui-btn mui-numbox-btn-plus" type="button">+</button>
 			</div>
         </div>  
-        <a class="mui-tab-item  mui-active" id="a2" style="background-color:red">  
+        <a class="mui-tab-item  mui-active" id="a2" style="background-color:#f10215">
             <span class="mui-tab-label" style="color:white">立即兑换</span>  
         </a>  
      </nav>
-     <div class="mui-content" style="background-color:white">  
-	     <div style="height:200px;padding:5px"><img height="190px" src='<%=path%>/img/${fn:replace(product.picPath,"\\","/")}' /></div>
-	     <div style="text-align:left;padding:10px 0px 0px 10px">
-	     	<p style="font-size:18px">${product.name}</p>
-	     	<p style="color:red;font-size:20px">${product.points}积分</p>
-	     	<p style="color:blue;font-size:20px">库存：${fn:length(product.canBeGivenCode)}</p>
+     <div class="mui-content mainContent">
+	     <div style="padding:5px;"><img width="100%" src='<%=path%>/img/${fn:replace(product.picPath,"\\","/")}' /></div>
+	     <div style="height:30px;line-height:30px;padding:0px 5px;">
+	     	<div style="display:inline-block;width:70%;background:-webkit-linear-gradient(left,#ef3390,#ef3647);"><p style="color:#ffffff;margin:0px;font-size:22px;padding-left:10px;">￥${product.points}积分</p></div>
+	     	<div style="display:inline-block;width:28%;text-align:right;"><p style="color:ef3390;margin:0px;font-size:20px;">库存：${fn:length(product.canBeGivenCode)}</p></div>
 	     </div>
+         <div style="padding:18px 0px 0px 5px;margin-top:10px;"><p style="font-size:17px;color:#232326;padding-top:10px;padding-left:10px;border:none;margin-bottom:0px;">${product.name}</p></div>
 	     <div style="text-align:left;padding:10px 0px 0px 10px">
 	     	 <ul class="mui-table-view"> 
 				 <li class="mui-table-view-cell mui-collapse">

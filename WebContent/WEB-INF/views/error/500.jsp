@@ -20,12 +20,12 @@
 			<!--start-content------>
 			<div class="content" id="index500"  style="display:none">
 				<img src="<%=path%>/assets/error/images/error2.png" title="error"  /><br />
-				<a href="<%=path%>/index">返回登录页面</a>
+				<%-- <a href="<%=path%>/index">返回登录页面</a> --%>
    			</div>
-   			<%-- <div class="content" id="appindex500"  style="display:none">
+   			<div class="content" id="appindex500"  style="display:none">
 				<img src="<%=path%>/assets/error/images/error2.png" title="error"  /><br />
-				<a href="<%=path%>/appindex">返回登录页面</a>
-   			</div> --%>
+				<%-- <a href="<%=path%>/appindex">返回登录页面</a> --%>
+   			</div>
 			<!--End-Cotent------>
 		</div>
 		<!--End-wrap--->
@@ -35,7 +35,7 @@
 		if(isUser=='true'){
 			$("#index500").show();
 		}else{
-			$("#index500").show();
+			$("#appindex500").show();
 		}
 	</script>
 </html>

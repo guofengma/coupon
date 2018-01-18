@@ -29,4 +29,15 @@ public class Product extends ProductEntity{
 		}
 		return redeemCode;
 	}
+	
+	public List<RedeemCode> getCanBeGivenBatch(){//一个商品可以发放的兑换码批次
+		List<RedeemCode> redeemCode = new ArrayList<RedeemCode>();
+		List<RedeemCode> batch = this.getRedeemCode(); //获取该商品的批次
+		for(RedeemCode temp : batch){
+			if(!temp.getDeleted()){
+				redeemCode.add(temp);
+			}
+		}
+		return redeemCode;
+	}
 }

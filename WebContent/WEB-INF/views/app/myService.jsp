@@ -10,14 +10,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">  
 
     <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.min.css">  
+    <link rel="stylesheet" href="<%=path%>/assets/css/common.css">
     <script src="<%=path%>/assets/mui-master/dist/js/mui.min.js"></script>  
   </head>
   <body>
-     <header class="mui-bar mui-bar-nav" style="background-color:red">
+     <header class="mui-bar mui-bar-nav commonHeader">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 	    <h1 class="mui-title" style="color:white">我的预约</h1>
 	 </header>
-     <div class="mui-content" style="background-color:white">  
+     <div class="mui-content mainContent" style="background-color:white">  
     	 <div class="mui-card">
 		    <ul class="mui-table-view" style="margin-top:0px">
 		    	<c:forEach items="${serviceInfos}" var="item">
@@ -88,11 +89,11 @@
 							    </div>
 							</c:if>
 						    <c:if test="${item.deal=='0'}"><!-- 未预约的可以取消 -->
-							    <button type="button" onclick="javascript:cancelService('${item.id}')" class="mui-btn mui-btn-danger">取消预约</button>
+							   <button type="button" onclick="javascript:cancelService('${item.id}')" class="mui-btn mui-btn-danger">取消预约</button>
 		        			</c:if>
 						    <c:set var="nowDate" value="<%=System.currentTimeMillis()%>"></c:set>
 						    <c:if test="${item.deal=='1'&&item.confirmReservationTime.time-nowDate>24*3600*1000}"><!--24小时外可以取消预约-->
-						      <button type="button" onclick="javascript:cancelService('${item.id}')" class="mui-btn mui-btn-danger">取消预约</button>
+						       <button type="button" onclick="javascript:cancelService('${item.id}')" class="mui-btn mui-btn-danger">取消预约</button>
 						    </c:if>
 						   </form>
 	            		</div>
@@ -100,7 +101,7 @@
 				</c:forEach>
 			</ul>
 		</div>
-		<div style="margin-top:10px">没有更多预约信息了</div>
+		<div style="padding-top:40px;padding-left:20px;font-size:20px;">没有更多预约信息了</div>
 	 </div>
   <script>  
 	function cancelService(id){

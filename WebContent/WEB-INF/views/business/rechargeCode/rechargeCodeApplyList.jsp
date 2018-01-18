@@ -127,13 +127,13 @@
 							<div class="space-4"></div> 	
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">选择批次：</label>
-								<div class="col-sm-9">
-									<select class="selectpicker col-xs-10 col-sm-10" id="batchId" name="batchId">
+								<div class="col-sm-9" style="margin-left:-35px">
+									<select class="selectpicker col-xs-11 col-sm-11" id="batchId" name="batchId">
 									 	<c:forEach items="${frontBatchs}" var="item">
 									  		<option value="${item.id}">
 												${item.batch}
 											</option>
-									 </c:forEach>
+									    </c:forEach>
 								 	</select>
 								</div>
 							 </div> 

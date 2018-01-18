@@ -1,20 +1,24 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/appinit.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>礼品兑换系统</title>
+    <title>兑好礼</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">  
     <meta name="apple-mobile-web-app-capable" content="yes">  
     <meta name="apple-mobile-web-app-status-bar-style" content="black">  
 
-    <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.min.css">  
-    <script src="<%=path%>/assets/mui-master/dist/js/mui.min.js"></script>
+    <link rel="stylesheet" href="<%=path%>/assets/mui-master/dist/css/mui.min.css">
+	<link rel="stylesheet" href="<%=path%>/assets/css/common.css">
+	<script src="<%=path%>/assets/mui-master/dist/js/mui.min.js"></script>
   </head>
   <body>
-  <header class="mui-bar mui-bar-nav" style="background-color:red;box-shadow: 0 1px 6px red">
-    <h1 class="mui-title" style="color:white">e兑</h1>
+  <header class="mui-bar mui-bar-nav" style="background-color:#f10215;box-shadow: 0 1px 6px #ffffff;max-width:640px;margin:0 auto;height:72px">
+	  <img style="height:72px" src="<%=path%>/assets/img/logo_white.png">
+	<img style="width:148px;margin-top:16px;margin-left:-6px;" src="<%=path%>/assets/img/dhl_white.png">
+	<%--<h1 style="color:#ffffff;font-family:'黑体';font-weight:'bold'">兑壕礼</h1>--%>
+      <%--<h1 class="mui-title" style="color:white">e兑</h1>--%>
   </header>
   <nav class="mui-bar mui-bar-tab " id="nav">  
       <a class="mui-tab-item mui-active" id="a1">  
@@ -26,7 +30,7 @@
           <span class="mui-tab-label">我的</span>  
       </a>  
    </nav>
-  <div class="mui-content mui-scroll-wrapper" id="product" style="background-color:white;padding-top:50px;width:100%;">  	 
+  <div class="appmain mui-content mui-scroll-wrapper" id="product" style="background-color:white;padding-top:0px;width:100%;margin-top:72px">
 	   <div class="mui-scroll">
 	   <div class="mui-slider">
 		  <div class="mui-slider-group mui-slider-loop">
@@ -47,16 +51,17 @@
 		</div>
 		<div style="width:100%;" id="addProduct">
 			<c:forEach items="${productsFour}" var="item" varStatus="status">
-				<div style="width:50%;float:left">
-					<div class="mui-card" style="height:200px">
-						<!--页眉，放置标题-->
-						<div class="mui-card-header" style="height:15%"><span style="font-size:14px">${item.name}</span></div>
+				<div style="width:50%;float:left;padding: 2px;">
+					<div class="mui-card" style="height:250px">
 						<!--内容区-->
-						<div class="mui-card-content" style="height:60%">
-							<a href="<%=path%>/business/app/productDetail?id=${item.id}"><img style="height:110px;padding-top:5px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a>
+						<div class="mui-card-content" style="height:200px;padding:0px 2px">
+							<a href="<%=path%>/business/app/productDetail?id=${item.id}"><img style="height:100%;padding-top:5px" src='<%=path%>/img/${fn:replace(item.picPath,"\\","/")}' /></a>
 						</div>
+						<!--页眉，放置标题-->
+						<div class="mui-card-header" style="min-height:28px;line-height14px;padding-top:0px;padding-bottom: 0px"><span style="font-size:14px; ">${item.name}</span></div>
+
 						<!--页脚，放置补充信息或支持的操作-->
-						<div class="mui-card-footer" style="height:25%">
+						<div class="mui-card-footer" style="min-height: 20px;padding-bottom: 0px;padding-top: 0px">
 							<span style="color:red">${item.points}积分</span>
 							<span style="color:blue">库存：${fn:length(item.canBeGivenCode)}</span>
 						</div>
@@ -122,12 +127,13 @@
     			 if(result.length>0){
     				 page = page + 1;
     				 for(var i=0;i<result.length;i++){
-    					 $("#addProduct").append("<div style='width:50%;float:left'><div class='mui-card' style='height:200px'>"+
-    								"<div class='mui-card-header' style='height:15%'><span style='font-size:14px'>"+result[i].name+
-    								"</span></div><div class='mui-card-content' style='height:60%'>"+
-    								"<a href='<%=path%>/business/app/productDetail?id="+result[i].id+"'><img style='height:110px;padding-top:5px' src='<%=path%>/img/"+result[i].picPath+
+    					 $("#addProduct").append("<div style='width:50%;float:left;padding: 2px;'><div class='mui-card' style='height:250px'>"+
+    								"<div class='mui-card-content' style='height:200px;'>"+
+    								"<a href='<%=path%>/business/app/productDetail?id="+result[i].id+"'><img style='height:100%;padding-top:5px' src='<%=path%>/img/"+result[i].picPath+
     								"''/></a></div>"+
-    								"<div class='mui-card-footer' style='height:25%'>"+
+                                    "<div class='mui-card-header' style='min-height:28px;line-height14px;padding-top:0px;padding-bottom: 0px'><span style='font-size:14px'>"+result[i].name+
+                                    "</span></div>"+
+    								"<div class='mui-card-footer' style='min-height: 20px;padding-bottom: 0px;padding-top: 0px'>"+
     								"<span style='color:red'>"+result[i].points+"积分</span>"+
     								"<span style='color:blue'>库存："+result[i].canBeGivenCode+"</span></div></div></div>")
     					 mui('#product').pullRefresh().endPullupToRefresh((false));  

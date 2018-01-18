@@ -64,6 +64,7 @@ public class ServiceInfoAction extends BaseAction{
 	
 	@RequestMapping(value = "serviceInfo/app/exchangeService")
 	public String exchangeService(HttpServletRequest request, ModelMap model) throws ParseException {
+		boolean hasExchanged = false;
 		String name = CookieUtil.getCookie(request, "phone_EN");
 		String recordId = request.getParameter("recordId");
 		String reservationTime = request.getParameter("reservationTime");
@@ -75,6 +76,11 @@ public class ServiceInfoAction extends BaseAction{
 			return "appindex";
 		Record record = recordService.findById(recordId);
 		ServiceInfo serviceInfo = new ServiceInfo();
+		if(record.getServiceInfo()!=null){
+			serviceInfo = record.getServiceInfo();
+			hasExchanged = true ;
+		}
+			
 		serviceInfo.setRecord(record);
 		serviceInfo.setReservationTime(MyDateUtils.strToDate(reservationTime.substring(0,10)));
 		serviceInfo.setAmOrPm(reservationTime.contains("上")?"上午":"下午");
@@ -82,7 +88,10 @@ public class ServiceInfoAction extends BaseAction{
 		serviceInfo.setContact(contact);
 		serviceInfo.setComments(comments);
 		serviceInfo.setDeal("0");
-		serviceInfoService.save(serviceInfo);
+		if(hasExchanged)
+			serviceInfoService.update(serviceInfo);
+		else
+			serviceInfoService.save(serviceInfo);
 		return "redirect:myService";
 	}
 	

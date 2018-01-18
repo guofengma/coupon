@@ -110,7 +110,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="confirmReservationAddress">服务地点：</label>
 								<div class="col-sm-9">
-									<input type="text" id="confirmReservationAddress" class="col-xs-10 col-sm-10" name="confirmReservationAddress">
+									<textArea style="height:100px;resize:none" id="confirmReservationAddress" class="col-xs-10 col-sm-10" name="confirmReservationAddress"></textArea>
 								</div>
 							 </div> 
 							 
@@ -134,7 +134,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="confirmComment">备注信息：</label>
 								<div class="col-sm-9">
-									<input type="text" id="confirmComment" class="col-xs-10 col-sm-10" name="confirmComment">
+									<textArea  style="height:100px;resize:none" id="confirmComment" class="col-xs-10 col-sm-10" name="confirmComment"></textArea>
 								</div>
 							 </div>
 							 
@@ -175,7 +175,7 @@
 							 </div> 
 							 
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="reservationTime">服务时间：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="reservationTime">预约时间：</label>
 								<div class="col-sm-9">
 									<input type="text" id="reservationTime" class="col-xs-10 col-sm-10" name="reservationTime" readonly>
 								</div>
@@ -183,9 +183,9 @@
 							
 							 <div class="space-4"></div> 
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="reservationAddress">服务地址：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="reservationAddress">预约地址：</label>
 								<div class="col-sm-9">
-									<input type="text" id="reservationAddress" class="col-xs-10 col-sm-10" name="reservationAddress" readonly>
+									<textArea id="reservationAddress" style="height:100px;resize:none" class="col-xs-10 col-sm-10" name="reservationAddress" readonly></textArea>
 								</div>
 							 </div>
 							 
@@ -201,7 +201,7 @@
 							 <div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="comments">客户留言：</label>
 								<div class="col-sm-9">
-									<input type="text" id="comments" class="col-xs-10 col-sm-10" name="comments" readonly>
+									<textArea id="comments" style="height:100px;resize:none" class="col-xs-10 col-sm-10" name="comments" readonly></textArea>
 								</div>
 							 </div>
 						</form>

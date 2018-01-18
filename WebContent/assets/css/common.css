@@ -1,0 +1,166 @@
+/*��������*/
+html,body,*{
+    padding: 0px;
+    margin: 0px;
+}
+
+body{
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.mui-icon-back:before, .mui-icon-left-nav:before{
+    color:#ffffff;
+}
+
+
+/*header*/
+header{
+    text-align: center;
+    height: 60px;
+    line-height: 60px;
+    margin-top: 16px;
+}
+header img{
+    width: 80px;
+}
+
+header h1{
+    font-size: 43px;
+    display: inline-block;
+    color: #f10215;
+    vertical-align: top;
+    padding-top: 18px;
+}
+
+p{
+    font-size: 16px;
+    padding: 10px 0px;
+}
+
+.recordDetail p{
+    border-bottom: 1px solid #eee;
+}
+
+p.title,p span.val{
+    color:#232326;
+}
+
+/*appindex����¼ҳ�棩loginForm*/
+#loginForm .mui-input-row{
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 24px;
+}
+#loginForm .mui-input-row label{
+    width: 0%;
+    display: none;
+}
+#loginForm .mui-input-row input{
+    width: 100%;
+    font-family: "";
+    font-size: 16px;
+    padding-bottom: 0px;
+}
+
+#loginForm button,#chargeForm button,.changePwd button{
+    width: 100%;
+    height: 42px;
+    background: #f10215;
+    border: #f10215;
+    margin-top: 16px;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+/*��Ʒ�б�ҳ*/
+
+.mui-bar-tab{
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+#product .mui-scroll{
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+    /*background: #f10215;*/
+}
+
+.mui-card{
+    margin: 0px;
+    position: unset;
+    box-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+
+.mui-card-header, .mui-card-footer{
+    position: unset;
+}
+
+/*app/myInfo--������Ϣҳ*/
+
+body .mui-bar-nav~.mui-content{
+    padding-top:0px;
+}
+
+body .mui-content .headIcon{
+    width: 80px;
+    max-width:none;
+}
+
+
+body .mui-table-view .mui-navigate-right{
+    font-family: "΢���ź� ";
+}
+
+.headIconContainer{
+    float:left;
+    height:130px;
+    padding-right:10px;
+    padding-top: 12px;
+    text-align:right;
+}
+
+/*chargeForm--��ֵҳ��*/
+.mui-input-group:before{
+    height: 0px;
+}
+
+.mui-input-group:after{
+    height: 0px;
+}
+
+
+
+#chargeForm button,.changePwd button{
+    width: 200px;
+    height: 40px;
+    font-size: 18px;
+    margin-top: 40px;
+}
+
+/*��ֳ�ֵҳ*/
+.commonHeader{
+    background:#f10215;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.mainContent{
+    background-color:white;
+    text-align:left;
+    margin-top:50px;
+}
+
+/*changePassword*/
+.changePwd .mui-input-row label{
+    display: none;
+}
+
+.changePwd .mui-input-row .mui-input-password{
+    float: none;
+    width: auto;
+    padding:10px 20px ;
+    width: 100%;
+}
+
+

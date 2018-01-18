@@ -162,6 +162,10 @@ function conditionChanged(){
 
 function exportAchievement(){
 	var id = $("#yuangong").val();
+	if(id==null||id==""||id=="null"){
+		alert("没有选择员工");
+		return false;
+	}
 	var startTime = $("#startTime").val();
 	var endTime = $("#endTime").val();
 	var url ="<%=path%>/business/record/exportAchievement?id="+id+"&startTime="+startTime+"&endTime="+endTime;
