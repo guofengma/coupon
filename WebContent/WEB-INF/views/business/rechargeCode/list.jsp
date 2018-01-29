@@ -27,10 +27,10 @@
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li>
-					<a href='<c:url value="/business/rechargeCode/batchlist"/>'><i class="icon-barcode"></i> 积分码批次管理</a>
+					<a href='<c:url value="/business/rechargeCode/batchlist"/>'><i class="icon-barcode"></i> 优米码批次管理</a>
 				</li>
 				<li class="active">
-					${batch.batch}--积分码管理
+					${batch.batch}--优米码管理
 				</li>
 			</ul>
 		</div>
@@ -108,7 +108,7 @@ function initTable() {
             searchable:true
         },
         {
-            title: "积分分值",
+            title: "优米分值",
             field: "points",
             searchable:false
         },

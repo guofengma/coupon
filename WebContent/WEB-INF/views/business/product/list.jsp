@@ -53,7 +53,7 @@
 									<thead>
 										<tr>
 											<th>商品名称</th>
-											<th>所需积分</th>
+											<th>所需优米</th>
 											<th>批次数量</th>
 											<th>兑换方式</th>
 											<!-- <th>预览图</th> -->
@@ -148,7 +148,7 @@
 							 
 							 <div class="space-4"></div> 
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">所需积分：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">所需优米：</label>
 								<div class="col-sm-9">
 									<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
 								</div>

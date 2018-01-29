@@ -532,6 +532,8 @@ public static void writeToExcel(String fileDir,String sheetName,List<Customer> l
 		}else{
 			String id = request.getParameter("id");
 			customer = customerService.findById(id);
+			customer.setStatu(false);
+			customer.setDeal(false);
 		}
 		customer.setName(request.getParameter("name"));
 		customer.setPhone(request.getParameter("phone"));

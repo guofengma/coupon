@@ -38,8 +38,16 @@
          </shiro:hasPermission>
          <shiro:hasPermission name="serviceInfo:deal">
 	         <li>
-	            <a href="<c:url value='/business/serviceInfo/undealList'/>"><i class="icon-phone"></i> 预约回复<i></i></a>
-	         </li> 
+	            <a href="#serviceInfo1" data-toggle="collapse" class="nav-header collapsed" ><i class="icon-phone" ></i> 预约处理 <i class="icon-caret-down"></i></a>
+	            <ul id="serviceInfo1" class="nav nav-list collapse" style="height:0px;" >
+	            	<li>
+	            	    <a href="<c:url value='/business/serviceInfo/undealList'/>"><i class="icon-circle-blank"></i> 待处理<i></i></a>
+	            	</li>
+	            	<li>
+	            	    <a href="<c:url value='/business/serviceInfo/dealList'/>"><i class="icon-circle"></i> 已处理<i></i></a>
+	            	</li>
+	            </ul>
+	            </li> 
          </shiro:hasPermission>
          <li>
             <a href="#search" data-toggle="collapse" class="nav-header collapsed" ><i class="icon-search" ></i> 信息查询 <i class="fa fa-fw fa-caret-down"></i></a>

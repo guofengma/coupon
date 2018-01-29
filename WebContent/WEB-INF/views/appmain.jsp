@@ -62,7 +62,7 @@
 
 						<!--页脚，放置补充信息或支持的操作-->
 						<div class="mui-card-footer" style="min-height: 20px;padding-bottom: 0px;padding-top: 0px">
-							<span style="color:red">${item.points}积分</span>
+							<span style="color:red">${item.points}优米</span>
 							<span style="color:blue">库存：${fn:length(item.canBeGivenCode)}</span>
 						</div>
 					</div>
@@ -134,7 +134,7 @@
                                     "<div class='mui-card-header' style='min-height:28px;line-height14px;padding-top:0px;padding-bottom: 0px'><span style='font-size:14px'>"+result[i].name+
                                     "</span></div>"+
     								"<div class='mui-card-footer' style='min-height: 20px;padding-bottom: 0px;padding-top: 0px'>"+
-    								"<span style='color:red'>"+result[i].points+"积分</span>"+
+    								"<span style='color:red'>"+result[i].points+"优米</span>"+
     								"<span style='color:blue'>库存："+result[i].canBeGivenCode+"</span></div></div></div>")
     					 mui('#product').pullRefresh().endPullupToRefresh((false));  
     				 }

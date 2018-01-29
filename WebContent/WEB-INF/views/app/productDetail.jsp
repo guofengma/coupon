@@ -35,7 +35,7 @@
      <div class="mui-content mainContent">
 	     <div style="padding:5px;"><img width="100%" src='<%=path%>/img/${fn:replace(product.picPath,"\\","/")}' /></div>
 	     <div style="height:30px;line-height:30px;padding:0px 5px;">
-	     	<div style="display:inline-block;width:70%;background:-webkit-linear-gradient(left,#ef3390,#ef3647);"><p style="color:#ffffff;margin:0px;font-size:22px;padding-left:10px;">￥${product.points}积分</p></div>
+	     	<div style="display:inline-block;width:70%;background:-webkit-linear-gradient(left,#ef3390,#ef3647);"><p style="color:#ffffff;margin:0px;font-size:22px;padding-left:10px;">￥${product.points}优米</p></div>
 	     	<div style="display:inline-block;width:28%;text-align:right;"><p style="color:ef3390;margin:0px;font-size:20px;">库存：${fn:length(product.canBeGivenCode)}</p></div>
 	     </div>
          <div style="padding:18px 0px 0px 5px;margin-top:10px;"><p style="font-size:17px;color:#232326;padding-top:10px;padding-left:10px;border:none;margin-bottom:0px;">${product.name}</p></div>

@@ -25,7 +25,7 @@
 	     </div>
 	     <div style="text-align:left;padding-left:5px;">
             <p>兑换日期：<span class="val">${fn:substring(record.createTime ,0,10)}</span></p>
-            <p>积分：<span class="val">${record.points}</span></p>
+            <p>优米：<span class="val">${record.points}</span></p>
 	     	<p>有效期至：<span class="val">${fn:substring(record.redeemCode.parent.endTime,0,10)}</span></p>
 	     	<p style="border:none;">券号：<span class="val">${record.redeemCode.code}</span></p>
 	     </div>

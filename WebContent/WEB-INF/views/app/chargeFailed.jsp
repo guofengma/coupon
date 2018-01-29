@@ -24,7 +24,7 @@
 	  	 	充值失败！原因：${message}
 	  	 </div>
 	  	 <div style="padding-top:20px;padding-left:20px;">
-	  	 	<button type="button" onclick="javascript:backToMyInfo()" class="mui-btn mui-btn-danger mui-btn-outlined">查看我的积分</button>&nbsp;&nbsp;&nbsp;
+	  	 	<button type="button" onclick="javascript:backToMyInfo()" class="mui-btn mui-btn-danger mui-btn-outlined">查看我的优米</button>&nbsp;&nbsp;&nbsp;
 	  	 	<button type="button" onclick="javascript:backToMain()" class="mui-btn mui-btn-danger mui-btn-outlined">返回首页</button>
 	  	 </div>
 	</div>

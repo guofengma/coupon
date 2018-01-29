@@ -35,7 +35,7 @@
 	  	 	</div>
 	  	 	<div style="width:100%;height:130px;text-align:left;padding:30px">
 	  	 		<span style="color:white;font-size:22px">${customer.phone}</span><br>
-	  	 		<span style="color:white;font-size:14px">我的积分：${customer.point}&nbsp;分</span><br> 
+	  	 		<span style="color:white;font-size:14px">我的优米：${customer.point}&nbsp;分</span><br> 
 	  	 		<span style="color:white;font-size:14px">所在省份：
 		  	 		<c:forEach items="${customer.customerCityByPriority}" var="city" varStatus="status">
 						<c:if test="${status.first}">${city.name}</c:if>
@@ -46,7 +46,7 @@
 	  	 <div style="text-align:left">
 			 <ul class="mui-table-view">
 			    <li class="mui-table-view-cell">
-			        <a class="mui-navigate-right" href="<%=path%>/business/app/toChargePage">积分充值
+			        <a class="mui-navigate-right" href="<%=path%>/business/app/toChargePage">优米充值
 			       	 	<span style="background: #f10215" class="mui-badge mui-badge-danger">仅支持e兑卡</span>
 			        </a>
 			    </li>

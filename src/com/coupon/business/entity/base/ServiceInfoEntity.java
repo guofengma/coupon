@@ -26,7 +26,7 @@ public abstract class ServiceInfoEntity extends BaseEntity{
 	
 	protected String comments;//客户填写备注
 	
-	protected String deal;//0是待处理；1是预约成功，2是预约失败（控制不让出现）,3是取消预约
+	protected String deal;//0是待处理；1是预约成功，2是预约失败（控制不让出现）,3是取消预约,4是后台确认取消预约
 	
 	protected Date confirmReservationTime;//后台确认服务时间
 	

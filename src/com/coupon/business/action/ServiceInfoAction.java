@@ -109,7 +109,7 @@ public class ServiceInfoAction extends BaseAction{
 	}
 	
 	@RequestMapping(value = "business/serviceInfo/undealList")
-	public String unealServiceInfo(HttpServletRequest request, ModelMap model) {
+	public String undealList(HttpServletRequest request, ModelMap model) {
 		super.addMenuParams(request, model);
 		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
 		if(null == user)
@@ -138,6 +138,36 @@ public class ServiceInfoAction extends BaseAction{
 		return "business/serviceInfo/undealList";	
 	}
 	
+	@RequestMapping(value = "business/serviceInfo/dealList")
+	public String dealList(HttpServletRequest request, ModelMap model) {
+		super.addMenuParams(request, model);
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		if(null == user)
+			return "index";
+		int pageNo = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_NO_NAME, PageListUtil.DEFAULT_PAGE_NO);
+		int pageSize = ServletRequestUtils.getIntParameter(request,
+				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
+		String roleString = RoleToString.roleToString(user.getRoles());
+		if(roleString.contains("管理员")){
+			IPageList<ServiceInfo> serviceInfos = serviceInfoService.findDealByAdmin(pageNo, pageSize);
+			model.addAttribute("serviceInfos",serviceInfos);
+		}
+		if(roleString.contains("大区经理")){
+			StringBuilder cityIds = new StringBuilder();
+			for(City temp : user.getCity()){
+				cityIds.append(temp.getId()+";");
+			}
+			IPageList<ServiceInfo> serviceInfos = serviceInfoService.findDealByManager(pageNo, pageSize,cityIds.toString());
+			model.addAttribute("serviceInfos",serviceInfos);
+		}
+		if(roleString.toString().contains("员工")){
+			IPageList<ServiceInfo> serviceInfos = serviceInfoService.findDealByStaff(pageNo, pageSize,user.getId());
+			model.addAttribute("serviceInfos",serviceInfos);
+		}
+		return "business/serviceInfo/dealList";	
+	}
+	
 	@RequestMapping(value = "/business/serviceInfo/deal")
 	public String dealServiceInfo(HttpServletRequest request, ModelMap model) throws ParseException {
 		String serviceInfoId= request.getParameter("serviceInfoId");
@@ -152,6 +182,20 @@ public class ServiceInfoAction extends BaseAction{
 		return "redirect:undealList";
 	}
 	
+	@RequestMapping(value = "/business/serviceInfo/redeal")
+	public String redealServiceInfo(HttpServletRequest request, ModelMap model) throws ParseException {
+		String serviceInfoId= request.getParameter("serviceInfoId");
+		ServiceInfo serviceInfo = serviceInfoService.findById(serviceInfoId);
+		serviceInfo.setConfirmReservationTime(MyDateUtils.strToMinutes(request.getParameter("confirmReservationTime"))); 
+		serviceInfo.setConfirmReservationAddress(request.getParameter("confirmReservationAddress"));
+		serviceInfo.setReservationPerson(request.getParameter("reservationPerson"));
+		serviceInfo.setReservationPersonContact(request.getParameter("reservationPersonContact"));
+		serviceInfo.setConfirmComment(request.getParameter("confirmComment"));
+		serviceInfo.setDeal("1");
+		serviceInfoService.update(serviceInfo);
+		return "redirect:dealList";
+	}
+	
 	@RequestMapping(value = "/business/serviceInfo/getServiceInfoById")
 	public void getServiceInfoById(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
 		String id = request.getParameter("id");
@@ -163,12 +207,17 @@ public class ServiceInfoAction extends BaseAction{
 		json.put("reservationAddress", serviceInfo.getReservationAddress());
 		json.put("contact", serviceInfo.getContact());
 		json.put("comments", serviceInfo.getComments());
+		json.put("confirmReservationTime", serviceInfo.getConfirmReservationTime()==null?"":serviceInfo.getConfirmReservationTime().toString().substring(0, 16));
+		json.put("confirmReservationAddress", serviceInfo.getConfirmReservationAddress());
+		json.put("reservationPerson", serviceInfo.getReservationPerson());
+		json.put("reservationPersonContact", serviceInfo.getReservationPersonContact());
+		json.put("confirmComment", serviceInfo.getConfirmComment());
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write(json.toString());
 	}
 	
-	@RequestMapping(value = "	/serviceInfo/app/cancelService")
+	@RequestMapping(value = "/serviceInfo/app/cancelService")
 	public void cancelService(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
 		Date currentTime = new Date();
 		String id = request.getParameter("id");
@@ -177,7 +226,6 @@ public class ServiceInfoAction extends BaseAction{
 		if(serviceInfo.getDeal().equals("1")){
 			if(serviceInfo.getConfirmReservationTime().getTime()-currentTime.getTime()>24*3600*1000){
 				json.put("statu", true);
-				serviceInfo.setRecord(null);
 				serviceInfo.setDeal("3");
 				serviceInfoService.update(serviceInfo);
 			}else{
@@ -185,11 +233,25 @@ public class ServiceInfoAction extends BaseAction{
 			}
 		}else{
 			json.put("statu", true);
-			serviceInfo.setRecord(null);
 			serviceInfo.setDeal("3");
 			serviceInfoService.update(serviceInfo);
 			json.put("statu", true);
 		}
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(json.toString());
+	}
+	
+	@RequestMapping(value = "/business/serviceInfo/confirmCancelService")
+	public void confirmCancelService(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		JSONObject json = new JSONObject();
+		ServiceInfo serviceInfo =serviceInfoService.findById(id);
+		serviceInfo.setRecord(null);
+		serviceInfo.setDeal("4");
+		serviceInfo.setDeleted(true);
+		serviceInfoService.update(serviceInfo);
+		json.put("status","success");
 		response.setContentType("application/json");
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write(json.toString());

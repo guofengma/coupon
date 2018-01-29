@@ -16,7 +16,7 @@
   <body>
 	 <header class="mui-bar mui-bar-nav commonHeader">
 	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-	    <h1 class="mui-title" style="color:#fff;font-size: 20px">积分充值</h1>
+	    <h1 class="mui-title" style="color:#fff;font-size: 20px">优米充值</h1>
 	 </header>
      <div class="mui-content mainContent">
 	  	 <form id="chargeForm" class="mui-input-group" action="<%=path%>/business/app/charge" method="post" style="padding-top:20px;line-height: 40px;font-size: 20px;">

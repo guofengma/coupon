@@ -151,7 +151,7 @@ function initTable() {
             searchable:true
         },
         {
-            title: "积分分值",
+            title: "优米值",
             field: "points",
             searchable:false
         },
@@ -279,7 +279,7 @@ function batchGiveCode(){
 					   $('#tb_rechargeCode').bootstrapTable('refresh');
 				   },
 				   error:function(){
-						alert("批量发放积分码失败！")
+						alert("批量发放优米码失败！")
 				    }
 			   });
 		}

@@ -27,7 +27,7 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-edit"></i> 待处理预约</li>
+				<li class="active"><i class="icon-edit"></i> 已处理预约</li>
 			</ul>
 		</div>
 		<div class="row">
@@ -45,6 +45,7 @@
 											<th>预约商品</th>
 											<th>使用兑换码</th>
 											<th>预约时间</th>
+											<th>服务时间</th>
 											<th>联系电话</th>
 											<th>备注</th>
 											<th>操作</th>
@@ -52,27 +53,20 @@
 									</thead>
 									<tbody>
 										<c:forEach items="${serviceInfos.items}" var="item">
-											<tr class="odd gradeX" id="${item.id}">
+											<tr class="odd gradeX">
 												<td>${item.record.customer.name}</td>
 												<td>${item.record.product.name}</td>
 												<td>${item.record.redeemCode.code}</td>
 												<td>${fn:substring(item.reservationTime,0,10)} ${item.amOrPm}</td>
+												<td>${fn:substring(item.confirmReservationTime,0,16)}</td>
 												<td>${item.contact}</td>
 												<td>${item.comments}</td>
 												<td>
 													<p>
-														<c:if test="${item.deal=='0'}">
-															<a href="javascript:showServiceInfo('${item.id}')" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-edit bigger-200"></i>
-																预约
-															</a>&nbsp;&nbsp;
-														</c:if>
-														<c:if test="${item.deal=='3'}">
-															<a href="javascript:confirmCancelServiceInfo('${item.id}')" class="btn-sm btn-app btn-success no-radius" >
-																<i class="icon-edit bigger-200"></i>
-																取消预约
-															</a>&nbsp;&nbsp;
-														</c:if>
+														<a href="javascript:showServiceInfo('${item.id}')" class="btn-sm btn-app btn-success no-radius" >
+															<i class="icon-edit bigger-200"></i>
+															修改
+														</a>&nbsp;&nbsp;
 													</p>
 												</td>
 											</tr>
@@ -82,7 +76,7 @@
 							</div>
 							<c:import url ="../../common/paging.jsp">
 		        				<c:param name="pageModelName" value="serviceInfos"/>
-		        				<c:param name="urlAddress" value="/business/serviceInfo/undealList"/>
+		        				<c:param name="urlAddress" value="/business/serviceInfo/dealList"/>
 	       				 	</c:import>
 						</div>
 					</div>
@@ -103,8 +97,9 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
-						<form class="form-horizontal" role="form" id="serviceInfoForm" action="<%=path%>/business/serviceInfo/deal" method="post">
+						<form class="form-horizontal" role="form" id="serviceInfoForm" action="<%=path%>/business/serviceInfo/redeal" method="post">
 							<input name="serviceInfoId" id="serviceInfoId" type="hidden"/> 
+							
 							<div class="form-group">
 								<label class="col-sm-3 control-label no-padding-right" for="confirmReservationTime">服务时间：</label>
 								<div class="col-sm-9 input-append date form_datetime " id='datetimepicker'>
@@ -148,7 +143,7 @@
 							 <div class="col-md-12">
 								<button class="btn-sm btn-success no-radius" type="button" onclick="dealServiceInfo()">
 									<i class="icon-ok bigger-200"></i>
-									提交
+									修改
 								</button>
 								<button class="btn-sm btn-success no-radius" type="button" onclick="cancel()">
 									<i class="icon-remove bigger-200"></i>
@@ -232,12 +227,6 @@ $("#datetimepicker").datetimepicker({
 });
     
 function showServiceInfo(serviceInfoId){
-	$("#confirmReservationTime").val('');
-	$("#confirmReservationAddress").val('');
-	$("#reservationPerson").val('');
-	$("#reservationPersonContact").val('');
-	$("#confirmComment").val('');
-	$("#serviceInfoId").val(serviceInfoId);
 	$.ajax({
 		url:"<%=path%>/business/serviceInfo/getServiceInfoById",    //请求的url地址
 	    dataType:"json",   
@@ -245,7 +234,12 @@ function showServiceInfo(serviceInfoId){
 	    data:{"id":serviceInfoId},
 	    type:"GET",
 	    success:function(result){
-			console.log(result);
+			$("#confirmReservationTime").val(result.confirmReservationTime);
+			$("#confirmReservationAddress").val(result.confirmReservationAddress);
+			$("#reservationPerson").val(result.reservationPerson);
+			$("#reservationPersonContact").val(result.reservationPersonContact);
+			$("#confirmComment").val(result.confirmComment);
+			$("#serviceInfoId").val(serviceInfoId);
 			$("#productName").val(result.productName);
 			$("#redeemCode").val(result.redeemCode);
 			$("#reservationTime").val(result.reservationTime);
@@ -266,26 +260,6 @@ function dealServiceInfo(){
 
 function cancel(){
 	$("#serviceInfo").modal("hide");
-}
-
-function confirmCancelServiceInfo(serviceInfoId){
-	var r = confirm('确定取消预约？','确认对话框');
-	if(r){
-		$.ajax({
-			url:"<%=path%>/business/serviceInfo/confirmCancelService",    //请求的url地址
-		    dataType:"json",   
-		    async:false,
-		    data:{"id":serviceInfoId},
-		    type:"GET",
-		    success:function(result){
-				<%-- window.location.href = "<%=path%>/business/serviceInfo/undealList"; --%>
-		    	$("#"+serviceInfoId).remove();
-			},
-		    error:function(){
-				alert("取消预约失败！")
-		    }
-		});
-	}
 }
 </script>
 </html>

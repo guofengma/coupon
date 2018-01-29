@@ -75,7 +75,7 @@
 											</th>
 											<th>姓名</th>
 											<th>电话号码</th>
-											<th>积分数量</th>
+											<th>优米数量</th>
 											<th>所属城市</th>
 											<th>兑换支行</th>
 											<th>送审员工</th>
@@ -197,7 +197,7 @@
 							 
 							 <div class="space-4"></div> 
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-points">积分数量：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-points">优米数量：</label>
 								<div class="col-sm-9">
 									<input type="text" id="form-points" class="col-xs-10 col-sm-10" name="points">
 								</div>

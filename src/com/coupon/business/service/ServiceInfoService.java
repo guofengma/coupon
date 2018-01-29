@@ -16,4 +16,10 @@ public interface ServiceInfoService  extends BaseService<ServiceInfo , String>{
 
 	IPageList<ServiceInfo> findUndealByStaff(int pageNo, int pageSize, String id);
 
+	IPageList<ServiceInfo> findDealByAdmin(int pageNo, int pageSize);
+
+	IPageList<ServiceInfo> findDealByManager(int pageNo, int pageSize, String string);
+
+	IPageList<ServiceInfo> findDealByStaff(int pageNo, int pageSize, String id);
+
 }

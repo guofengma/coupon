@@ -31,10 +31,10 @@ public class ServiceInfoDaoImpl  extends BaseDaoImpl<ServiceInfo, String> implem
 	public IPageList<ServiceInfo> findUndealByAdmin(int pageNo, int pageSize) {
 		int first = (pageNo - 1) * pageSize;
 		List<ServiceInfo> items = this.queryByHql(
-				"from ServiceInfo r where r.deleted=false and r.deal = '0' order by createTime desc", null,
+				"from ServiceInfo r where r.deleted=false and (r.deal = '0' or r.deal='3') order by createTime desc", null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from ServiceInfo r where r.deleted=false and r.deal = '0'", null)
+				"select count(*) from ServiceInfo r where r.deleted=false and (r.deal = '0' or r.deal='3')", null)
 				.toString());
 		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
@@ -44,7 +44,7 @@ public class ServiceInfoDaoImpl  extends BaseDaoImpl<ServiceInfo, String> implem
 	public IPageList<ServiceInfo> findUndealByManager(int pageNo, int pageSize, String cityIds) {
 		int first = (pageNo - 1) * pageSize;
 		List<ServiceInfo> tempList = this.queryByHql(
-				"from ServiceInfo r where r.deleted=false and r.deal='0' order by createTime desc", null,
+				"from ServiceInfo r where r.deleted=false and (r.deal = '0' or r.deal='3') order by createTime desc", null,
 				first, pageSize);
 		List<ServiceInfo> items = new ArrayList<ServiceInfo>();
 		for(ServiceInfo temp : tempList){
@@ -66,10 +66,58 @@ public class ServiceInfoDaoImpl  extends BaseDaoImpl<ServiceInfo, String> implem
 	public IPageList<ServiceInfo> findUndealByStaff(int pageNo, int pageSize, String userId) {
 		int first = (pageNo - 1) * pageSize;
 		List<ServiceInfo> items = this.queryByHql(
-				"from ServiceInfo r where r.deleted=false and r.deal='0' and r.record.customer.user.id ='"+userId+"' order by createTime desc", null,
+				"from ServiceInfo r where r.deleted=false and (r.deal = '0' or r.deal='3') and r.record.customer.user.id ='"+userId+"' order by createTime desc", null,
 				first, pageSize);
 		int count = Integer.parseInt(this.findUnique(
-				"select count(*) from ServiceInfo r where r.deleted=false and r.deal='0' and r.record.customer.user.id ='"+userId+"' ", null)
+				"select count(*) from ServiceInfo r where r.deleted=false and (r.deal = '0' or r.deal='3') and r.record.customer.user.id ='"+userId+"' ", null)
+				.toString());
+		System.out.println(count);
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+	}
+	
+	@Override
+	public IPageList<ServiceInfo> findDealByAdmin(int pageNo, int pageSize) {
+		int first = (pageNo - 1) * pageSize;
+		List<ServiceInfo> items = this.queryByHql(
+				"from ServiceInfo r where r.deleted=false and r.deal != '0' and r.deal!='3' order by createTime desc", null,
+				first, pageSize);
+		int count = Integer.parseInt(this.findUnique(
+				"select count(*) from ServiceInfo r where r.deleted=false and r.deal != '0' and r.deal!='3'", null)
+				.toString());
+		System.out.println(count);
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+	}
+
+	@Override
+	public IPageList<ServiceInfo> findDealByManager(int pageNo, int pageSize, String cityIds) {
+		int first = (pageNo - 1) * pageSize;
+		List<ServiceInfo> tempList = this.queryByHql(
+				"from ServiceInfo r where r.deleted=false and r.deal!='0' and r.deal!='3' order by createTime desc", null,
+				first, pageSize);
+		List<ServiceInfo> items = new ArrayList<ServiceInfo>();
+		for(ServiceInfo temp : tempList){
+			boolean is = false ;
+			for(City tempCity :temp.getRecord().getCustomer().getCity()){
+				if(cityIds.contains(tempCity.getId())){
+					is = true ;
+				}
+			}
+			if(is){
+				items.add(temp);
+			}
+		}
+		int count = items.size();
+		return PageListUtil.getPageList(count, pageNo, items, pageSize);
+	}
+
+	@Override
+	public IPageList<ServiceInfo> findDealByStaff(int pageNo, int pageSize, String userId) {
+		int first = (pageNo - 1) * pageSize;
+		List<ServiceInfo> items = this.queryByHql(
+				"from ServiceInfo r where r.deleted=false and r.deal!='0' and r.deal!='3' and r.record.customer.user.id ='"+userId+"' order by createTime desc", null,
+				first, pageSize);
+		int count = Integer.parseInt(this.findUnique(
+				"select count(*) from ServiceInfo r where r.deleted=false and r.deal!='0' and r.deal!='3' and r.record.customer.user.id ='"+userId+"' ", null)
 				.toString());
 		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);

@@ -27,7 +27,7 @@
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li class="active">
-					<i class="icon-barcode"></i> 积分码批次管理
+					<i class="icon-barcode"></i> 优米码批次管理
 				</li>
 			</ul>
 		</div>
@@ -54,8 +54,8 @@
 											<th>批次名称</th>
 											<th>状态</th>
 											<th>有效期</th>
-											<th>积分码总数量</th>
-											<th>积分码未领取数量</th>
+											<th>优米码总数量</th>
+											<th>优米码未领取数量</th>
 											<th>制作状态</th>
 											<th>描述信息</th>
 											<th>执行人</th>
@@ -90,11 +90,11 @@
 															</a>&nbsp; --%>
 															<%-- <a href="javascript:openMakeModal('${item.id}');" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-random bigger-200"></i>
-																生成积分码
+																生成优米码
 															</a>&nbsp; --%>
 															<a href="<c:url value='/business/rechargeCode/list?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-barcode bigger-200"></i>
-																管理积分码
+																管理优米码
 															</a>&nbsp;
 															<a href="<c:url value='/business/rechargeCode/exportExcel?id=${item.id}'/>" class="btn-sm btn-app btn-success no-radius" >
 																<i class="icon-share-alt bigger-200"></i>
@@ -133,7 +133,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 class="modal-title">制作积分码</h3>
+				<h3 class="modal-title">制作优米码</h3>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -142,7 +142,7 @@
 							<input name="fatherId" id="fatherId" type="hidden" value=""/> 					 
 							 
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-points">积分分值：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="form-points">优米分值：</label>
 								<div class="col-sm-9">
 									<input type="text" id="form-points" class="col-xs-10 col-sm-10" name="points">
 								</div>
@@ -179,7 +179,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 class="modal-title">积分码批次信息</h3>
+				<h3 class="modal-title">优米码批次信息</h3>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -205,7 +205,7 @@
 							 <div class="source">
 								 <div class="space-4"></div> 	
 								 <div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="points">积分分值：</label>
+									<label class="col-sm-3 control-label no-padding-right" for="points">优米分值：</label>
 									<div class="col-sm-9">
 										<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
 									</div>

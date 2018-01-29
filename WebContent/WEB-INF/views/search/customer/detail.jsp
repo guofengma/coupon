@@ -33,7 +33,7 @@
 					<a href='<c:url value="/search/customer/findByCondition"/>'><i class="icon-qrcode"></i> 客户信息查询</a>
 				</li>
 				<li class="active">
-					客户姓名：${customer.name}，电话号码：${customer.phone}，剩余积分：${customer.point}
+					客户姓名：${customer.name}，电话号码：${customer.phone}，剩余优米：${customer.point}
 				</li>
 			</ul>
 		</div>
@@ -64,7 +64,7 @@
 											<th>商品兑换码</th>
 											<th>发生时间</th>
 											<th>状态</th>
-											<th>积分数量</th>
+											<th>优米数量</th>
 											<th>备注</th>
 										</tr>
 									</thead>

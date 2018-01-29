@@ -43,6 +43,9 @@
 				           <c:if test="${item.deal=='2'}">
 				          		<font color="red">预约失败</font>
 				           </c:if>
+				           <c:if test="${item.deal=='3'}">
+				          		<font color="red">已申请取消预约</font>
+				           </c:if>
 				       </a>
 			           <div class="mui-collapse-content" id="${item.id}">
 			            <form class="mui-input-group" style="padding-top:20px">

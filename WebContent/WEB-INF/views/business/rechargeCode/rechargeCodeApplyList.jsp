@@ -27,7 +27,7 @@
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
 				<li class="active">
-					<i class="icon-barcode"></i> 我申请的积分码
+					<i class="icon-barcode"></i> 我申请的优米码
 				</li>
 			</ul>
 		</div>
@@ -41,7 +41,7 @@
 						<div class="table-toolbar" style="text-align: right;">
 							<div class="btn-group">
 									<a href="javascript:add()" class="btn-sm btn-app btn-success no-radius">
-										<i class="icon-plus bigger-200">申请积分码</i>
+										<i class="icon-plus bigger-200">申请优米码</i>
 									</a>
 							</div>
 						</div>
@@ -112,7 +112,7 @@
 	</div>	
 </div>
 
-<!-- 申请积分兑换码模态框 -->
+<!-- 申请优米兑换码模态框 -->
 <div class="modal fade" id="frontBatchInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 1600px;">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -140,7 +140,7 @@
 							 
 							 <div class="space-4"></div> 	
 							 <div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="points">积分分值：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="points">优米分值：</label>
 								<div class="col-sm-9">
 									<input type="text" id="points" class="col-xs-10 col-sm-10" name="points">
 								</div>

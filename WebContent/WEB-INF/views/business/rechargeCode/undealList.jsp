@@ -29,7 +29,7 @@
 	<div id="page-wrapper" style="height:100%;padding-top:60px">
 		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<ul class="breadcrumb">
-				<li class="active"><i class="icon-comment"></i> 积分码审核</li>
+				<li class="active"><i class="icon-comment"></i> 优米码审核</li>
 			</ul>
 		</div>
 		<div class="row">
