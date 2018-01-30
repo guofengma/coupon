@@ -86,7 +86,7 @@ public class CustomerAction extends BaseAction{
 		for(Role temp : roles){
 			roleString.append(temp.getName()+";");
 		}
-		if(roleString.toString().contains("管理员")){
+		if(roleString.toString().contains("管理员")||roleString.toString().contains("客服")){
 			IPageList<Customer> customers = customerService.findByAdmin(pageNo, pageSize,check,condition);
 			model.addAttribute("customers",customers);
 			return "business/customer/"+(check?"checkList":"uncheckList");	
@@ -131,7 +131,7 @@ public class CustomerAction extends BaseAction{
 		for(Role temp : roles){
 			roleString.append(temp.getName()+";");
 		}
-		if(roleString.toString().contains("管理员")){
+		if(roleString.toString().contains("管理员")||roleString.toString().contains("客服")){
 			roleType = "1";
 		}
 		if(roleString.toString().contains("大区经理")){
@@ -186,7 +186,7 @@ public class CustomerAction extends BaseAction{
 		for(Role temp : roles){
 			roleString.append(temp.getName()+";");
 		}
-		if(roleString.toString().contains("管理员")){
+		if(roleString.toString().contains("管理员")||roleString.toString().contains("客服")){
 			roleType = "1";
 		}
 		if(roleString.toString().contains("大区经理")){

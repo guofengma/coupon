@@ -119,7 +119,7 @@ public class ServiceInfoAction extends BaseAction{
 		int pageSize = ServletRequestUtils.getIntParameter(request,
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		String roleString = RoleToString.roleToString(user.getRoles());
-		if(roleString.contains("管理员")){
+		if(roleString.contains("管理员")||roleString.toString().contains("客服")){
 			IPageList<ServiceInfo> serviceInfos = serviceInfoService.findUndealByAdmin(pageNo, pageSize);
 			model.addAttribute("serviceInfos",serviceInfos);
 		}
@@ -149,7 +149,7 @@ public class ServiceInfoAction extends BaseAction{
 		int pageSize = ServletRequestUtils.getIntParameter(request,
 				PageListUtil.PAGE_SIZE_NAME, PageListUtil.DEFAULT_PAGE_SIZE);
 		String roleString = RoleToString.roleToString(user.getRoles());
-		if(roleString.contains("管理员")){
+		if(roleString.contains("管理员")||roleString.toString().contains("客服")){
 			IPageList<ServiceInfo> serviceInfos = serviceInfoService.findDealByAdmin(pageNo, pageSize);
 			model.addAttribute("serviceInfos",serviceInfos);
 		}
