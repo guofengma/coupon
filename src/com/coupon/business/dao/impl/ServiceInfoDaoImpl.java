@@ -122,4 +122,11 @@ public class ServiceInfoDaoImpl  extends BaseDaoImpl<ServiceInfo, String> implem
 		System.out.println(count);
 		return PageListUtil.getPageList(count, pageNo, items, pageSize);
 	}
+
+	@Override
+	public List<ServiceInfo> findUndealService() {
+		List<ServiceInfo> items = this.queryByHql(
+				"from ServiceInfo r where r.deleted=false and (r.deal = '0' or r.deal='3')", null);
+		return items;
+	}
 }

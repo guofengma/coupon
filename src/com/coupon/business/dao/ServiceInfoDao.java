@@ -22,5 +22,7 @@ public interface ServiceInfoDao extends BaseDao<ServiceInfo , String>{
 
 	IPageList<ServiceInfo> findDealByStaff(int pageNo, int pageSize, String userId);
 
+	List<ServiceInfo> findUndealService();
+
 
 }

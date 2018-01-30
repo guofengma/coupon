@@ -96,6 +96,52 @@
 	         </shiro:hasPermission>
     </ul>
 </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">消息</h4>
+            </div>
+            <div class="modal-body">
+				有新的预约待处理，<a href="<%=basePath%>/business/serviceInfo/undealList">去处理</a>
+			</div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 <script type="text/javascript">
- 
+toastr.options = {  
+        closeButton: false,  
+        debug: false,  
+        progressBar: false,  
+        positionClass: "toast-bottom-right",  
+        onclick: false,  
+        showDuration: "300",  
+        hideDuration: "1000",  
+        timeOut: "3000",  
+        extendedTimeOut: "2000",  
+        showEasing: "swing",  
+        hideEasing: "linear",  
+        showMethod: "fadeIn",  
+        hideMethod: "fadeOut"  
+    };
+
+function checkServiceInfo(){
+	$.ajax({
+		url:"<%=basePath%>/business/serviceInfo/countUndealService",    //请求的url地址
+	    dataType:"json",   
+	    async:false,
+	    type:"POST",   //请求方式
+	    success:function(result){
+			if(result.count!=0)
+				toastr.info("您有"+result.count+"条预约待处理!"); 
+	    },
+	    error:function(){
+			window.location.href = "<%=basePath%>/index"
+	    }
+	});
+}
+checkServiceInfo();
+window.setInterval('checkServiceInfo()',1000*60*10);
 </script>

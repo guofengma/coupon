@@ -256,4 +256,20 @@ public class ServiceInfoAction extends BaseAction{
 	 	response.setCharacterEncoding("utf-8");
 		response.getWriter().write(json.toString());
 	}
+
+	@RequestMapping(value = "/business/serviceInfo/countUndealService")
+	public void countUndealService(HttpServletRequest request, ModelMap model,HttpServletResponse response) throws IOException {
+		JSONObject json = new JSONObject();
+		List<ServiceInfo> serviceInfos =serviceInfoService.findUndealService();
+		User user = userService.findByUserName(CookieUtil.getCookie(request, "name_EN"));
+		String roleString = RoleToString.roleToString(user.getRoles());
+		if(roleString.contains("管理员")||roleString.toString().contains("客服")){
+			json.put("count",serviceInfos.size());
+		}else{
+			json.put("count",0);
+		}
+		response.setContentType("application/json");
+	 	response.setCharacterEncoding("utf-8");
+		response.getWriter().write(json.toString());
+	}
 }

@@ -56,4 +56,9 @@ public class ServiceInfoServiceImpl extends BaseServiceImpl<ServiceInfo, String>
 	public IPageList<ServiceInfo> findDealByStaff(int pageNo, int pageSize, String userId) {
 		return getServiceInfoDao().findDealByStaff( pageNo,pageSize,userId);
 	}
+
+	@Override
+	public List<ServiceInfo> findUndealService() {
+		return getServiceInfoDao().findUndealService();
+	}
 }

@@ -29,6 +29,9 @@
 <link rel="stylesheet" href="<%=path %>/assets/bootstrap/css/plugins/morris.css" >
  <!-- Custom CSS -->
 <link rel="stylesheet" href="<%=path %>/assets/css/sb-admin.css" >
+
+<link rel="stylesheet" href="<%=path %>/assets/toastr/toastr.min.css" >
+
 <%-- <link rel="stylesheet" href="<%=path %>/assets/css/ace.min.css" /> --%>
 <%-- <link rel="stylesheet" href="<%=path %>/assets/css/ace-rtl.min.css" /> --%>
 <%-- <link rel="stylesheet" href="<%=path %>/assets/css/ace-skins.min.css" /> --%>
@@ -41,6 +44,7 @@
 <script src="<%=path %>/assets/js/jquery.backstretch.min.js"></script>
 <script src="<%=path %>/assets/js/scripts.js"></script>
 <script src="<%=path %>/assets/js/menus.js"></script>
+<script src="<%=path %>/assets/toastr/toastr.min.js"></script>
 <%-- <script src="<%=path %>/js/main.js"></script> --%>
 
 <%-- <script src="<%=path %>/assets/js/ace-extra.min.js"></script> --%>
